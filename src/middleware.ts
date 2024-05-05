@@ -10,7 +10,6 @@ export default createMiddleware({
     defaultLocale: locales[0],
 });
 
-const matcher = ["/", `/(${locales.join("|")})/:path*`];
 export const config = {
-    matcher,
+    matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
 };
