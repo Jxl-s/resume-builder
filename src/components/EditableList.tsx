@@ -30,6 +30,9 @@ const EditableList: FC<Props> = ({ items, setItems }) => {
 
     const handleFocus = () => {
         setIsFocused(true);
+
+        // if we got here from tabbing, this is required
+        handleClick();
     };
 
     const handleBlur = (e: React.FocusEvent<HTMLUListElement>) => {
@@ -61,7 +64,7 @@ const EditableList: FC<Props> = ({ items, setItems }) => {
         if (listItems.length === 0) {
             listItems = Array.from({ length: 3 }).map(
                 (_, i) =>
-                    `<li class="opacity-50">Enter bullet list item ${i + 1}</li>`
+                    `<li class="opacity-80">Enter bullet list item ${i + 1}</li>`
             );
         }
 
@@ -70,7 +73,7 @@ const EditableList: FC<Props> = ({ items, setItems }) => {
 
     return (
         <div
-            className={`ps-4 duration-300 rounded-md ${isFocused && "bg-primary/20"} ${items.length === 0 && "cursor-pointer hover:bg-primary/20"}`}
+            className={`ps-4 duration-300 rounded-md ${isFocused ? "bg-primary/20" : "cursor-pointer hover:bg-primary/20"}`}
             onClick={handleClick}
         >
             <ul
@@ -81,7 +84,7 @@ const EditableList: FC<Props> = ({ items, setItems }) => {
                 contentEditable={true}
                 spellCheck={false}
                 suppressContentEditableWarning={true}
-                className={`p-2 list-disc list-outside border-none outline-none`}
+                className={`ps-2 py-0.5 list-disc list-outside border-none outline-none`}
                 style={{
                     fontSize: `${contentSize}pt`,
                 }}

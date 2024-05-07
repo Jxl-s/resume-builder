@@ -29,7 +29,7 @@ const EditableHeading: FC<Props> = ({ content, setContent }) => {
             suppressContentEditableWarning={true}
             onKeyDown={handleKeyDown}
             onBlur={handleBlur}
-            className="border-b-2 border-b-black outline-none"
+            className="border-b-2 border-b-black outline-none mb-1"
             style={{
                 fontSize: `${headingSize}pt`,
                 fontWeight: "bold",

@@ -13,3 +13,9 @@ body {
     color: white;
     background-color: var(--primary);
 }
+
+[contentEditable=true]:empty::before {
+    content: attr(data-placeholder);
+    color: rgba(0, 0, 0, 0.5);
+    font-weight: 600;
+}
