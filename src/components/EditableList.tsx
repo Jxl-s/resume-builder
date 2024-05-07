@@ -2,17 +2,12 @@
 import DOMPurify from "isomorphic-dompurify";
 import useDocSettingsStore from "@/stores/useDocSettingsStore";
 import React, { FC, useEffect, useRef, useState } from "react";
+import { sanitizeHtml } from "@/utils/sanitizeHtml";
 
 interface Props {
     items: string[];
     setItems: (items: string[]) => void;
 }
-
-const sanitizeHtml = (html: string) => {
-    return DOMPurify.sanitize(html, {
-        ALLOWED_TAGS: ["b", "i", "u"],
-    });
-};
 
 const EditableList: FC<Props> = ({ items, setItems }) => {
     const ulRef = useRef<HTMLUListElement>(null);
@@ -84,6 +79,7 @@ const EditableList: FC<Props> = ({ items, setItems }) => {
                 onBlur={handleBlur}
                 onKeyDown={handleKeyDown}
                 contentEditable={true}
+                spellCheck={false}
                 suppressContentEditableWarning={true}
                 className={`p-2 list-disc list-outside border-none outline-none`}
                 style={{
