@@ -36,13 +36,26 @@ interface ResumeEditor {
         title: string;
         items: SectionItem[];
     }[];
+
+    setSections: (
+        sections: { id: string; title: string; items: SectionItem[] }[]
+    ) => void;
+    addSection: (title: string) => void;
+    removeSection: (sectionId: string) => void;
+    updateSection: (sectionId: string, title: string) => void;
+
+    setItems: (sectionId: string, items: SectionItem[]) => void;
+    addItem: (sectionId: string, item: SectionItem) => void;
+
+    removeItem: (itemId: string) => void;
+    updateItem: (itemId: string, item: SectionItem) => void;
 }
+
 const useResumeEditorStore = create<ResumeEditor>((set) => ({
     name: "John Doe",
     subtitle: "Software Engineer",
     contact:
         "123-456-7890 | email@email.com | linkedin.com/in/john-die | github.com/John-Doe | johndoe.com",
-
     sections: [
         {
             title: "Education",
@@ -76,6 +89,61 @@ const useResumeEditorStore = create<ResumeEditor>((set) => ({
             ],
         },
     ],
+
+    setSections: (sections) => set({ sections }),
+    addSection: (title) =>
+        set((state) => ({
+            sections: [
+                ...state.sections,
+                {
+                    id: uuidv4(),
+                    title,
+                    items: [],
+                },
+            ],
+        })),
+
+    removeSection: (sectionId) =>
+        set((state) => ({
+            sections: state.sections.filter((s) => s.id !== sectionId),
+        })),
+
+    updateSection: (sectionId, title) =>
+        set((state) => ({
+            sections: state.sections.map((s) =>
+                s.id === sectionId ? { ...s, title } : s
+            ),
+        })),
+
+    setItems: (sectionId, items) =>
+        set((state) => ({
+            sections: state.sections.map((s) =>
+                s.id === sectionId ? { ...s, items } : s
+            ),
+        })),
+
+    addItem: (sectionId, item) =>
+        set((state) => ({
+            sections: state.sections.map((s) =>
+                s.id === sectionId ? { ...s, items: [...s.items, item] } : s
+            ),
+        })),
+
+    removeItem: (itemId) =>
+        set((state) => ({
+            sections: state.sections.map((s) => ({
+                ...s,
+                items: s.items.filter((i) => i.id !== itemId),
+            })),
+        })),
+
+    updateItem: (itemId, item) =>
+        set((state) => ({
+            sections: state.sections.map((s) => ({
+                ...s,
+                items: s.items.map((i) => (i.id === itemId ? item : i)),
+            })),
+        })),
 }));
 
 export default useResumeEditorStore;
