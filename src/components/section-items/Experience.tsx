@@ -26,11 +26,13 @@ const Experience: FC<Props> = ({
                     placeholder: "Company",
                     content: company.content,
                     setContent: company.setContent,
+                    defaultStyle: ["b"],
                 }}
                 right={{
                     placeholder: "Location",
                     content: location.content,
                     setContent: location.setContent,
+                    defaultStyle: ["b"],
                 }}
             />
             <EditableTwoSide
@@ -38,11 +40,13 @@ const Experience: FC<Props> = ({
                     placeholder: "Occupation",
                     content: position.content,
                     setContent: position.setContent,
+                    defaultStyle: ["i"],
                 }}
                 right={{
                     placeholder: "Dates",
                     content: date.content,
                     setContent: date.setContent,
+                    defaultStyle: ["i"],
                 }}
             />
             <EditableList

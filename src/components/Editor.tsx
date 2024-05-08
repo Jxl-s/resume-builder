@@ -11,35 +11,14 @@ const Editor: FC = () => {
     const [title, setTitle] = useState<string>("Education");
     const [items, setItems] = useState<string[]>([]);
 
-    const [topLeft, setTopLeft] = useState<string>("<b>Company</b>");
-    const [topRight, setTopRight] = useState<string>("<b>Location</b>");
-    const [bottomLeft, setBottomLeft] = useState<string>("<i>Occupation</i>");
-    const [bottomRight, setBottomRight] = useState<string>("<i>Dates</i>");
+    const [topLeft, setTopLeft] = useState<string>("<b>a</b>");
+    const [topRight, setTopRight] = useState<string>("<b>a</b>");
+    const [bottomLeft, setBottomLeft] = useState<string>("<i></i>");
+    const [bottomRight, setBottomRight] = useState<string>("<i></i>");
 
-    useEffect(() => {
-        function checkEmptyContentEditable() {
-            const contentEditableElements = document.querySelectorAll(
-                "[contentEditable=true]"
-            );
-
-            contentEditableElements.forEach((element) => {
-                if (element.textContent?.trim() === "") {
-                    element.classList.add("empty-content");
-                } else {
-                    element.classList.remove("empty-content");
-                }
-            });
-        }
-
-        document.addEventListener("input", checkEmptyContentEditable);
-        document.addEventListener(
-            "DOMContentLoaded",
-            checkEmptyContentEditable
-        );
-    }, [])
     return (
         <div className="bg-white text-black p-4">
-            <EditableHeading content={title} setContent={setTitle} />
+            {/* <EditableHeading content={title} setContent={setTitle} /> */}
             <Experience
                 company={{ content: topLeft, setContent: setTopLeft }}
                 position={{ content: bottomLeft, setContent: setBottomLeft }}

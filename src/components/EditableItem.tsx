@@ -1,10 +1,10 @@
 import { sanitizeHtml } from "@/utils/sanitizeHtml";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import "./EditableItem.css";
 
 interface Props {
     Component?: React.ElementType;
-    defaultStyle?: ("b" | "i" | "u")[];
+    defaultStyle?: string[];
     placeholder?: string;
     className?: string;
 
@@ -22,6 +22,7 @@ const EditableItem: FC<Props> = ({
     className,
     fontSize,
 }) => {
+    const itemRef = useRef<HTMLElement>(null);
     const handleKeyDown = (e: React.KeyboardEvent<HTMLSpanElement>) => {
         if (e.ctrlKey || e.metaKey) {
             if (e.key === "b" || e.key === "i" || e.key === "u") {
@@ -63,8 +64,16 @@ const EditableItem: FC<Props> = ({
         }
     };
 
+    useEffect(() => {
+        if (!itemRef.current) return;
+        if (itemRef.current.textContent === "") {
+            itemRef.current.classList.add("empty-content");
+        }
+    }, []);
+
     return (
         <Component
+            ref={itemRef}
             contentEditable={true}
             data-placeholder={placeholder}
             suppressContentEditableWarning={true}

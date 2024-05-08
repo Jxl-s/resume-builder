@@ -8,11 +8,13 @@ interface Props {
         placeholder: string;
         content: string;
         setContent: (content: string) => void;
+        defaultStyle?: string[];
     };
     right: {
         placeholder: string;
         content: string;
         setContent: (content: string) => void;
+        defaultStyle?: string[];
     };
 }
 
@@ -27,20 +29,20 @@ const EditableTwoSide: FC<Props> = ({ left, right }) => {
             }}
         >
             <EditableItem
-                Component={"i"}
+                Component={"span"}
                 content={left.content}
                 setContent={left.setContent}
                 placeholder={left.placeholder}
                 className="text-left"
-                defaultStyle={["b"]}
+                defaultStyle={left.defaultStyle ?? []}
             />
             <EditableItem
-                Component={"b"}
+                Component={"span"}
                 content={right.content}
                 setContent={right.setContent}
                 placeholder={right.placeholder}
                 className="text-right"
-                defaultStyle={["i", "u"]}
+                defaultStyle={right.defaultStyle ?? []}
             />
         </article>
     );
