@@ -1,12 +1,13 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import EditableHeading from "./EditableHeading";
 import EditableList from "./EditableList";
 import EditableTwoSide from "./EditableTwoSide";
 import Experience from "./section-items/Experience";
 
 const Editor: FC = () => {
+    // these are all temporary
     const [title, setTitle] = useState<string>("Education");
     const [items, setItems] = useState<string[]>([]);
 
@@ -15,6 +16,27 @@ const Editor: FC = () => {
     const [bottomLeft, setBottomLeft] = useState<string>("<i>Occupation</i>");
     const [bottomRight, setBottomRight] = useState<string>("<i>Dates</i>");
 
+    useEffect(() => {
+        function checkEmptyContentEditable() {
+            const contentEditableElements = document.querySelectorAll(
+                "[contentEditable=true]"
+            );
+
+            contentEditableElements.forEach((element) => {
+                if (element.textContent?.trim() === "") {
+                    element.classList.add("empty-content");
+                } else {
+                    element.classList.remove("empty-content");
+                }
+            });
+        }
+
+        document.addEventListener("input", checkEmptyContentEditable);
+        document.addEventListener(
+            "DOMContentLoaded",
+            checkEmptyContentEditable
+        );
+    }, [])
     return (
         <div className="bg-white text-black p-4">
             <EditableHeading content={title} setContent={setTitle} />

@@ -1,8 +1,10 @@
 import { sanitizeHtml } from "@/utils/sanitizeHtml";
 import React, { FC, useState } from "react";
+import "./EditableItem.css";
 
 interface Props {
     Component?: React.ElementType;
+    defaultStyle?: ("b" | "i" | "u")[];
     placeholder?: string;
     className?: string;
 
@@ -13,6 +15,7 @@ interface Props {
 
 const EditableItem: FC<Props> = ({
     Component = "span",
+    defaultStyle = [],
     placeholder = "",
     content,
     setContent,
@@ -20,6 +23,23 @@ const EditableItem: FC<Props> = ({
     fontSize,
 }) => {
     const handleKeyDown = (e: React.KeyboardEvent<HTMLSpanElement>) => {
+        if (e.ctrlKey || e.metaKey) {
+            if (e.key === "b" || e.key === "i" || e.key === "u") {
+                e.preventDefault();
+                // apply the appropriate execcommand
+                let command = "";
+                if (e.key === "b") {
+                    command = "bold";
+                } else if (e.key === "i") {
+                    command = "italic";
+                } else if (e.key === "u") {
+                    command = "underline";
+                }
+
+                document.execCommand(command, false);
+            }
+        }
+
         if (e.key === "Enter") {
             e.preventDefault();
             e.currentTarget.blur();
@@ -35,6 +55,14 @@ const EditableItem: FC<Props> = ({
         setContent(e.target.innerHTML);
     };
 
+    const handleInput = (e: React.FormEvent<HTMLSpanElement>) => {
+        if (e.currentTarget.textContent === "") {
+            e.currentTarget.classList.add("empty-content");
+        } else {
+            e.currentTarget.classList.remove("empty-content");
+        }
+    };
+
     return (
         <Component
             contentEditable={true}
@@ -42,7 +70,8 @@ const EditableItem: FC<Props> = ({
             suppressContentEditableWarning={true}
             onKeyDown={handleKeyDown}
             onBlur={handleBlur}
-            className={`outline-none cursor-pointer duration-300 hover:bg-primary/20 focus:bg-primary/20 focus:border-b focus:border-b-primary focus:cursor-auto ${className ?? ""}`}
+            onInput={handleInput}
+            className={`editable-item ${defaultStyle.map((s) => `ce-${s}`).join(" ")} outline-none cursor-pointer duration-300 hover:bg-primary/20 focus:bg-primary/20 focus:border-b focus:border-b-primary focus:cursor-auto ${className ?? ""}`}
             style={{
                 fontSize: fontSize ? `${fontSize}pt` : undefined,
             }}

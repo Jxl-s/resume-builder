@@ -27,18 +27,20 @@ const EditableTwoSide: FC<Props> = ({ left, right }) => {
             }}
         >
             <EditableItem
-                Component={"span"}
+                Component={"i"}
                 content={left.content}
                 setContent={left.setContent}
                 placeholder={left.placeholder}
                 className="text-left"
+                defaultStyle={["b"]}
             />
             <EditableItem
-                Component={"span"}
+                Component={"b"}
                 content={right.content}
                 setContent={right.setContent}
                 placeholder={right.placeholder}
                 className="text-right"
+                defaultStyle={["i", "u"]}
             />
         </article>
     );
