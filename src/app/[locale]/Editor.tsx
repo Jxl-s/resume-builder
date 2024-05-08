@@ -10,12 +10,14 @@ import ExperienceItem, {
     ExperienceItemWithId,
 } from "@/components/items/Experience";
 import { v4 as uuidv4 } from "uuid";
+import Section from "@/components/Section";
+import { IEducationItem } from "@/types/items";
 
 const Editor: FC = () => {
     const sections = useResumeEditorStore((state) => state.sections);
     const setSections = useResumeEditorStore((state) => state.setSections);
-    const updateSection = useResumeEditorStore((state) => state.updateSection);
     const addSection = useResumeEditorStore((state) => state.addSection);
+    const updateSection = useResumeEditorStore((state) => state.updateSection);
 
     useEffect(() => {
         setSections([
@@ -27,10 +29,10 @@ const Editor: FC = () => {
                         id: uuidv4(),
                         type: "education",
                         value: {
-                            school: "<b></b>",
-                            location: "<b></b>",
-                            degree: "<b></b>",
-                            date: "<b></b>",
+                            school: "",
+                            location: "",
+                            degree: "",
+                            date: "",
                         },
                     },
                 ],
@@ -43,10 +45,10 @@ const Editor: FC = () => {
                         id: uuidv4(),
                         type: "experience",
                         value: {
-                            company: "<b></b>",
-                            location: "<b></b>",
-                            position: "<b></b>",
-                            dates: "<b></b>",
+                            company: "",
+                            location: "",
+                            position: "",
+                            dates: "",
                             description: [],
                         },
                     },
@@ -55,8 +57,7 @@ const Editor: FC = () => {
         ]);
     }, [setSections]);
 
-    const [desc, setDesc] = useState<string[]>(["hello!"]);
-    console.log("new desc", desc);
+    console.log(JSON.stringify(sections));
     return (
         <div
             className="bg-white text-black p-4"
@@ -64,52 +65,35 @@ const Editor: FC = () => {
                 width: "595pt",
             }}
         >
-            <ExperienceItem
-                company="<b></b>"
-                location="<b></b>"
-                position="<b></b>"
-                dates="<b></b>"
-                description={desc}
-                setCompany={() => {}}
-                setLocation={() => {}}
-                setPosition={() => {}}
-                setDates={() => {}}
-                setDescription={setDesc}
-            />
-            {/* {sections.map((s) => {
-                return (
-                    <section key={s.id}>
-                        <EditableHeading
-                            content={s.title}
-                            setContent={(c) => updateSection(s.id, c)}
-                        />
-                        {s.items.map((i) => {
-                            if (i.type === "education") {
-                                return (
-                                    <EducationItemWithId
-                                        sectionId={s.id}
-                                        itemId={i.id}
-                                        key={i.id}
-                                    />
-                                );
-                            }
+            {sections.map((section) => (
+                <Section
+                    key={section.id}
+                    title={section.title}
+                    setTitle={(t) => updateSection(section.id, t)}
+                >
+                    {section.items.map((item) => {
+                        if (item.type === "education") {
+                            return (
+                                <EducationItemWithId
+                                    key={item.id}
+                                    sectionId={section.id}
+                                    itemId={item.id}
+                                />
+                            );
+                        }
 
-                            if (i.type === "experience") {
-                                return (
-                                    <ExperienceItemWithId
-                                        sectionId={s.id}
-                                        itemId={i.id}
-                                        key={i.id}
-                                    />
-                                );
-                            }
-                        })}
-                    </section>
-                );
-            })} */}
-            <button onClick={() => addSection("<b></b>")}>
-                Add new section
-            </button>
+                        if (item.type === "experience") {
+                            return (
+                                <ExperienceItemWithId
+                                    key={item.id}
+                                    sectionId={section.id}
+                                    itemId={item.id}
+                                />
+                            );
+                        }
+                    })}
+                </Section>
+            ))}
         </div>
     );
 };

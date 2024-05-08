@@ -8,13 +8,11 @@ interface SectionTypes {
     education: IEducationItem;
 }
 
-type SectionItem = {
-    [K in keyof SectionTypes]: {
-        type: K;
-        id: string;
-        value: SectionTypes[K];
-    };
-}[keyof SectionTypes];
+interface SectionItem {
+    type: keyof SectionTypes;
+    id: string;
+    value: Object;
+}
 
 interface ResumeEditor {
     name: string;

@@ -84,21 +84,45 @@ const EducationItemWithId: FC<EducationItemWithIdProps> = ({
             ?.items.find((item) => item.id === itemId)
     );
 
+    const updateItem = useResumeEditorStore((state) => state.updateItem);
     if (!educationItem) return null;
-
     const { school, location, degree, date } =
         educationItem.value as IEducationItem;
+
+    const setSchool = (school: string) =>
+        updateItem(sectionId, itemId, {
+            ...educationItem,
+            value: { ...educationItem.value, school },
+        });
+
+    const setLocation = (location: string) =>
+        updateItem(sectionId, itemId, {
+            ...educationItem,
+            value: { ...educationItem.value, location },
+        });
+
+    const setDegree = (degree: string) =>
+        updateItem(sectionId, itemId, {
+            ...educationItem,
+            value: { ...educationItem.value, degree },
+        });
+
+    const setDate = (date: string) =>
+        updateItem(sectionId, itemId, {
+            ...educationItem,
+            value: { ...educationItem.value, date },
+        });
 
     return (
         <EducationItem
             school={school}
-            setSchool={() => {}}
+            setSchool={setSchool}
             location={location}
-            setLocation={() => {}}
+            setLocation={setLocation}
             degree={degree}
-            setDegree={() => {}}
+            setDegree={setDegree}
             date={date}
-            setDate={() => {}}
+            setDate={setDate}
         />
     );
 };

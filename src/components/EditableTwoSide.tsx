@@ -12,7 +12,7 @@ const EditableTwoSide: FC<Props> = ({ left, right }) => {
     const contentSize = useDocSettingsStore((state) => state.contentSize);
 
     return (
-        <article
+        <aside
             className="flex justify-between gap-4"
             style={{
                 fontSize: `${contentSize}pt`,
@@ -20,7 +20,7 @@ const EditableTwoSide: FC<Props> = ({ left, right }) => {
         >
             <EditableItem {...left} />
             <EditableItem {...right} />
-        </article>
+        </aside>
     );
 };
 

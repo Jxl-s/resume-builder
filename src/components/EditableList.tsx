@@ -2,6 +2,7 @@
 import useDocSettingsStore from "@/stores/useDocSettingsStore";
 import React, { FC, useEffect, useRef, useState } from "react";
 import "./EditableList.css";
+import { sanitizeHtml } from "@/utils/sanitizeHtml";
 
 interface Props {
     items: string[];
@@ -60,14 +61,17 @@ const EditableList: FC<Props> = ({ items, setItems }) => {
             const newItems = [];
 
             for (const item of Array.from(e.currentTarget.children)) {
-                newItems.push(item.innerHTML);
+                newItems.push(sanitizeHtml(item.innerHTML));
             }
 
             setItems(newItems);
         }
     };
 
-    let innerHtml = items.map((item) => `<li>${item}</li>`).join("");
+    let innerHtml = items
+        .map((item) => `<li>${sanitizeHtml(item)}</li>`)
+        .join("");
+
     if (innerHtml === "") {
         innerHtml = Array.from({ length: 3 })
             .map(

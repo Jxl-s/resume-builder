@@ -60,7 +60,7 @@ const EditableItem: FC<EditableItemProps> = ({
             return;
         }
 
-        setContent(e.target.innerHTML);
+        setContent(sanitizeHtml(e.target.innerHTML));
     };
 
     const applyDefaultStyle = () => {

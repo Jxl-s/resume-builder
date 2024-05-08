@@ -91,23 +91,58 @@ const ExperienceItemWithId: FC<ExperienceItemWithIdProps> = ({
             ?.items.find((item) => item.id === itemId)
     );
 
+    const updateItem = useResumeEditorStore((state) => state.updateItem);
     if (!experienceItem) return null;
 
     const { company, location, position, dates, description } =
         experienceItem.value as IExperienceItem;
 
+    const setCompany = (company: string) => {
+        updateItem(sectionId, itemId, {
+            ...experienceItem,
+            value: { ...experienceItem.value, company },
+        });
+    };
+
+    const setLocation = (location: string) => {
+        updateItem(sectionId, itemId, {
+            ...experienceItem,
+            value: { ...experienceItem.value, location },
+        });
+    };
+
+    const setPosition = (position: string) => {
+        updateItem(sectionId, itemId, {
+            ...experienceItem,
+            value: { ...experienceItem.value, position },
+        });
+    };
+
+    const setDates = (dates: string) => {
+        updateItem(sectionId, itemId, {
+            ...experienceItem,
+            value: { ...experienceItem.value, dates },
+        });
+    };
+
+    const setDescription = (description: string[]) => {
+        updateItem(sectionId, itemId, {
+            ...experienceItem,
+            value: { ...experienceItem.value, description },
+        });
+    };
     return (
         <ExperienceItem
             company={company}
-            setCompany={() => {}}
+            setCompany={setCompany}
             location={location}
-            setLocation={() => {}}
+            setLocation={setLocation}
             position={position}
-            setPosition={() => {}}
+            setPosition={setPosition}
             dates={dates}
-            setDates={() => {}}
+            setDates={setDates}
             description={description}
-            setDescription={() => {}}
+            setDescription={setDescription}
         />
     );
 };
