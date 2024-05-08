@@ -93,6 +93,7 @@ const EditableItem: FC<EditableItemProps> = ({
         <Component
             ref={itemRef}
             contentEditable={true}
+            spellCheck={false}
             data-placeholder={placeholder}
             suppressContentEditableWarning={true}
             onKeyDown={handleKeyDown}

@@ -1,21 +1,11 @@
 import { create } from "zustand";
 import { v4 as uuidv4 } from "uuid";
+import { IEducationItem, IExperienceItem } from "@/types/items";
 
 // type: education/experience, custom, project
 interface SectionTypes {
-    experience: {
-        company: string;
-        position: string;
-        date: string;
-        location: string;
-        description: string[];
-    };
-    education: {
-        school: string;
-        degree: string;
-        date: string;
-        location: string;
-    };
+    experience: IExperienceItem;
+    education: IEducationItem;
 }
 
 type SectionItem = {
@@ -47,8 +37,8 @@ interface ResumeEditor {
     setItems: (sectionId: string, items: SectionItem[]) => void;
     addItem: (sectionId: string, item: SectionItem) => void;
 
-    removeItem: (itemId: string) => void;
-    updateItem: (itemId: string, item: SectionItem) => void;
+    removeItem: (sectionId: string, itemId: string) => void;
+    updateItem: (sectionId: string, itemId: string, item: SectionItem) => void;
 }
 
 const useResumeEditorStore = create<ResumeEditor>((set) => ({
@@ -56,94 +46,100 @@ const useResumeEditorStore = create<ResumeEditor>((set) => ({
     subtitle: "Software Engineer",
     contact:
         "123-456-7890 | email@email.com | linkedin.com/in/john-die | github.com/John-Doe | johndoe.com",
-    sections: [
-        {
-            title: "Education",
-            id: uuidv4(),
-            items: [
-                {
-                    type: "experience",
-                    id: uuidv4(),
-                    value: {
-                        company: "Amazon",
-                        position: "Software Engineer",
-                        date: "August 2017 - May 2021",
-                        location: "Berkeley, CA",
-                        description: [
-                            "Developed a new feature that increased user retention by 20%",
-                            "Implemented a new algorithm that reduced server load by 15%",
-                            "Collaborated with a team of 5 to develop a new product from scratch",
-                        ],
-                    },
-                },
-                {
-                    type: "education",
-                    id: uuidv4(),
-                    value: {
-                        date: "May 2024",
-                        degree: "Master of Science in Computer Science",
-                        location: "Berkeley, CA",
-                        school: "University of California, Berkeley",
-                    },
-                },
-            ],
-        },
-    ],
+
+    sections: [],
 
     setSections: (sections) => set({ sections }),
-    addSection: (title) =>
-        set((state) => ({
-            sections: [
-                ...state.sections,
-                {
-                    id: uuidv4(),
-                    title,
-                    items: [],
-                },
-            ],
-        })),
+    addSection: (title) => {
+        set((state) => {
+            const copy = [...state.sections];
 
-    removeSection: (sectionId) =>
+            copy.push({
+                title,
+                id: uuidv4(),
+                items: [],
+            });
+
+            return { sections: copy };
+        });
+    },
+
+    removeSection: (sectionId) => {
         set((state) => ({
             sections: state.sections.filter((s) => s.id !== sectionId),
-        })),
+        }));
+    },
 
-    updateSection: (sectionId, title) =>
-        set((state) => ({
-            sections: state.sections.map((s) =>
-                s.id === sectionId ? { ...s, title } : s
-            ),
-        })),
+    updateSection: (sectionId, title) => {
+        set((state) => {
+            const copy = [...state.sections];
+            const section = copy.find((s) => s.id === sectionId);
 
-    setItems: (sectionId, items) =>
-        set((state) => ({
-            sections: state.sections.map((s) =>
-                s.id === sectionId ? { ...s, items } : s
-            ),
-        })),
+            if (section) {
+                section.title = title;
+            }
 
-    addItem: (sectionId, item) =>
-        set((state) => ({
-            sections: state.sections.map((s) =>
-                s.id === sectionId ? { ...s, items: [...s.items, item] } : s
-            ),
-        })),
+            return { sections: copy };
+        });
+    },
 
-    removeItem: (itemId) =>
-        set((state) => ({
-            sections: state.sections.map((s) => ({
-                ...s,
-                items: s.items.filter((i) => i.id !== itemId),
-            })),
-        })),
+    setItems: (sectionId, items) => {
+        set((state) => {
+            const copy = [...state.sections];
+            const section = copy.find((s) => s.id === sectionId);
 
-    updateItem: (itemId, item) =>
-        set((state) => ({
-            sections: state.sections.map((s) => ({
-                ...s,
-                items: s.items.map((i) => (i.id === itemId ? item : i)),
-            })),
-        })),
+            if (section) {
+                section.items = items;
+            }
+
+            return { sections: copy };
+        });
+    },
+
+    addItem: (sectionId, item) => {
+        set((state) => {
+            const copy = [...state.sections];
+            const section = copy.find((s) => s.id === sectionId);
+
+            if (section) {
+                section.items.push(item);
+            }
+
+            return { sections: copy };
+        });
+    },
+
+    removeItem: (sectionId, itemId) => {
+        set((state) => {
+            const copy = [...state.sections];
+            const section = copy.find((s) => s.id === sectionId);
+
+            if (section) {
+                section.items = section.items.filter((i) => i.id !== itemId);
+            }
+
+            return { sections: copy };
+        });
+    },
+
+    updateItem: (sectionId, itemId, item) => {
+        set((state) => {
+            const copy = [...state.sections];
+            const section = copy.find((s) => s.id === sectionId);
+
+            if (section) {
+                const itemIndex = section.items.findIndex(
+                    (i) => i.id === itemId
+                );
+
+                if (itemIndex !== -1) {
+                    section.items[itemIndex] = item;
+                }
+            }
+
+            return { sections: copy };
+        });
+    },
 }));
 
 export default useResumeEditorStore;

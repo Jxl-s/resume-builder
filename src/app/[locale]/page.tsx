@@ -1,4 +1,4 @@
-import Editor from "@/components/Editor";
+import Editor from "@/app/[locale]/Editor";
 import { useTranslations } from "next-intl";
 
 export default function Home() {
