@@ -1,21 +1,11 @@
 import useDocSettingsStore from "@/stores/useDocSettingsStore";
 import { sanitizeHtml } from "@/utils/sanitizeHtml";
 import React, { FC, useState } from "react";
-import EditableItem from "./EditableItem";
+import EditableItem, { EditableItemProps } from "./EditableItem";
 
 interface Props {
-    left: {
-        placeholder: string;
-        content: string;
-        setContent: (content: string) => void;
-        defaultStyle?: string[];
-    };
-    right: {
-        placeholder: string;
-        content: string;
-        setContent: (content: string) => void;
-        defaultStyle?: string[];
-    };
+    left: EditableItemProps;
+    right: EditableItemProps;
 }
 
 const EditableTwoSide: FC<Props> = ({ left, right }) => {
@@ -28,22 +18,8 @@ const EditableTwoSide: FC<Props> = ({ left, right }) => {
                 fontSize: `${contentSize}pt`,
             }}
         >
-            <EditableItem
-                Component={"span"}
-                content={left.content}
-                setContent={left.setContent}
-                placeholder={left.placeholder}
-                className="text-left"
-                defaultStyle={left.defaultStyle ?? []}
-            />
-            <EditableItem
-                Component={"span"}
-                content={right.content}
-                setContent={right.setContent}
-                placeholder={right.placeholder}
-                className="text-right"
-                defaultStyle={right.defaultStyle ?? []}
-            />
+            <EditableItem {...left} />
+            <EditableItem {...right} />
         </article>
     );
 };

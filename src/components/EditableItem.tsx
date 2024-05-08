@@ -1,28 +1,34 @@
 import { sanitizeHtml } from "@/utils/sanitizeHtml";
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useRef } from "react";
 import "./EditableItem.css";
+import type { TextStyle } from "@/types";
 
-interface Props {
+// This would be used by other components that compose of this one
+export interface EditableItemProps {
     Component?: React.ElementType;
-    defaultStyle?: string[];
+
+    defaultStyle?: TextStyle[];
     placeholder?: string;
     className?: string;
-
-    setContent: (content: string) => void;
-    content: string;
     fontSize?: number;
+
+    content: string;
+    setContent: (content: string) => void;
 }
 
-const EditableItem: FC<Props> = ({
+const EditableItem: FC<EditableItemProps> = ({
     Component = "span",
+
     defaultStyle = [],
     placeholder = "",
+    className = "",
+    fontSize,
+
     content,
     setContent,
-    className,
-    fontSize,
 }) => {
     const itemRef = useRef<HTMLElement>(null);
+
     const handleKeyDown = (e: React.KeyboardEvent<HTMLSpanElement>) => {
         if (e.ctrlKey || e.metaKey) {
             if (e.key === "b" || e.key === "i" || e.key === "u") {
@@ -47,6 +53,7 @@ const EditableItem: FC<Props> = ({
         }
     };
 
+    // Updating the content
     const handleBlur = (e: React.FocusEvent<HTMLSpanElement>) => {
         if (e.target.textContent === "") {
             setContent("");
@@ -56,14 +63,25 @@ const EditableItem: FC<Props> = ({
         setContent(e.target.innerHTML);
     };
 
+    const applyDefaultStyle = () => {
+        for (const style of defaultStyle) {
+            if (!document.queryCommandState(style)) {
+                document.execCommand(style);
+            }
+        }
+    };
+
+    // Handling placeholder and empty content
     const handleInput = (e: React.FormEvent<HTMLSpanElement>) => {
-        if (e.currentTarget.textContent === "") {
+        if (e.currentTarget.textContent?.trim() === "") {
             e.currentTarget.classList.add("empty-content");
+            applyDefaultStyle();
         } else {
             e.currentTarget.classList.remove("empty-content");
         }
     };
 
+    // Initial placeholder handling
     useEffect(() => {
         if (!itemRef.current) return;
         if (itemRef.current.textContent === "") {
@@ -79,8 +97,9 @@ const EditableItem: FC<Props> = ({
             suppressContentEditableWarning={true}
             onKeyDown={handleKeyDown}
             onBlur={handleBlur}
+            onFocus={handleInput}
             onInput={handleInput}
-            className={`editable-item ${defaultStyle.map((s) => `ce-${s}`).join(" ")} outline-none cursor-pointer duration-300 hover:bg-primary/20 focus:bg-primary/20 focus:border-b focus:border-b-primary focus:cursor-auto ${className ?? ""}`}
+            className={`editable-item outline-none cursor-pointer duration-300 hover:bg-primary/20 focus:bg-primary/20 focus:border-b focus:border-b-primary focus:cursor-auto ${defaultStyle.map((s) => `ce-${s}`).join(" ")} ${className}`}
             style={{
                 fontSize: fontSize ? `${fontSize}pt` : undefined,
             }}
