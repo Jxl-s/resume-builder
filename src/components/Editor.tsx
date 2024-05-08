@@ -11,8 +11,8 @@ const Editor: FC = () => {
     const [title, setTitle] = useState<string>("Education");
     const [items, setItems] = useState<string[]>([]);
 
-    const [topLeft, setTopLeft] = useState<string>("<b>a</b>");
-    const [topRight, setTopRight] = useState<string>("<b>a</b>");
+    const [topLeft, setTopLeft] = useState<string>("<b></b>");
+    const [topRight, setTopRight] = useState<string>("<b></b>");
     const [bottomLeft, setBottomLeft] = useState<string>("<i></i>");
     const [bottomRight, setBottomRight] = useState<string>("<i></i>");
 
