@@ -2,9 +2,13 @@
 
 import { FC, useEffect, useState } from "react";
 import useResumeEditorStore from "@/stores/useResumeEditorStore";
-import { EducationItemWithId } from "../../components/items/Education";
+import EducationItem, {
+    EducationItemWithId,
+} from "../../components/items/Education";
 import EditableHeading from "../../components/EditableHeading";
-import { ExperienceItemWithId } from "@/components/items/Experience";
+import ExperienceItem, {
+    ExperienceItemWithId,
+} from "@/components/items/Experience";
 import { v4 as uuidv4 } from "uuid";
 
 const Editor: FC = () => {
@@ -50,6 +54,9 @@ const Editor: FC = () => {
             },
         ]);
     }, [setSections]);
+
+    const [desc, setDesc] = useState<string[]>(["hello!"]);
+    console.log("new desc", desc);
     return (
         <div
             className="bg-white text-black p-4"
@@ -57,7 +64,19 @@ const Editor: FC = () => {
                 width: "595pt",
             }}
         >
-            {sections.map((s) => {
+            <ExperienceItem
+                company="<b></b>"
+                location="<b></b>"
+                position="<b></b>"
+                dates="<b></b>"
+                description={desc}
+                setCompany={() => {}}
+                setLocation={() => {}}
+                setPosition={() => {}}
+                setDates={() => {}}
+                setDescription={setDesc}
+            />
+            {/* {sections.map((s) => {
                 return (
                     <section key={s.id}>
                         <EditableHeading
@@ -87,7 +106,7 @@ const Editor: FC = () => {
                         })}
                     </section>
                 );
-            })}
+            })} */}
             <button onClick={() => addSection("<b></b>")}>
                 Add new section
             </button>

@@ -1,8 +1,7 @@
 "use client";
-import DOMPurify from "isomorphic-dompurify";
 import useDocSettingsStore from "@/stores/useDocSettingsStore";
 import React, { FC, useEffect, useRef, useState } from "react";
-import { sanitizeHtml } from "@/utils/sanitizeHtml";
+import "./EditableList.css";
 
 interface Props {
     items: string[];
@@ -11,82 +10,91 @@ interface Props {
 
 const EditableList: FC<Props> = ({ items, setItems }) => {
     const ulRef = useRef<HTMLUListElement>(null);
-    const [isFocused, setIsFocused] = useState(false);
+    const divRef = useRef<HTMLDivElement>(null);
 
     const contentSize = useDocSettingsStore((state) => state.contentSize);
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === "Backspace" && e.currentTarget.textContent === "") {
+        if (
+            (e.key === "Backspace" || e.key === "Delete") &&
+            e.currentTarget.textContent === ""
+        ) {
             e.preventDefault();
         }
     };
 
-    const handleClick = () => {
-        // create a new item if the list is empty
+    const handleFocus = (e: React.FocusEvent<HTMLUListElement>) => {
+        if (divRef.current) {
+            divRef.current.classList.remove("ce-list-unfocused");
+            divRef.current.classList.add("ce-list-focused");
+        }
+
         if (items.length === 0) {
-            setItems([""]);
+            e.currentTarget.innerHTML = "<li></li>";
+            const li = e.currentTarget.querySelector("li");
+            if (!li) return;
+
+            const range = document.createRange();
+            range.setStart(li, 0);
+            range.setEnd(li, 0);
+
+            // Get the Selection object
+            const selection = window.getSelection();
+            if (!selection) return;
+
+            selection.removeAllRanges();
+            selection.addRange(range);
         }
     };
 
-    const handleFocus = () => {
-        setIsFocused(true);
-
-        // if we got here from tabbing, this is required
-        handleClick();
-    };
-
     const handleBlur = (e: React.FocusEvent<HTMLUListElement>) => {
-        setIsFocused(false);
+        if (divRef.current) {
+            divRef.current.classList.add("ce-list-unfocused");
+            divRef.current.classList.remove("ce-list-focused");
+        }
 
-        // if the list is empty, set items to an empty array
         if (e.currentTarget.textContent === "") {
             setItems([]);
         } else {
-            const newItems: string[] = [];
+            // parse the list and send
+            const newItems = [];
 
-            for (const child of Array.from(e.currentTarget.children)) {
-                // don't push empty items
-                if (child.textContent !== "") {
-                    newItems.push(child.innerHTML);
-                }
+            for (const item of Array.from(e.currentTarget.children)) {
+                newItems.push(item.innerHTML);
             }
 
             setItems(newItems);
         }
     };
 
-    useEffect(() => {
-        if (!ulRef.current) return;
-        let listItems = items.map((item) => {
-            return `<li>${sanitizeHtml(item)}</li>`;
-        });
-
-        if (listItems.length === 0) {
-            listItems = Array.from({ length: 3 }).map(
-                (_, i) =>
-                    `<li class="opacity-80">Enter bullet list item ${i + 1}</li>`
-            );
-        }
-
-        ulRef.current.innerHTML = listItems.join("");
-    }, [items]);
+    let innerHtml = items.map((item) => `<li>${item}</li>`).join("");
+    if (innerHtml === "") {
+        innerHtml = Array.from({ length: 3 })
+            .map(
+                (_, i) => `<li class="opacity-50">Enter bullet point #${i}</li>`
+            )
+            .join("");
+    }
 
     return (
         <div
-            className={`ps-4 duration-300 rounded-md ${isFocused ? "bg-primary/20" : "cursor-pointer hover:bg-primary/20"}`}
-            onClick={handleClick}
+            ref={divRef}
+            className={`ps-4 duration-300 rounded-md hover:bg-primary/20 ce-list-unfocused`}
         >
             <ul
                 ref={ulRef}
+                onKeyDown={handleKeyDown}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
-                onKeyDown={handleKeyDown}
                 contentEditable={true}
                 spellCheck={false}
                 suppressContentEditableWarning={true}
-                className={`ps-2 py-0.5 list-disc list-outside border-none outline-none`}
+                className={`ce-list ps-2 py-0.5 list-disc list-outside border-none outline-none`}
                 style={{
                     fontSize: `${contentSize}pt`,
+                }}
+                dangerouslySetInnerHTML={{
+                    __html: innerHtml,
                 }}
             />
         </div>
