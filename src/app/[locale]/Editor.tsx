@@ -6,6 +6,8 @@ import { EducationItemWithId } from "../../components/items/Education";
 import { ExperienceItemWithId } from "@/components/items/Experience";
 import Section from "@/components/Section";
 import { FaPlusCircle } from "react-icons/fa";
+import Button from "@/components/Button";
+import TextItem, { TextItemWithId } from "@/components/items/Text";
 
 const Editor: FC = () => {
     const sections = useResumeEditorStore((state) => state.sections);
@@ -58,16 +60,25 @@ const Editor: FC = () => {
                                 />
                             );
                         }
+
+                        if (item.type === "text") {
+                            return (
+                                <TextItemWithId
+                                    key={item.id}
+                                    itemId={item.id}
+                                />
+                            );
+                        }
                     })}
                 </Section>
             ))}
-            <button
+            <Button
                 onClick={() => addSection("<b></b>")}
-                className="flex items-center bg-primary text-white gap-2 w-full rounded-md justify-center py-2 mt-4 shadow-md hover:brightness-110 duration-300"
+                className="flex items-center justify-center gap-2 w-full text-sm"
             >
                 <FaPlusCircle className="w-6 h-6" />
                 <span className="font-semibold">Create new section</span>
-            </button>
+            </Button>
         </div>
     );
 };

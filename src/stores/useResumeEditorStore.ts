@@ -1,11 +1,12 @@
 import { create } from "zustand";
 import { v4 as uuidv4 } from "uuid";
-import { IEducationItem, IExperienceItem } from "@/types/items";
+import { IEducationItem, IExperienceItem, ITextItem } from "@/types/items";
 
 // type: education/experience, custom, project
 interface SectionTypes {
     experience: IExperienceItem;
     education: IEducationItem;
+    text: ITextItem;
 }
 
 interface SectionItem {
@@ -37,6 +38,10 @@ interface ResumeEditor {
 
     removeItem: (sectionId: string, itemId: string) => void;
     updateItem: (sectionId: string, itemId: string, item: SectionItem) => void;
+
+    addEducation: (sectionId: string) => void;
+    addExperience: (sectionId: string) => void;
+    addText: (sectionId: string) => void;
 }
 
 const useResumeEditorStore = create<ResumeEditor>((set) => ({
@@ -133,6 +138,77 @@ const useResumeEditorStore = create<ResumeEditor>((set) => ({
                 if (itemIndex !== -1) {
                     section.items[itemIndex] = item;
                 }
+            }
+
+            return { sections: copy };
+        });
+    },
+
+    // some abstractions
+    addEducation: (sectionId: string) => {
+        const item: SectionItem = {
+            type: "education",
+            id: uuidv4(),
+            value: {
+                school: "<b></b>",
+                location: "<b></b>",
+                degree: "<i></i>",
+                date: "<i></i>",
+            },
+        };
+
+        set((state) => {
+            const copy = [...state.sections];
+            const section = copy.find((s) => s.id === sectionId);
+
+            if (section) {
+                section.items.push(item);
+            }
+
+            return { sections: copy };
+        });
+    },
+
+    addExperience: (sectionId: string) => {
+        const item: SectionItem = {
+            type: "experience",
+            id: uuidv4(),
+            value: {
+                company: "<b></b>",
+                location: "<b></b>",
+                position: "<i></i>",
+                dates: "<i></i>",
+                description: ["<p></p>"],
+            },
+        };
+
+        set((state) => {
+            const copy = [...state.sections];
+            const section = copy.find((s) => s.id === sectionId);
+
+            if (section) {
+                section.items.push(item);
+            }
+
+            return { sections: copy };
+        });
+    },
+
+    addText: (sectionId: string) => {
+        const item: SectionItem = {
+            type: "text",
+            id: uuidv4(),
+            value: {
+                text: "<p></p>",
+            },
+        };
+
+        set((state) => {
+            const copy = [...state.sections];
+            const section = copy.find((s) => s.id === sectionId);
+
+            if (section) {
+                section.items.push(item);
             }
 
             return { sections: copy };

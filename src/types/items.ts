@@ -12,3 +12,7 @@ export interface IExperienceItem {
     dates: string;
     description: string[];
 }
+
+export interface ITextItem {
+    text: string;
+}

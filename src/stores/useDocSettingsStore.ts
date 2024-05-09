@@ -8,7 +8,7 @@ interface DocSettings {
 
 const useDocSettingsStore = create<DocSettings>((set) => ({
     titleSize: 24,
-    headingSize: 16,
+    headingSize: 14,
     contentSize: 11,
 }));
 

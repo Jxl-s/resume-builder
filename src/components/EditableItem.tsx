@@ -11,6 +11,7 @@ export interface EditableItemProps {
     placeholder?: string;
     className?: string;
     fontSize?: number;
+    allowMultiLine?: boolean;
 
     content: string;
     setContent: (content: string) => void;
@@ -23,6 +24,7 @@ const EditableItem: FC<EditableItemProps> = ({
     placeholder = "",
     className = "",
     fontSize,
+    allowMultiLine = false,
 
     content,
     setContent,
@@ -47,7 +49,7 @@ const EditableItem: FC<EditableItemProps> = ({
             }
         }
 
-        if (e.key === "Enter") {
+        if (e.key === "Enter" && !allowMultiLine) {
             e.preventDefault();
             e.currentTarget.blur();
         }
@@ -60,7 +62,7 @@ const EditableItem: FC<EditableItemProps> = ({
             return;
         }
 
-        setContent(sanitizeHtml(e.target.innerHTML));
+        setContent(sanitizeHtml(e.target.innerHTML, allowMultiLine));
     };
 
     const applyDefaultStyle = () => {
@@ -107,7 +109,7 @@ const EditableItem: FC<EditableItemProps> = ({
                 fontSize: fontSize ? `${fontSize}pt` : undefined,
             }}
             dangerouslySetInnerHTML={{
-                __html: sanitizeHtml(content),
+                __html: sanitizeHtml(content, allowMultiLine),
             }}
         />
     );
