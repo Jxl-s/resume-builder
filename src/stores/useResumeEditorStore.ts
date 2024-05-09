@@ -178,7 +178,7 @@ const useResumeEditorStore = create<ResumeEditor>((set) => ({
                 location: "<b></b>",
                 position: "<i></i>",
                 dates: "<i></i>",
-                description: ["<p></p>"],
+                description: [],
             },
         };
 

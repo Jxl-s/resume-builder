@@ -16,3 +16,11 @@ export interface IExperienceItem {
 export interface ITextItem {
     text: string;
 }
+
+export interface IProjectItem {
+    name: string;
+    technologies: string;
+    dates: string;
+    source?: string;
+    demo?: string;
+}

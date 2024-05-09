@@ -4,8 +4,12 @@ import useDocSettingsStore from "@/stores/useDocSettingsStore";
 import useResumeEditorStore from "@/stores/useResumeEditorStore";
 import { IEducationItem } from "@/types/items";
 import { useSection } from "../Section";
+import { FaGripVertical, FaTrash } from "react-icons/fa";
+import DeleteDrag from "../DeleteDrag";
 
 interface EducationItemProps {
+    itemId: string;
+
     school: string;
     setSchool: (school: string) => void;
 
@@ -20,6 +24,7 @@ interface EducationItemProps {
 }
 
 const EducationItem: FC<EducationItemProps> = ({
+    itemId,
     school,
     setSchool,
     location,
@@ -29,15 +34,24 @@ const EducationItem: FC<EducationItemProps> = ({
     date,
     setDate,
 }) => {
+    const { sectionId } = useSection();
     const contentSize = useDocSettingsStore((state) => state.contentSize);
+    const removeItem = useResumeEditorStore((state) => state.removeItem);
+
+    const onRemoveItem = () => {
+        removeItem(sectionId, itemId);
+    };
 
     return (
-        <article
-            className="mb-2"
+        <DeleteDrag
+            className="relative my-auto"
             style={{
                 fontSize: contentSize + "pt",
             }}
+            onDelete={onRemoveItem}
+            onMoved={() => {}}
         >
+            
             <EditableTwoSide
                 left={{
                     content: school,
@@ -66,7 +80,7 @@ const EducationItem: FC<EducationItemProps> = ({
                     placeholder: "Date",
                 }}
             />
-        </article>
+        </DeleteDrag>
     );
 };
 
@@ -114,6 +128,7 @@ const EducationItemWithId: FC<EducationItemWithIdProps> = ({ itemId }) => {
 
     return (
         <EducationItem
+            itemId={itemId}
             school={school}
             setSchool={setSchool}
             location={location}

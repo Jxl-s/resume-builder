@@ -78,7 +78,6 @@ const EditableItem: FC<EditableItemProps> = ({
         if (e.currentTarget.textContent?.trim() === "") {
             e.currentTarget.classList.add("empty-content");
             applyDefaultStyle();
-            console.log("applied", defaultStyle);
         } else {
             e.currentTarget.classList.remove("empty-content");
         }

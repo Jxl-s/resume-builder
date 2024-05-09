@@ -5,7 +5,7 @@ export const sanitizeHtml = (html: string, allowBr = false) => {
     if (!allowBr) {
         allowedTags.splice(allowedTags.indexOf("br"), 1);
     }
-    console.log(html, allowedTags);
+
     return DOMPurify.sanitize(html, {
         ALLOWED_TAGS: allowedTags,
     });

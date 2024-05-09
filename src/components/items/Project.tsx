@@ -2,13 +2,13 @@ import { FC, use } from "react";
 import EditableTwoSide from "../EditableTwoSide";
 import useDocSettingsStore from "@/stores/useDocSettingsStore";
 import useResumeEditorStore from "@/stores/useResumeEditorStore";
-import { IExperienceItem } from "@/types/items";
+import { IProjectItem } from "@/types/items";
 import EditableList from "../EditableList";
 import { useSection } from "../Section";
 import { FaGripVertical, FaTrash } from "react-icons/fa";
 import DeleteDrag from "../DeleteDrag";
 
-interface ExperienceItemProps {
+interface ProjectItemProps {
     itemId: string;
 
     company: string;
@@ -27,7 +27,7 @@ interface ExperienceItemProps {
     setDescription: (description: string[]) => void;
 }
 
-const ExperienceItem: FC<ExperienceItemProps> = ({
+const ProjectItem: FC<ProjectItemProps> = ({
     itemId,
 
     company,
@@ -91,74 +91,4 @@ const ExperienceItem: FC<ExperienceItemProps> = ({
     );
 };
 
-interface ExperienceItemWithIdProps {
-    itemId: string;
-}
-
-const ExperienceItemWithId: FC<ExperienceItemWithIdProps> = ({ itemId }) => {
-    const { sectionId } = useSection();
-    const experienceItem = useResumeEditorStore((state) =>
-        state.sections
-            .find((section) => section.id === sectionId)
-            ?.items.find((item) => item.id === itemId)
-    );
-
-    const updateItem = useResumeEditorStore((state) => state.updateItem);
-    if (!experienceItem) return null;
-
-    const { company, location, position, dates, description } =
-        experienceItem.value as IExperienceItem;
-
-    const setCompany = (company: string) => {
-        updateItem(sectionId, itemId, {
-            ...experienceItem,
-            value: { ...experienceItem.value, company },
-        });
-    };
-
-    const setLocation = (location: string) => {
-        updateItem(sectionId, itemId, {
-            ...experienceItem,
-            value: { ...experienceItem.value, location },
-        });
-    };
-
-    const setPosition = (position: string) => {
-        updateItem(sectionId, itemId, {
-            ...experienceItem,
-            value: { ...experienceItem.value, position },
-        });
-    };
-
-    const setDates = (dates: string) => {
-        updateItem(sectionId, itemId, {
-            ...experienceItem,
-            value: { ...experienceItem.value, dates },
-        });
-    };
-
-    const setDescription = (description: string[]) => {
-        updateItem(sectionId, itemId, {
-            ...experienceItem,
-            value: { ...experienceItem.value, description },
-        });
-    };
-    return (
-        <ExperienceItem
-            itemId={itemId}
-            company={company}
-            setCompany={setCompany}
-            location={location}
-            setLocation={setLocation}
-            position={position}
-            setPosition={setPosition}
-            dates={dates}
-            setDates={setDates}
-            description={description}
-            setDescription={setDescription}
-        />
-    );
-};
-
-export default ExperienceItem;
-export { ExperienceItemWithId };
+export default ProjectItem;

@@ -4,24 +4,42 @@ import useDocSettingsStore from "@/stores/useDocSettingsStore";
 import useResumeEditorStore from "@/stores/useResumeEditorStore";
 import { useSection } from "../Section";
 import { ITextItem } from "@/types/items";
+import { FaGripVertical, FaTrash } from "react-icons/fa";
+import DeleteDrag from "../DeleteDrag";
 
 interface Props {
+    itemId: string;
     content: string;
     setContent: (content: string) => void;
 }
 
-const TextItem: FC<Props> = ({ content, setContent }) => {
+const TextItem: FC<Props> = ({ itemId, content, setContent }) => {
+    const { sectionId } = useSection();
     const contentSize = useDocSettingsStore((state) => state.contentSize);
+    const removeItem = useResumeEditorStore((state) => state.removeItem);
+
+    const onRemoveItem = () => {
+        removeItem(sectionId, itemId);
+    };
+
     return (
-        <EditableItem
-            content={content}
-            setContent={setContent}
-            className="w-full inline-block mb-2"
-            Component={"div"}
-            allowMultiLine={true}
-            fontSize={contentSize}
-            placeholder="Text here"
-        />
+        <DeleteDrag
+            className="mb-2 relative"
+            style={{
+                fontSize: contentSize + "pt",
+            }}
+            onDelete={onRemoveItem}
+            onMoved={() => {}}
+        >
+            <EditableItem
+                content={content}
+                setContent={setContent}
+                className="w-full inline-block"
+                Component={"div"}
+                allowMultiLine={true}
+                placeholder="Text here"
+            />
+        </DeleteDrag>
     );
 };
 
@@ -45,7 +63,7 @@ const TextItemWithId: FC<{ itemId: string }> = ({ itemId }) => {
         });
     };
 
-    return <TextItem content={text} setContent={setText} />;
+    return <TextItem itemId={itemId} content={text} setContent={setText} />;
 };
 
 export default TextItem;

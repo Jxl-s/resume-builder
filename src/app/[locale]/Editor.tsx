@@ -8,6 +8,7 @@ import Section from "@/components/Section";
 import { FaPlusCircle } from "react-icons/fa";
 import Button from "@/components/Button";
 import TextItem, { TextItemWithId } from "@/components/items/Text";
+import EditableThreeSide from "@/components/EditableThreeSide";
 
 const Editor: FC = () => {
     const sections = useResumeEditorStore((state) => state.sections);
