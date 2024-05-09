@@ -32,7 +32,7 @@ const EditableHeading: FC<Props> = ({ content, setContent }) => {
         <DeleteDrag
             onDelete={onRemoveSection}
             onMoved={() => {}}
-            className="border-b border-b-black outline-none mb-1 gap-2"
+            className="border-b border-b-black outline-none mb-1 flex items-center gap-2"
         >
             <EditableItem
                 Component={"h1"}
@@ -44,7 +44,7 @@ const EditableHeading: FC<Props> = ({ content, setContent }) => {
                 className="inline"
             />
             <FaPlusCircle
-                className="w-4 h-4 inline text-primary/50 hover:text-primary duration-300 cursor-pointer"
+                className="w-3 h-3 inline text-primary/50 hover:text-primary duration-300 cursor-pointer"
                 onClick={onAddItem}
             />
         </DeleteDrag>
