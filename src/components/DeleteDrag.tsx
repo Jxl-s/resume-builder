@@ -1,7 +1,13 @@
+import useResumeDraggerStore, {
+    DraggedOverType,
+} from "@/stores/useResumeDraggerStore";
 import { FC, PropsWithChildren, useRef } from "react";
 import { FaGripVertical, FaTrash } from "react-icons/fa";
 
 interface Props {
+    idString: string;
+    dragType: DraggedOverType;
+
     onDelete: () => void;
     onMoved: (i: number) => void;
     className?: string;
@@ -9,12 +15,18 @@ interface Props {
 }
 
 const DeleteDrag: FC<PropsWithChildren<Props>> = ({
+    idString,
+    dragType,
+
     onDelete,
     onMoved,
     className = "",
     style = {},
     children,
 }) => {
+    const setDraggedItem = useResumeDraggerStore(
+        (state) => state.setDraggedItem
+    );
     const articleRef = useRef<HTMLElement>(null);
 
     const handleTrashOver = () => {
@@ -30,18 +42,25 @@ const DeleteDrag: FC<PropsWithChildren<Props>> = ({
     const handleGripOver = () => {
         if (!articleRef.current) return;
         articleRef.current.style.backgroundColor = "rgb(77 77 77 / 0.2)";
-    }
+    };
 
     const handleGripLeave = () => {
         if (!articleRef.current) return;
         articleRef.current.style.backgroundColor = "white";
-    }
+    };
+
+    const handleDragStart = (e: React.DragEvent) => {
+        if (!articleRef.current) return;
+        setDraggedItem(dragType, idString);
+    };
 
     return (
         <article
             className={`relative ${className} duration-300`}
             style={style}
             ref={articleRef}
+            onDragStart={handleDragStart}
+            draggable={true}
         >
             <FaTrash
                 className="w-3 h-3 absolute text-danger/50 hover:text-danger duration-300 cursor-pointer"
@@ -54,7 +73,7 @@ const DeleteDrag: FC<PropsWithChildren<Props>> = ({
                 onMouseLeave={handleTrashLeave}
             />
             <FaGripVertical
-                className="w-3 h-3 right-0 translate-x-5 absolute text-black/50 hover:text-black duration-300 cursor-pointer"
+                className="w-3 h-3 right-0 translate-x-5 absolute text-black/50 hover:text-black duration-300 cursor-grab"
                 onClick={onDelete}
                 style={{
                     top: "50%",

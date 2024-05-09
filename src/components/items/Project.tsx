@@ -7,6 +7,7 @@ import EditableList from "../EditableList";
 import { useSection } from "../Section";
 import { FaGripVertical, FaTrash } from "react-icons/fa";
 import DeleteDrag from "../DeleteDrag";
+import { DraggedOverType } from "@/stores/useResumeDraggerStore";
 
 interface ProjectItemProps {
     itemId: string;
@@ -51,6 +52,8 @@ const ProjectItem: FC<ProjectItemProps> = ({
 
     return (
         <DeleteDrag
+            dragType={DraggedOverType.Item}
+            idString={sectionId + "-" + itemId}
             className="mb-2 relative"
             style={{
                 fontSize: contentSize + "pt",

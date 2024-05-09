@@ -6,6 +6,7 @@ import { useSection } from "../Section";
 import { ITextItem } from "@/types/items";
 import { FaGripVertical, FaTrash } from "react-icons/fa";
 import DeleteDrag from "../DeleteDrag";
+import { DraggedOverType } from "@/stores/useResumeDraggerStore";
 
 interface Props {
     itemId: string;
@@ -24,6 +25,8 @@ const TextItem: FC<Props> = ({ itemId, content, setContent }) => {
 
     return (
         <DeleteDrag
+            dragType={DraggedOverType.Item}
+            idString={sectionId + "-" + itemId}
             className="mb-2 relative"
             style={{
                 fontSize: contentSize + "pt",
