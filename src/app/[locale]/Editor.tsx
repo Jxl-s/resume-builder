@@ -1,17 +1,11 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import useResumeEditorStore from "@/stores/useResumeEditorStore";
-import EducationItem, {
-    EducationItemWithId,
-} from "../../components/items/Education";
-import EditableHeading from "../../components/EditableHeading";
-import ExperienceItem, {
-    ExperienceItemWithId,
-} from "@/components/items/Experience";
-import { v4 as uuidv4 } from "uuid";
+import { EducationItemWithId } from "../../components/items/Education";
+import { ExperienceItemWithId } from "@/components/items/Experience";
 import Section from "@/components/Section";
-import { IEducationItem } from "@/types/items";
+import { FaPlusCircle } from "react-icons/fa";
 
 const Editor: FC = () => {
     const sections = useResumeEditorStore((state) => state.sections);
@@ -20,47 +14,21 @@ const Editor: FC = () => {
     const updateSection = useResumeEditorStore((state) => state.updateSection);
 
     useEffect(() => {
-        setSections([
-            {
-                title: "<b>Education</b>",
-                id: uuidv4(),
-                items: [
-                    {
-                        id: uuidv4(),
-                        type: "education",
-                        value: {
-                            school: "",
-                            location: "",
-                            degree: "",
-                            date: "",
-                        },
-                    },
-                ],
-            },
-            {
-                title: "<b>Experience</b>",
-                id: uuidv4(),
-                items: [
-                    {
-                        id: uuidv4(),
-                        type: "experience",
-                        value: {
-                            company: "",
-                            location: "",
-                            position: "",
-                            dates: "",
-                            description: [],
-                        },
-                    },
-                ],
-            },
-        ]);
+        const savedSections = window.localStorage.getItem("sections");
+        if (savedSections) {
+            setSections(JSON.parse(savedSections));
+        }
     }, [setSections]);
 
-    console.log(JSON.stringify(sections));
+    useEffect(() => {
+        if (sections.length > 0) {
+            window.localStorage.setItem("sections", JSON.stringify(sections));
+        }
+    }, [sections]);
+
     return (
         <div
-            className="bg-white text-black p-4"
+            className="bg-white text-black p-8"
             style={{
                 width: "595pt",
             }}
@@ -68,6 +36,7 @@ const Editor: FC = () => {
             {sections.map((section) => (
                 <Section
                     key={section.id}
+                    sectionId={section.id}
                     title={section.title}
                     setTitle={(t) => updateSection(section.id, t)}
                 >
@@ -76,7 +45,6 @@ const Editor: FC = () => {
                             return (
                                 <EducationItemWithId
                                     key={item.id}
-                                    sectionId={section.id}
                                     itemId={item.id}
                                 />
                             );
@@ -86,7 +54,6 @@ const Editor: FC = () => {
                             return (
                                 <ExperienceItemWithId
                                     key={item.id}
-                                    sectionId={section.id}
                                     itemId={item.id}
                                 />
                             );
@@ -94,6 +61,13 @@ const Editor: FC = () => {
                     })}
                 </Section>
             ))}
+            <button
+                onClick={() => addSection("<b></b>")}
+                className="flex items-center bg-primary text-white gap-2 w-full rounded-md justify-center py-2 mt-4 shadow-md hover:brightness-110 duration-300"
+            >
+                <FaPlusCircle className="w-6 h-6" />
+                <span className="font-semibold">Create new section</span>
+            </button>
         </div>
     );
 };

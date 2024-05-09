@@ -3,6 +3,7 @@ import EditableTwoSide from "../EditableTwoSide";
 import useDocSettingsStore from "@/stores/useDocSettingsStore";
 import useResumeEditorStore from "@/stores/useResumeEditorStore";
 import { IEducationItem } from "@/types/items";
+import { useSection } from "../Section";
 
 interface EducationItemProps {
     school: string;
@@ -70,14 +71,11 @@ const EducationItem: FC<EducationItemProps> = ({
 };
 
 interface EducationItemWithIdProps {
-    sectionId: string;
     itemId: string;
 }
 
-const EducationItemWithId: FC<EducationItemWithIdProps> = ({
-    sectionId,
-    itemId,
-}) => {
+const EducationItemWithId: FC<EducationItemWithIdProps> = ({ itemId }) => {
+    const { sectionId } = useSection();
     const educationItem = useResumeEditorStore((state) =>
         state.sections
             .find((section) => section.id === sectionId)
@@ -86,6 +84,7 @@ const EducationItemWithId: FC<EducationItemWithIdProps> = ({
 
     const updateItem = useResumeEditorStore((state) => state.updateItem);
     if (!educationItem) return null;
+
     const { school, location, degree, date } =
         educationItem.value as IEducationItem;
 

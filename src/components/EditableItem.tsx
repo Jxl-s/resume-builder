@@ -76,6 +76,7 @@ const EditableItem: FC<EditableItemProps> = ({
         if (e.currentTarget.textContent?.trim() === "") {
             e.currentTarget.classList.add("empty-content");
             applyDefaultStyle();
+            console.log("applied", defaultStyle);
         } else {
             e.currentTarget.classList.remove("empty-content");
         }
@@ -98,6 +99,7 @@ const EditableItem: FC<EditableItemProps> = ({
             suppressContentEditableWarning={true}
             onKeyDown={handleKeyDown}
             onBlur={handleBlur}
+            onClick={handleInput}
             onFocus={handleInput}
             onInput={handleInput}
             className={`editable-item outline-none cursor-pointer duration-300 hover:bg-primary/20 focus:bg-primary/20 focus:border-b focus:border-b-primary focus:cursor-auto ${defaultStyle.map((s) => `ce-${s}`).join(" ")} ${className}`}

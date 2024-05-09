@@ -4,6 +4,7 @@ import useDocSettingsStore from "@/stores/useDocSettingsStore";
 import useResumeEditorStore from "@/stores/useResumeEditorStore";
 import { IExperienceItem } from "@/types/items";
 import EditableList from "../EditableList";
+import { useSection } from "../Section";
 
 interface ExperienceItemProps {
     company: string;
@@ -77,14 +78,11 @@ const ExperienceItem: FC<ExperienceItemProps> = ({
 };
 
 interface ExperienceItemWithIdProps {
-    sectionId: string;
     itemId: string;
 }
 
-const ExperienceItemWithId: FC<ExperienceItemWithIdProps> = ({
-    sectionId,
-    itemId,
-}) => {
+const ExperienceItemWithId: FC<ExperienceItemWithIdProps> = ({ itemId }) => {
+    const { sectionId } = useSection();
     const experienceItem = useResumeEditorStore((state) =>
         state.sections
             .find((section) => section.id === sectionId)
