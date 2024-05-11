@@ -40,41 +40,11 @@ const DeleteDrag: FC<PropsWithChildren<Props>> = ({
         articleRef.current.style.backgroundColor = "white";
     };
 
-    const handleDragStart = (e: React.DragEvent) => {
-        if (!articleRef.current) return;
-        e.dataTransfer.setData("text/plain", idString);
-    };
-
-    const handleDragEnd = (e: React.DragEvent) => {
-        if (!articleRef.current) return;
-    };
-
-    const handleDragOver = (e: React.DragEvent) => {
-        e.preventDefault();
-    };
-
-    const handleDrop = (e: React.DragEvent) => {
-        e.preventDefault();
-        const draggedId = e.dataTransfer.getData("text/plain");
-        console.log("From: ", draggedId, "To: ", idString);
-        if (draggedId === idString) return;
-    };
-
     return (
         <article
             className={`relative ${className} duration-300`}
             style={style}
             ref={articleRef}
-            onDragStart={handleDragStart}
-            onDragEnd={handleDragEnd}
-            onDragOver={handleDragOver}
-            onDrop={handleDrop}
-            onMouseDown={() => {
-                articleRef.current?.setAttribute("draggable", "true");
-            }}
-            onMouseUp={() => {
-                articleRef.current?.setAttribute("draggable", "false");
-            }}
         >
             <FaTrash
                 className="w-3 h-3 absolute text-danger/50 hover:text-danger duration-300 cursor-pointer"
