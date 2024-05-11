@@ -6,7 +6,6 @@ import { IEducationItem } from "@/types/items";
 import { useSection } from "../Section";
 import { FaGripVertical, FaTrash } from "react-icons/fa";
 import DeleteDrag from "../DeleteDrag";
-import { DraggedOverType } from "@/stores/useResumeDraggerStore";
 
 interface EducationItemProps {
     itemId: string;
@@ -45,8 +44,7 @@ const EducationItem: FC<EducationItemProps> = ({
 
     return (
         <DeleteDrag
-            dragType={DraggedOverType.Item}
-            idString={sectionId + "-" + itemId}
+            idString={sectionId + "_" + itemId}
             className="relative my-auto"
             style={{
                 fontSize: contentSize + "pt",

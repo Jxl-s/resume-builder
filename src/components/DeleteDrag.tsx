@@ -1,13 +1,8 @@
-import useResumeDraggerStore, {
-    DraggedOverType,
-} from "@/stores/useResumeDraggerStore";
 import { FC, PropsWithChildren, useRef } from "react";
 import { FaGripVertical, FaTrash } from "react-icons/fa";
 
 interface Props {
     idString: string;
-    dragType: DraggedOverType;
-
     onDelete: () => void;
     onMoved: (i: number) => void;
     className?: string;
@@ -16,7 +11,6 @@ interface Props {
 
 const DeleteDrag: FC<PropsWithChildren<Props>> = ({
     idString,
-    dragType,
 
     onDelete,
     onMoved,
@@ -24,9 +18,6 @@ const DeleteDrag: FC<PropsWithChildren<Props>> = ({
     style = {},
     children,
 }) => {
-    const setDraggedItem = useResumeDraggerStore(
-        (state) => state.setDraggedItem
-    );
     const articleRef = useRef<HTMLElement>(null);
 
     const handleTrashOver = () => {
@@ -51,7 +42,22 @@ const DeleteDrag: FC<PropsWithChildren<Props>> = ({
 
     const handleDragStart = (e: React.DragEvent) => {
         if (!articleRef.current) return;
-        setDraggedItem(dragType, idString);
+        e.dataTransfer.setData("text/plain", idString);
+    };
+
+    const handleDragEnd = (e: React.DragEvent) => {
+        if (!articleRef.current) return;
+    };
+
+    const handleDragOver = (e: React.DragEvent) => {
+        e.preventDefault();
+    };
+
+    const handleDrop = (e: React.DragEvent) => {
+        e.preventDefault();
+        const draggedId = e.dataTransfer.getData("text/plain");
+        console.log("From: ", draggedId, "To: ", idString);
+        if (draggedId === idString) return;
     };
 
     return (
@@ -60,7 +66,15 @@ const DeleteDrag: FC<PropsWithChildren<Props>> = ({
             style={style}
             ref={articleRef}
             onDragStart={handleDragStart}
-            draggable={true}
+            onDragEnd={handleDragEnd}
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+            onMouseDown={() => {
+                articleRef.current?.setAttribute("draggable", "true");
+            }}
+            onMouseUp={() => {
+                articleRef.current?.setAttribute("draggable", "false");
+            }}
         >
             <FaTrash
                 className="w-3 h-3 absolute text-danger/50 hover:text-danger duration-300 cursor-pointer"

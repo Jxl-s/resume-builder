@@ -8,7 +8,6 @@ import Section from "@/components/Section";
 import { FaPlusCircle } from "react-icons/fa";
 import Button from "@/components/Button";
 import TextItem, { TextItemWithId } from "@/components/items/Text";
-import EditableThreeSide from "@/components/EditableThreeSide";
 
 const Editor: FC = () => {
     const sections = useResumeEditorStore((state) => state.sections);
@@ -36,14 +35,14 @@ const Editor: FC = () => {
                 width: "595pt",
             }}
         >
-            {sections.map((section) => (
+            {sections.map((section, i) => (
                 <Section
                     key={section.id}
                     sectionId={section.id}
                     title={section.title}
                     setTitle={(t) => updateSection(section.id, t)}
                 >
-                    {section.items.map((item) => {
+                    {section.items.map((item, i) => {
                         if (item.type === "education") {
                             return (
                                 <EducationItemWithId

@@ -6,7 +6,6 @@ import { useSection } from "../Section";
 import { ITextItem } from "@/types/items";
 import { FaGripVertical, FaTrash } from "react-icons/fa";
 import DeleteDrag from "../DeleteDrag";
-import { DraggedOverType } from "@/stores/useResumeDraggerStore";
 
 interface Props {
     itemId: string;
@@ -25,8 +24,7 @@ const TextItem: FC<Props> = ({ itemId, content, setContent }) => {
 
     return (
         <DeleteDrag
-            dragType={DraggedOverType.Item}
-            idString={sectionId + "-" + itemId}
+            idString={sectionId + "_" + itemId}
             className="mb-2 relative"
             style={{
                 fontSize: contentSize + "pt",
@@ -46,7 +44,11 @@ const TextItem: FC<Props> = ({ itemId, content, setContent }) => {
     );
 };
 
-const TextItemWithId: FC<{ itemId: string }> = ({ itemId }) => {
+interface TextItemWithIdProps {
+    itemId: string;
+}
+
+const TextItemWithId: FC<TextItemWithIdProps> = ({ itemId }) => {
     const { sectionId } = useSection();
     const textItem = useResumeEditorStore((state) =>
         state.sections

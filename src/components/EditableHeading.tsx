@@ -5,7 +5,6 @@ import { FaGripVertical, FaPlusCircle, FaTrash } from "react-icons/fa";
 import useResumeEditorStore from "@/stores/useResumeEditorStore";
 import { useSection } from "./Section";
 import DeleteDrag from "./DeleteDrag";
-import { DraggedOverType } from "@/stores/useResumeDraggerStore";
 
 interface Props {
     content: string;
@@ -26,13 +25,12 @@ const EditableHeading: FC<Props> = ({ content, setContent }) => {
     };
 
     const onAddItem = () => {
-        addEducation(sectionId); // temporary
+        addExperience(sectionId); // temporary
     };
 
     return (
         <DeleteDrag
-            dragType={DraggedOverType.Section}
-            idString={"-" + sectionId}
+            idString={"_" + sectionId}
             onDelete={onRemoveSection}
             onMoved={() => {}}
             className="border-b border-b-black outline-none mb-1 flex items-center gap-2"
