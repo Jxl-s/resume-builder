@@ -7,18 +7,22 @@ import EditableList from "../EditableList";
 import { useSection } from "../Section";
 import { FaGripVertical, FaTrash } from "react-icons/fa";
 import DeleteDrag from "../DeleteDrag";
+import EditableThreeSide from "../EditableThreeSide";
 
 interface ProjectItemProps {
     itemId: string;
 
-    company: string;
-    setCompany: (company: string) => void;
+    name: string;
+    setName: (name: string) => void;
 
-    location: string;
-    setLocation: (location: string) => void;
+    technologies: string;
+    setTechnologies: (technologies: string) => void;
 
-    position: string;
-    setPosition: (position: string) => void;
+    source?: string;
+    setSource: (source: string) => void;
+
+    demo?: string;
+    setDemo: (demo: string) => void;
 
     dates: string;
     setDates: (dates: string) => void;
@@ -29,13 +33,14 @@ interface ProjectItemProps {
 
 const ProjectItem: FC<ProjectItemProps> = ({
     itemId,
-
-    company,
-    setCompany,
-    location,
-    setLocation,
-    position,
-    setPosition,
+    name,
+    setName,
+    technologies,
+    setTechnologies,
+    source,
+    setSource,
+    demo,
+    setDemo,
     dates,
     setDates,
     description,
@@ -59,37 +64,123 @@ const ProjectItem: FC<ProjectItemProps> = ({
             onDelete={onRemoveItem}
             onMoved={() => {}}
         >
-            <EditableTwoSide
+            <EditableThreeSide
                 left={{
-                    content: company,
-                    setContent: setCompany,
+                    content: name,
+                    setContent: setName,
                     defaultStyle: ["bold"],
-                    placeholder: "Company",
+                    placeholder: "Name",
                 }}
-                right={{
-                    content: location,
-                    setContent: setLocation,
-                    defaultStyle: ["bold"],
-                    placeholder: "Location",
-                }}
-            />
-            <EditableTwoSide
-                left={{
-                    content: position,
-                    setContent: setPosition,
+                afterLeft={{
+                    content: technologies,
+                    setContent: setTechnologies,
                     defaultStyle: ["italic"],
-                    placeholder: "Position",
+                    placeholder: "Tech Stack #1, Tech Stack #2, ...",
                 }}
                 right={{
                     content: dates,
                     setContent: setDates,
-                    defaultStyle: ["italic"],
-                    placeholder: "Dates",
+                    defaultStyle: ["bold"],
+                    placeholder: "Date - Date",
                 }}
             />
+            {/* <EditableTwoSide
+                left={{
+                    content: source ?? "No Source",
+                    setContent: setSource,
+                    defaultStyle: ["italic", "underline"],
+                    placeholder: "Source Link",
+                }}
+                right={{
+                    content: demo ?? "No Demo",
+                    setContent: setDates,
+                    defaultStyle: ["italic", "underline"],
+                    placeholder: "Demo Link",
+                }}
+            /> */}
             <EditableList items={description} setItems={setDescription} />
         </DeleteDrag>
     );
 };
 
+interface ExperienceItemWithIdProps {
+    itemId: string;
+}
+
+const ProjectItemWithId: FC<ExperienceItemWithIdProps> = ({ itemId }) => {
+    const { sectionId } = useSection();
+    const projectItem = useResumeEditorStore((state) =>
+        state.sections
+            .find((section) => section.id === sectionId)
+            ?.items.find((item) => item.id === itemId)
+    );
+
+    const updateItem = useResumeEditorStore((state) => state.updateItem);
+    if (!projectItem) return null;
+
+    const { dates, description, name, technologies, source, demo } =
+        projectItem.value as IProjectItem;
+
+    const setName = (name: string) => {
+        updateItem(sectionId, itemId, {
+            ...projectItem,
+            value: { ...projectItem.value, name },
+        });
+    };
+
+    const setTechnologies = (technologies: string) => {
+        updateItem(sectionId, itemId, {
+            ...projectItem,
+            value: { ...projectItem.value, technologies },
+        });
+    };
+
+    const setSource = (source: string) => {
+        updateItem(sectionId, itemId, {
+            ...projectItem,
+            value: { ...projectItem.value, source },
+        });
+    };
+
+    const setDemo = (demo: string) => {
+        updateItem(sectionId, itemId, {
+            ...projectItem,
+            value: { ...projectItem.value, demo },
+        });
+    };
+
+    const setDates = (dates: string) => {
+        updateItem(sectionId, itemId, {
+            ...projectItem,
+            value: { ...projectItem.value, dates },
+        });
+    };
+
+    const setDescription = (description: string[]) => {
+        updateItem(sectionId, itemId, {
+            ...projectItem,
+            value: { ...projectItem.value, description },
+        });
+    };
+
+    return (
+        <ProjectItem
+            itemId={itemId}
+            name={name}
+            setName={setName}
+            technologies={technologies}
+            setTechnologies={setTechnologies}
+            source={source}
+            setSource={setSource}
+            demo={demo}
+            setDemo={setDemo}
+            dates={dates}
+            setDates={setDates}
+            description={description}
+            setDescription={setDescription}
+        />
+    );
+};
+
 export default ProjectItem;
+export { ProjectItemWithId };

@@ -19,7 +19,7 @@ const Section: FC<PropsWithChildren<SectionProps>> = ({
 }) => {
     return (
         <SectionContext.Provider value={{ sectionId }}>
-            <section>
+            <section className="mb-2">
                 <EditableHeading content={title} setContent={setTitle} />
                 {children}
             </section>

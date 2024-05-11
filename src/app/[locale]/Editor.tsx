@@ -8,9 +8,31 @@ import Section from "@/components/Section";
 import { FaPlusCircle } from "react-icons/fa";
 import Button from "@/components/Button";
 import TextItem, { TextItemWithId } from "@/components/items/Text";
+import { ProjectItemWithId } from "@/components/items/Project";
+import EditableItem from "@/components/EditableItem";
+import useDocSettingsStore from "@/stores/useDocSettingsStore";
 
 const Editor: FC = () => {
+    const titleSize = useDocSettingsStore((state) => state.titleSize);
+    const contentSize = useDocSettingsStore((state) => state.contentSize);
+
+    const [name, setName] = useResumeEditorStore((state) => [
+        state.name,
+        state.setName,
+    ]);
+
+    const [subtitle, setSubtitle] = useResumeEditorStore((state) => [
+        state.subtitle,
+        state.setSubtitle,
+    ]);
+
+    const [contact, setContact] = useResumeEditorStore((state) => [
+        state.contact,
+        state.setContact,
+    ]);
+
     const sections = useResumeEditorStore((state) => state.sections);
+
     const setSections = useResumeEditorStore((state) => state.setSections);
     const addSection = useResumeEditorStore((state) => state.addSection);
     const updateSection = useResumeEditorStore((state) => state.updateSection);
@@ -32,9 +54,32 @@ const Editor: FC = () => {
         <div
             className="bg-white text-black p-8"
             style={{
-                width: "595pt",
+                width: "695pt",
             }}
         >
+            <EditableItem
+                content={name}
+                setContent={setName}
+                Component={"span"}
+                defaultStyle={["bold"]}
+                className="text-center block"
+                fontSize={titleSize}
+            />
+            <EditableItem
+                content={subtitle}
+                setContent={setSubtitle}
+                Component={"span"}
+                defaultStyle={["italic"]}
+                className="text-center block"
+                fontSize={contentSize}
+            />
+            <EditableItem
+                content={contact}
+                setContent={setContact}
+                Component={"span"}
+                className="text-center block"
+                fontSize={contentSize}
+            />
             {sections.map((section, i) => (
                 <Section
                     key={section.id}
@@ -64,6 +109,15 @@ const Editor: FC = () => {
                         if (item.type === "text") {
                             return (
                                 <TextItemWithId
+                                    key={item.id}
+                                    itemId={item.id}
+                                />
+                            );
+                        }
+
+                        if (item.type === "project") {
+                            return (
+                                <ProjectItemWithId
                                     key={item.id}
                                     itemId={item.id}
                                 />

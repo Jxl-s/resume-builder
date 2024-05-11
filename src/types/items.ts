@@ -23,4 +23,5 @@ export interface IProjectItem {
     dates: string;
     source?: string;
     demo?: string;
+    description: string[];
 }

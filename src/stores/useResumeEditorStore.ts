@@ -1,12 +1,18 @@
 import { create } from "zustand";
 import { v4 as uuidv4 } from "uuid";
-import { IEducationItem, IExperienceItem, ITextItem } from "@/types/items";
+import {
+    IEducationItem,
+    IExperienceItem,
+    IProjectItem,
+    ITextItem,
+} from "@/types/items";
 
 // type: education/experience, custom, project
 interface SectionTypes {
     experience: IExperienceItem;
     education: IEducationItem;
     text: ITextItem;
+    project: IProjectItem;
 }
 
 interface SectionItem {
@@ -17,8 +23,11 @@ interface SectionItem {
 
 interface ResumeEditor {
     name: string;
+    setName: (name: string) => void;
     subtitle: string;
+    setSubtitle: (subtitle: string) => void;
     contact: string;
+    setContact: (contact: string) => void;
 
     sections: {
         id: string;
@@ -42,14 +51,17 @@ interface ResumeEditor {
     addEducation: (sectionId: string) => void;
     addExperience: (sectionId: string) => void;
     addText: (sectionId: string) => void;
+    addProject: (sectionId: string) => void;
 }
 
 const useResumeEditorStore = create<ResumeEditor>((set) => ({
-    name: "John Doe",
+    name: "<b>John Doe</b>",
+    setName: (name) => set({ name }),
     subtitle: "Software Engineer",
+    setSubtitle: (subtitle) => set({ subtitle }),
     contact:
         "123-456-7890 | email@email.com | linkedin.com/in/john-die | github.com/John-Doe | johndoe.com",
-
+    setContact: (contact) => set({ contact }),
     sections: [],
 
     setSections: (sections) => set({ sections }),
@@ -200,6 +212,32 @@ const useResumeEditorStore = create<ResumeEditor>((set) => ({
             id: uuidv4(),
             value: {
                 text: "<p></p>",
+            },
+        };
+
+        set((state) => {
+            const copy = [...state.sections];
+            const section = copy.find((s) => s.id === sectionId);
+
+            if (section) {
+                section.items.push(item);
+            }
+
+            return { sections: copy };
+        });
+    },
+
+    addProject: (sectionId: string) => {
+        const item: SectionItem = {
+            type: "project",
+            id: uuidv4(),
+            value: {
+                name: "<b></b>",
+                technologies: "<i></i>",
+                dates: "<i></i>",
+                source: "<i><u></u></i>",
+                demo: "<i><u></u></i>",
+                description: [],
             },
         };
 

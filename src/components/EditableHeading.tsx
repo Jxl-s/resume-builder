@@ -17,6 +17,7 @@ const EditableHeading: FC<Props> = ({ content, setContent }) => {
     const addExperience = useResumeEditorStore((state) => state.addExperience);
     const addEducation = useResumeEditorStore((state) => state.addEducation);
     const addText = useResumeEditorStore((state) => state.addText);
+    const addProject = useResumeEditorStore((state) => state.addProject);
 
     const { sectionId } = useSection();
 
@@ -25,7 +26,10 @@ const EditableHeading: FC<Props> = ({ content, setContent }) => {
     };
 
     const onAddItem = () => {
-        addExperience(sectionId); // temporary
+        addProject(sectionId); // temporary
+        addExperience(sectionId);
+        addEducation(sectionId);
+        addText(sectionId);
     };
 
     return (

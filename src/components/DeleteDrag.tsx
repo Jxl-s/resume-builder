@@ -4,14 +4,12 @@ import { FaGripVertical, FaTrash } from "react-icons/fa";
 interface Props {
     idString: string;
     onDelete: () => void;
-    onMoved: (i: number) => void;
+    onMoved: () => void;
     className?: string;
     style?: React.CSSProperties;
 }
 
 const DeleteDrag: FC<PropsWithChildren<Props>> = ({
-    idString,
-
     onDelete,
     onMoved,
     className = "",
@@ -58,7 +56,7 @@ const DeleteDrag: FC<PropsWithChildren<Props>> = ({
             />
             <FaGripVertical
                 className="w-3 h-3 right-0 translate-x-5 absolute text-black/50 hover:text-black duration-300 cursor-grab"
-                onClick={onDelete}
+                onClick={onMoved}
                 style={{
                     top: "50%",
                     transform: "translate(1.25rem, -50%)",

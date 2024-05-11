@@ -61,30 +61,30 @@ const ExperienceItem: FC<ExperienceItemProps> = ({
         >
             <EditableTwoSide
                 left={{
-                    content: company,
-                    setContent: setCompany,
-                    defaultStyle: ["bold"],
-                    placeholder: "Company",
-                }}
-                right={{
-                    content: location,
-                    setContent: setLocation,
-                    defaultStyle: ["bold"],
-                    placeholder: "Location",
-                }}
-            />
-            <EditableTwoSide
-                left={{
                     content: position,
                     setContent: setPosition,
-                    defaultStyle: ["italic"],
+                    defaultStyle: ["bold"],
                     placeholder: "Position",
                 }}
                 right={{
                     content: dates,
                     setContent: setDates,
-                    defaultStyle: ["italic"],
+                    defaultStyle: ["bold"],
                     placeholder: "Dates",
+                }}
+            />
+            <EditableTwoSide
+                left={{
+                    content: company,
+                    setContent: setCompany,
+                    defaultStyle: ["italic"],
+                    placeholder: "Company",
+                }}
+                right={{
+                    content: location,
+                    setContent: setLocation,
+                    defaultStyle: ["italic"],
+                    placeholder: "Location",
                 }}
             />
             <EditableList items={description} setItems={setDescription} />

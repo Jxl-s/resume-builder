@@ -45,7 +45,7 @@ const EducationItem: FC<EducationItemProps> = ({
     return (
         <DeleteDrag
             idString={sectionId + "_" + itemId}
-            className="relative my-auto"
+            className="my-auto mb-2"
             style={{
                 fontSize: contentSize + "pt",
             }}
@@ -60,10 +60,10 @@ const EducationItem: FC<EducationItemProps> = ({
                     placeholder: "School",
                 }}
                 right={{
-                    content: location,
-                    setContent: setLocation,
+                    content: date,
+                    setContent: setDate,
                     defaultStyle: ["bold"],
-                    placeholder: "Location",
+                    placeholder: "Date",
                 }}
             />
             <EditableTwoSide
@@ -74,10 +74,10 @@ const EducationItem: FC<EducationItemProps> = ({
                     placeholder: "Degree",
                 }}
                 right={{
-                    content: date,
-                    setContent: setDate,
+                    content: location,
+                    setContent: setLocation,
                     defaultStyle: ["italic"],
-                    placeholder: "Date",
+                    placeholder: "Location",
                 }}
             />
         </DeleteDrag>
