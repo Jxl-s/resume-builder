@@ -22,12 +22,13 @@ interface SectionItem {
 }
 
 interface ResumeEditor {
-    name: string;
-    setName: (name: string) => void;
-    subtitle: string;
-    setSubtitle: (subtitle: string) => void;
-    contact: string;
-    setContact: (contact: string) => void;
+    header: {
+        name: string;
+        subtitle: string;
+        contact: string;
+    };
+
+    setHeader: (header: { name: string; subtitle: string; contact: string }) => void;
 
     sections: {
         id: string;
@@ -55,13 +56,15 @@ interface ResumeEditor {
 }
 
 const useResumeEditorStore = create<ResumeEditor>((set) => ({
-    name: "<b>John Doe</b>",
-    setName: (name) => set({ name }),
-    subtitle: "Software Engineer",
-    setSubtitle: (subtitle) => set({ subtitle }),
-    contact:
-        "123-456-7890 | email@email.com | linkedin.com/in/john-die | github.com/John-Doe | johndoe.com",
-    setContact: (contact) => set({ contact }),
+    header: {
+        name: "<b>John Doe</b>",
+        subtitle: "Software Engineer",
+        contact:
+            "123-456-7890 | email@email.com | linkedin.com/in/john-die | github.com/John-Doe | johndoe.com",
+    },
+
+    setHeader: (header) => set({ header }),
+
     sections: [],
 
     setSections: (sections) => set({ sections }),

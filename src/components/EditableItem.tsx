@@ -12,6 +12,7 @@ export interface EditableItemProps {
     className?: string;
     fontSize?: number;
     allowMultiLine?: boolean;
+    style?: React.CSSProperties;
 
     content: string;
     setContent: (content: string) => void;
@@ -25,6 +26,7 @@ const EditableItem: FC<EditableItemProps> = ({
     className = "",
     fontSize,
     allowMultiLine = false,
+    style,
 
     content,
     setContent,
@@ -106,6 +108,7 @@ const EditableItem: FC<EditableItemProps> = ({
             className={`editable-item outline-none cursor-pointer duration-300 hover:bg-primary/20 focus:bg-primary/20 focus:border-b focus:border-b-primary focus:cursor-auto ${defaultStyle.map((s) => `ce-${s}`).join(" ")} ${className}`}
             style={{
                 fontSize: fontSize ? `${fontSize}pt` : undefined,
+                ...style,
             }}
             dangerouslySetInnerHTML={{
                 __html: sanitizeHtml(content, allowMultiLine),
