@@ -1,7 +1,6 @@
 import { FC, PropsWithChildren, useRef } from "react";
 import { FaArrowDown, FaGripVertical, FaTrash } from "react-icons/fa";
 import { FaArrowUp } from "react-icons/fa6";
-
 interface Props {
     onDelete: () => void;
     onMoved: (i: "up" | "down") => void;
@@ -17,6 +16,7 @@ const DeleteDrag: FC<PropsWithChildren<Props>> = ({
     children,
 }) => {
     const articleRef = useRef<HTMLElement>(null);
+    const tooltipRef = useRef<HTMLDivElement>(null);
 
     const handleTrashOver = () => {
         if (!articleRef.current) return;
@@ -38,11 +38,23 @@ const DeleteDrag: FC<PropsWithChildren<Props>> = ({
         articleRef.current.style.backgroundColor = "white";
     };
 
+    const handlePointerEnter = () => {
+        if (!tooltipRef.current) return;
+        // tooltipRef.current.style.display = "flex";
+    };
+
+    const handlePointerLeave = () => {
+        if (!tooltipRef.current) return;
+        // tooltipRef.current.style.display = "none";
+    };
+
     return (
         <article
             className={`relative ${className} duration-300`}
-            style={style}
+            style={{ ...style }}
             ref={articleRef}
+            onMouseEnter={handlePointerEnter}
+            onMouseLeave={handlePointerLeave}
         >
             <FaTrash
                 className="print:hidden w-3 h-3 absolute text-danger/50 hover:text-danger duration-300 cursor-pointer"
@@ -56,6 +68,7 @@ const DeleteDrag: FC<PropsWithChildren<Props>> = ({
             />
             <div
                 className="print:hidden right-0 absolute duration-300 flex flex-col gap-1"
+                ref={tooltipRef}
                 style={{
                     top: "50%",
                     transform: "translate(1.25rem, -50%)",
@@ -74,16 +87,6 @@ const DeleteDrag: FC<PropsWithChildren<Props>> = ({
                     onMouseLeave={handleGripLeave}
                 />
             </div>
-            {/* <FaGripVertical
-                className="print:hidden w-3 h-3 right-0 translate-x-5 absolute text-black/50 hover:text-black duration-300 cursor-grab"
-                onClick={onMoved}
-                style={{
-                    top: "50%",
-                    transform: "translate(1.25rem, -50%)",
-                }}
-                onMouseOver={handleGripOver}
-                onMouseLeave={handleGripLeave}
-            /> */}
             {children}
         </article>
     );

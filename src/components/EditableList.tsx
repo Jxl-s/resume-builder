@@ -119,7 +119,7 @@ const EditableList: FC<Props> = ({ items, setItems }) => {
     return (
         <div
             ref={divRef}
-            className={`ps-4 duration-300 rounded-md hover:bg-primary/20 ce-list-unfocused`}
+            className={`ps-2.5 duration-300 hover:bg-primary/20 ce-list-unfocused`}
         >
             <ul
                 ref={ulRef}

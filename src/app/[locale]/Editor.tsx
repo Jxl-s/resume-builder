@@ -37,8 +37,14 @@ const Editor: FC = () => {
 
     return (
         <div
-            className="bg-white text-black p-8 w-[595pt] rounded-lg"
+            className="bg-white text-black w-[595pt] rounded-lg"
             ref={containerRef}
+            style={{
+                paddingTop: "10mm",
+                paddingBottom: "10mm",
+                paddingLeft: "10mm",
+                paddingRight: "10mm",
+            }}
         >
             <Header />
             {sections.map((section, i) => (
@@ -91,15 +97,8 @@ const Editor: FC = () => {
                 onClick={() => addSection("<b></b>")}
                 className="flex items-center justify-center gap-2 w-full text-sm print:hidden"
             >
-                <FaPlusCircle className="w-6 h-6" />
-                <span className="font-semibold">Create new section</span>
-            </Button>
-            <Button
-                onClick={() => console.log(JSON.stringify(sections))}
-                className="flex items-center justify-center gap-2 w-full text-sm print:hidden"
-            >
-                <FaPlusCircle className="w-6 h-6" />
-                <span className="font-semibold">Download</span>
+                <FaPlusCircle className="w-4 h-4" />
+                <span className="font-semibold py-2">Create new section</span>
             </Button>
         </div>
     );
