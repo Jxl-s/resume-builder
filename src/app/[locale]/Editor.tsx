@@ -35,7 +35,7 @@ const Editor: FC = () => {
 
     return (
         <div
-            className="bg-white text-black p-8 w-[595pt] h-[842pt]"
+            className="bg-white text-black p-8 w-[595pt] rounded-lg"
         >
             <Header />
             {sections.map((section, i) => (

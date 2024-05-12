@@ -19,7 +19,7 @@ const Button: FC<PropsWithChildren<Props>> = ({
     return (
         <button
             onClick={onClick}
-            className={`${themes[theme]} ${className} rounded-md py-2 mt-4 shadow-md hover:brightness-110 duration-300`}
+            className={`${themes[theme]} ${className} rounded-md py-2 shadow-md hover:brightness-110 duration-300`}
         >
             {children}
         </button>
