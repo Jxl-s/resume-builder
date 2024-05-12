@@ -5,9 +5,7 @@ export default function Home() {
     const t = useTranslations("Index");
 
     return (
-        <main className="p-6">
-            <h1>{t("description")}</h1>
-            <h1>Something</h1>
+        <main className="p-6 print:p-0">
             <Editor />
         </main>
     );

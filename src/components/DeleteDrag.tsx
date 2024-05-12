@@ -45,7 +45,7 @@ const DeleteDrag: FC<PropsWithChildren<Props>> = ({
             ref={articleRef}
         >
             <FaTrash
-                className="w-3 h-3 absolute text-danger/50 hover:text-danger duration-300 cursor-pointer"
+                className="print:hidden w-3 h-3 absolute text-danger/50 hover:text-danger duration-300 cursor-pointer"
                 onClick={onDelete}
                 style={{
                     top: "50%",
@@ -55,7 +55,7 @@ const DeleteDrag: FC<PropsWithChildren<Props>> = ({
                 onMouseLeave={handleTrashLeave}
             />
             <FaGripVertical
-                className="w-3 h-3 right-0 translate-x-5 absolute text-black/50 hover:text-black duration-300 cursor-grab"
+                className="print:hidden w-3 h-3 right-0 translate-x-5 absolute text-black/50 hover:text-black duration-300 cursor-grab"
                 onClick={onMoved}
                 style={{
                     top: "50%",

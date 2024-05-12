@@ -16,6 +16,23 @@ const EditableList: FC<Props> = ({ items, setItems }) => {
     const contentSize = useDocSettingsStore((state) => state.contentSize);
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.ctrlKey || e.metaKey) {
+            if (e.key === "b" || e.key === "i" || e.key === "u") {
+                e.preventDefault();
+                // apply the appropriate execcommand
+                let command = "";
+                if (e.key === "b") {
+                    command = "bold";
+                } else if (e.key === "i") {
+                    command = "italic";
+                } else if (e.key === "u") {
+                    command = "underline";
+                }
+
+                document.execCommand(command, false);
+            }
+        }
+
         if (
             (e.key === "Backspace" || e.key === "Delete") &&
             e.currentTarget.textContent === ""

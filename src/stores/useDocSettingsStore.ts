@@ -9,7 +9,7 @@ interface DocSettings {
 const useDocSettingsStore = create<DocSettings>((set) => ({
     titleSize: 28,
     headingSize: 12,
-    contentSize: 11,
+    contentSize: 10,
 }));
 
 export default useDocSettingsStore;

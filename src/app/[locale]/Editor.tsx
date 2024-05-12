@@ -35,10 +35,7 @@ const Editor: FC = () => {
 
     return (
         <div
-            className="bg-white text-black p-8"
-            style={{
-                width: "695pt",
-            }}
+            className="bg-white text-black p-8 w-[595pt] h-[842pt]"
         >
             <Header />
             {sections.map((section, i) => (
@@ -89,10 +86,17 @@ const Editor: FC = () => {
             ))}
             <Button
                 onClick={() => addSection("<b></b>")}
-                className="flex items-center justify-center gap-2 w-full text-sm"
+                className="flex items-center justify-center gap-2 w-full text-sm print:hidden"
             >
                 <FaPlusCircle className="w-6 h-6" />
                 <span className="font-semibold">Create new section</span>
+            </Button>
+            <Button
+                onClick={() => console.log(JSON.stringify(sections))}
+                className="flex items-center justify-center gap-2 w-full text-sm print:hidden"
+            >
+                <FaPlusCircle className="w-6 h-6" />
+                <span className="font-semibold">Download</span>
             </Button>
         </div>
     );
