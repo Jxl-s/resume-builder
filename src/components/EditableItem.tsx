@@ -2,6 +2,7 @@ import { sanitizeHtml } from "@/utils/sanitizeHtml";
 import React, { FC, useEffect, useRef } from "react";
 import "./EditableItem.css";
 import type { TextStyle } from "@/types";
+import useStylingStore from "@/stores/useStylingStore";
 
 // This would be used by other components that compose of this one
 export interface EditableItemProps {
