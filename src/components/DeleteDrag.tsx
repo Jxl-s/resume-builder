@@ -1,10 +1,10 @@
 import { FC, PropsWithChildren, useRef } from "react";
-import { FaGripVertical, FaTrash } from "react-icons/fa";
+import { FaArrowDown, FaGripVertical, FaTrash } from "react-icons/fa";
+import { FaArrowUp } from "react-icons/fa6";
 
 interface Props {
-    idString: string;
     onDelete: () => void;
-    onMoved: () => void;
+    onMoved: (i: "up" | "down") => void;
     className?: string;
     style?: React.CSSProperties;
 }
@@ -54,7 +54,27 @@ const DeleteDrag: FC<PropsWithChildren<Props>> = ({
                 onMouseOver={handleTrashOver}
                 onMouseLeave={handleTrashLeave}
             />
-            <FaGripVertical
+            <div
+                className="print:hidden right-0 absolute duration-300 flex flex-col gap-1"
+                style={{
+                    top: "50%",
+                    transform: "translate(1.25rem, -50%)",
+                }}
+            >
+                <FaArrowUp
+                    className="w-3 h-3 text-black/50 cursor-pointer hover:text-black duration-300"
+                    onClick={() => onMoved("up")}
+                    onMouseOver={handleGripOver}
+                    onMouseLeave={handleGripLeave}
+                />
+                <FaArrowDown
+                    className="w-3 h-3 text-black/50 cursor-pointer hover:text-black duration-300"
+                    onClick={() => onMoved("down")}
+                    onMouseOver={handleGripOver}
+                    onMouseLeave={handleGripLeave}
+                />
+            </div>
+            {/* <FaGripVertical
                 className="print:hidden w-3 h-3 right-0 translate-x-5 absolute text-black/50 hover:text-black duration-300 cursor-grab"
                 onClick={onMoved}
                 style={{
@@ -63,7 +83,7 @@ const DeleteDrag: FC<PropsWithChildren<Props>> = ({
                 }}
                 onMouseOver={handleGripOver}
                 onMouseLeave={handleGripLeave}
-            />
+            /> */}
             {children}
         </article>
     );

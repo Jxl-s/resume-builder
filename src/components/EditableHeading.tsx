@@ -19,6 +19,8 @@ const EditableHeading: FC<Props> = ({ content, setContent }) => {
     const addText = useResumeEditorStore((state) => state.addText);
     const addProject = useResumeEditorStore((state) => state.addProject);
 
+    const moveSection = useResumeEditorStore((state) => state.moveSection);
+
     const { sectionId } = useSection();
 
     const onRemoveSection = () => {
@@ -34,9 +36,8 @@ const EditableHeading: FC<Props> = ({ content, setContent }) => {
 
     return (
         <DeleteDrag
-            idString={"_" + sectionId}
             onDelete={onRemoveSection}
-            onMoved={() => {}}
+            onMoved={(dir) => moveSection(sectionId, dir)}
             className="border-b border-b-black outline-none mb-1 flex items-center gap-2"
         >
             <EditableItem

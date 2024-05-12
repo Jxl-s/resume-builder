@@ -37,6 +37,7 @@ const EducationItem: FC<EducationItemProps> = ({
     const { sectionId } = useSection();
     const contentSize = useDocSettingsStore((state) => state.contentSize);
     const removeItem = useResumeEditorStore((state) => state.removeItem);
+    const moveItem = useResumeEditorStore((state) => state.moveItem);
 
     const onRemoveItem = () => {
         removeItem(sectionId, itemId);
@@ -44,13 +45,12 @@ const EducationItem: FC<EducationItemProps> = ({
 
     return (
         <DeleteDrag
-            idString={sectionId + "_" + itemId}
             className="my-auto mb-2"
+            onMoved={(dir) => moveItem(sectionId, itemId, dir)}
             style={{
                 fontSize: contentSize + "pt",
             }}
             onDelete={onRemoveItem}
-            onMoved={() => {}}
         >
             <EditableTwoSide
                 left={{

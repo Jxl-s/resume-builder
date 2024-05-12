@@ -28,7 +28,11 @@ interface ResumeEditor {
         contact: string;
     };
 
-    setHeader: (header: { name: string; subtitle: string; contact: string }) => void;
+    setHeader: (header: {
+        name: string;
+        subtitle: string;
+        contact: string;
+    }) => void;
 
     sections: {
         id: string;
@@ -53,6 +57,13 @@ interface ResumeEditor {
     addExperience: (sectionId: string) => void;
     addText: (sectionId: string) => void;
     addProject: (sectionId: string) => void;
+
+    moveSection: (sectionId: string, direction: "up" | "down") => void;
+    moveItem: (
+        sectionId: string,
+        itemId: string,
+        direction: "up" | "down"
+    ) => void;
 }
 
 const useResumeEditorStore = create<ResumeEditor>((set) => ({
@@ -251,6 +262,59 @@ const useResumeEditorStore = create<ResumeEditor>((set) => ({
             if (section) {
                 section.items.push(item);
             }
+
+            return { sections: copy };
+        });
+    },
+
+    moveSection: (sectionId, direction) => {
+        set((state) => {
+            const copy = [...state.sections];
+            const sectionIndex = copy.findIndex((s) => s.id === sectionId);
+
+            // if it's already the first and up don't do anything. if it's already last and down, same.
+            const isAlreadyFirst = sectionIndex === 0 && direction === "up";
+            const isAlreadyLast =
+                sectionIndex === copy.length - 1 && direction === "down";
+
+            if (isAlreadyFirst || isAlreadyLast) {
+                return { sections: copy };
+            }
+
+            const targetIndex =
+                direction === "up" ? sectionIndex - 1 : sectionIndex + 1;
+            const temp = copy[sectionIndex];
+            copy[sectionIndex] = copy[targetIndex];
+            copy[targetIndex] = temp;
+
+            return { sections: copy };
+        });
+    },
+
+    moveItem: (sectionId, itemId, direction) => {
+        set((state) => {
+            const copy = [...state.sections];
+            const section = copy.find((s) => s.id === sectionId);
+            if (!section) return { sections: copy };
+
+            const itemIndex = section.items.findIndex((i) => i.id === itemId);
+            if (itemIndex === -1) return { sections: copy };
+
+            // if it's already the first and up don't do anything. if it's already last and down, same.
+            const isAlreadyFirst = itemIndex === 0 && direction === "up";
+            const isAlreadyLast =
+                itemIndex === section.items.length - 1 && direction === "down";
+
+            if (isAlreadyFirst || isAlreadyLast) {
+                return { sections: copy };
+            }
+
+            const targetIndex =
+                direction === "up" ? itemIndex - 1 : itemIndex + 1;
+
+            const temp = section.items[itemIndex];
+            section.items[itemIndex] = section.items[targetIndex];
+            section.items[targetIndex] = temp;
 
             return { sections: copy };
         });

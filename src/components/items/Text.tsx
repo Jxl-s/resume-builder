@@ -17,20 +17,19 @@ const TextItem: FC<Props> = ({ itemId, content, setContent }) => {
     const { sectionId } = useSection();
     const contentSize = useDocSettingsStore((state) => state.contentSize);
     const removeItem = useResumeEditorStore((state) => state.removeItem);
-
+    const moveItem = useResumeEditorStore((state) => state.moveItem);
     const onRemoveItem = () => {
         removeItem(sectionId, itemId);
     };
 
     return (
         <DeleteDrag
-            idString={sectionId + "_" + itemId}
             className="mb-2 relative"
             style={{
                 fontSize: contentSize + "pt",
             }}
             onDelete={onRemoveItem}
-            onMoved={() => {}}
+            onMoved={(dir) => moveItem(sectionId, itemId, dir)}
         >
             <EditableItem
                 content={content}

@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect } from "react";
+import { FC, useEffect, useRef } from "react";
 import useResumeEditorStore from "@/stores/useResumeEditorStore";
 import { EducationItemWithId } from "../../components/items/Education";
 import { ExperienceItemWithId } from "@/components/items/Experience";
@@ -12,8 +12,10 @@ import { ProjectItemWithId } from "@/components/items/Project";
 import EditableItem from "@/components/EditableItem";
 import useDocSettingsStore from "@/stores/useDocSettingsStore";
 import Header from "@/components/items/Header";
+import useStylingStore from "@/stores/useStylingStore";
 
 const Editor: FC = () => {
+    const containerRef = useRef<HTMLDivElement>(null);
     const sections = useResumeEditorStore((state) => state.sections);
 
     const setSections = useResumeEditorStore((state) => state.setSections);
@@ -36,6 +38,7 @@ const Editor: FC = () => {
     return (
         <div
             className="bg-white text-black p-8 w-[595pt] rounded-lg"
+            ref={containerRef}
         >
             <Header />
             {sections.map((section, i) => (
