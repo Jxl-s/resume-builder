@@ -8,6 +8,7 @@ interface Props {
 
 const themes = {
     primary: "bg-primary text-white",
+    danger: "bg-danger text-white",
 };
 
 const Button: FC<PropsWithChildren<Props>> = ({
@@ -19,7 +20,7 @@ const Button: FC<PropsWithChildren<Props>> = ({
     return (
         <button
             onClick={onClick}
-            className={`${themes[theme]} ${className} rounded-md py-2 shadow-md hover:brightness-110 duration-300`}
+            className={`${themes[theme]} ${className} rounded-md shadow-md hover:brightness-110 duration-300`}
         >
             {children}
         </button>
