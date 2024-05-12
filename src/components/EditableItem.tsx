@@ -33,7 +33,6 @@ const EditableItem: FC<EditableItemProps> = ({
     setContent,
 }) => {
     const itemRef = useRef<HTMLElement>(null);
-
     const handleKeyDown = (e: React.KeyboardEvent<HTMLSpanElement>) => {
         if (e.ctrlKey || e.metaKey) {
             if (e.key === "b" || e.key === "i" || e.key === "u") {
@@ -56,6 +55,8 @@ const EditableItem: FC<EditableItemProps> = ({
             e.preventDefault();
             e.currentTarget.blur();
         }
+
+        updateDisplayStyle();
     };
 
     // Updating the content
@@ -66,6 +67,11 @@ const EditableItem: FC<EditableItemProps> = ({
         }
 
         setContent(sanitizeHtml(e.target.innerHTML, allowMultiLine));
+        useStylingStore.setState({
+            isBold: false,
+            isItalic: false,
+            isUnderline: false,
+        });
     };
 
     const applyDefaultStyle = () => {
@@ -76,6 +82,14 @@ const EditableItem: FC<EditableItemProps> = ({
         }
     };
 
+    const updateDisplayStyle = () => {
+        useStylingStore.setState({
+            isBold: document.queryCommandState("bold"),
+            isItalic: document.queryCommandState("italic"),
+            isUnderline: document.queryCommandState("underline"),
+        });
+    };
+
     // Handling placeholder and empty content
     const handleInput = (e: React.FormEvent<HTMLSpanElement>) => {
         if (e.currentTarget.textContent?.trim() === "") {
@@ -84,6 +98,8 @@ const EditableItem: FC<EditableItemProps> = ({
         } else {
             e.currentTarget.classList.remove("empty-content");
         }
+
+        updateDisplayStyle();
     };
 
     // Initial placeholder handling

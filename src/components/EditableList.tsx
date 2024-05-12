@@ -3,6 +3,7 @@ import useDocSettingsStore from "@/stores/useDocSettingsStore";
 import React, { FC, useEffect, useRef, useState } from "react";
 import "./EditableList.css";
 import { sanitizeHtml } from "@/utils/sanitizeHtml";
+import useStylingStore from "@/stores/useStylingStore";
 
 interface Props {
     items: string[];
@@ -39,6 +40,8 @@ const EditableList: FC<Props> = ({ items, setItems }) => {
         ) {
             e.preventDefault();
         }
+
+        updateDisplayStyle();
     };
 
     const handleFocus = (e: React.FocusEvent<HTMLUListElement>) => {
@@ -63,6 +66,8 @@ const EditableList: FC<Props> = ({ items, setItems }) => {
             selection.removeAllRanges();
             selection.addRange(range);
         }
+
+        updateDisplayStyle();
     };
 
     const handleBlur = (e: React.FocusEvent<HTMLUListElement>) => {
@@ -83,6 +88,20 @@ const EditableList: FC<Props> = ({ items, setItems }) => {
 
             setItems(newItems);
         }
+
+        useStylingStore.setState({
+            isBold: false,
+            isItalic: false,
+            isUnderline: false,
+        });
+    };
+
+    const updateDisplayStyle = () => {
+        useStylingStore.setState({
+            isBold: document.queryCommandState("bold"),
+            isItalic: document.queryCommandState("italic"),
+            isUnderline: document.queryCommandState("underline"),
+        });
     };
 
     let innerHtml = items
