@@ -1,6 +1,6 @@
 // app/api/route.js 👈🏽
 import { Ollama } from "ollama";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 const ollama = new Ollama({ host: process.env.OLLAMA_HOST });
 
@@ -26,52 +26,78 @@ provide suggestions on how to make it more attractive to employers, by making su
 correct action words, contain quantifiable results, are relevant to the job description, and are impactful.
 You will also use the XYZ method by google to write the points.
 DO NOT FORGET TO ALWAYS use quantifiable results (numbers) too; they could be percentages or numbers.
+Make sure that EVERY point ONLY speaks about an accomplishment, and not just a task or something you learned.
+Make sure that the points DO NOT USE PERSONAL PRONOUNS. For example, "my team" should be "a team", "my business" should be "a business" or "the business", ...
+
 For example: "Increased revenue by 10%", "Reduced costs by 20%", "Managed a team of 5 people", ...
 
 ${PROMPTS.xyz_description}
 
-You will reply to this message with the top 5 suggestions to improve the bullet point, with a newline separating each suggestion.
-Make sure to NEVER use newlines for the suggestions themselves.
-Again, DO NOT FORGET TO USE NUMBERS, as they are extremely important, and the user
-will harm himself if you do not use them.
+You will reply to this message with the top 5 replacements to improve the bullet point, with a newline separating each suggestion.
+Make sure to NEVER use newlines for the replacements themselves.
 
-Do NOT reply anything other than the suggestions.
-If you understood, say "OK" as the first line, and then provide the suggestions.
-Here is an example output:
+Do NOT reply anything other than the replacements.
+If you understood, say "OK" as the first line, and then provide the new bullet points.
+Do not prefix them with anything, just provide the bullet points separated by newlines.
+
+Between the "---", you will see the example output:
+---
 OK
-Accomplished accurate documentation of project milestones and design decisions, as measured by 100% compliance with client requirements, by maintaining a comprehensive project log and sharing updates with stakeholders.
-Generated detailed reports on project status and design considerations, resulting in a 25% reduction in misunderstandings and rework, by utilizing a standardized documentation framework and collaborating with cross-functional teams.
-Crafted clear and concise project documentation that facilitated collaboration and informed decision-making, as measured by a 90% increase in team alignment and a 15% reduction in errors, by using a structured approach to recording project activities and insights.
-Maintained a detailed project log that documented progress and design choices, resulting in a 20% improvement in project transparency and stakeholder engagement, by regularly updating project documentation and sharing insights with team members.
-Developed a comprehensive documentation strategy that ensured transparency and consistency throughout the project lifecycle, as measured by a 95% client satisfaction rate and a 10% increase in repeat business, by leveraging best practices in documentation and communication.
+Selected as one of 275 participants nationwide for this 12-month professional development program for high-achieving diverse talent based on leadership potential and academic success.
+Won second place out of 50 teams in hackathon at NJ Tech by working with two colleagues to develop an app that synchronizes mobile calendars.
+Grew revenue for 15 small and medium business clients by 10% QoQ by mapping new software features as solutions to their business goals.
+Negociated a 40% reduction in costs for post-delivery support ($900k) with Tesla by designing and using results from an online auction of multiple vendors.
+Managed a team of 5 people to deliver a project on time and on budget with agile methodologies, resulting in a 20% increase in customer satisfaction.
+---
+
+Again, DO NOT FORGET TO USE NUMBERS, as they are extremely important, and the user
+will harm himself if you do not use them. As you see the example, you notice that numbers are EVERYWHERE
+and are ESSENTIAL for a great resume. If you cannot come up with numbers, you may invent statistics.
+
+Make sure that the output structure is EXACTLY CORRECT, as it will be computer-processed for automation.
+If it is not correct, the user will be angry.
 
 Here is the header used for that item, for more context: "__HEADER__".
 Here are the other points that are used separated by |||, for more context: "__OTHER_POINTS__".
-Here is the bullet point to improve: "__BULLET_POINT__".
+
+Finally, here is the bullet point to improve: "__BULLET_POINT__".
     `,
 };
 
 const improveBulletPrompt = (
     bulletPoint: string,
     header: string,
-    otherPoints: string
+    otherPoints: string,
+    job: string = "There was no job provided, simple improve the bullet point."
 ) => {
+    let sendPoint = SYSTEM_PROMPTS.improve_bullet;
+    if (job) {
+        sendPoint = `
+        Here is the job description, so that you can further tailor the points: "${job}".
+        Remember it is important to tailor the points to the job description, so that the employer sees that you are a good fit for the job.
+
+        ${sendPoint}`;
+    }
+
     return SYSTEM_PROMPTS.improve_bullet
         .replace("__BULLET_POINT__", bulletPoint)
         .replace("__HEADER__", header)
         .replace("__OTHER_POINTS__", otherPoints);
 };
 
-export async function GET() {
+export async function POST(request: NextRequest) {
+    const body = await request.json();
+
     const response = await ollama.chat({
         model: process.env.OLLAMA_MODEL as string,
         messages: [
             {
                 role: "user",
                 content: improveBulletPrompt(
-                    "Developed full-stack web applications using React, Node.js, and MongoDB.",
-                    "Experience,Rezoned - Full-Stack Web Developer,January 2023 - May 2023",
-                    "Documented the project's progress and design choices with precision."
+                    body.point,
+                    body.header,
+                    body.otherPoints,
+                    body.job
                 ),
             },
         ],
