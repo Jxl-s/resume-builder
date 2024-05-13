@@ -8,6 +8,7 @@ interface Props {
 
 const themes = {
     primary: "bg-primary text-white",
+    primaryOutline: "bg-transparent text-primary border border-primary hover:bg-primary hover:text-white",
     danger: "bg-danger text-white",
 };
 

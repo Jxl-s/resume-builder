@@ -23,8 +23,21 @@ export default function Home() {
                     <h1 className="text-2xl font-semibold">
                         Document Settings
                     </h1>
+                    <div className="text-sm my-2">
+                        <p>Measurement Unit</p>
+                        <p>Text Spacing</p>
+                    </div>
                     <h1 className="text-2xl font-semibold">Margin Settings</h1>
+                    <div className="text-sm my-2">
+                        <p>Top-Bottom Margin</p>
+                        <p>Left-Right Margin</p>
+                    </div>
                     <h1 className="text-2xl font-semibold">Font Sizes</h1>
+                    <div className="text-sm my-2">
+                        <p>Title</p>
+                        <p>Headings</p>
+                        <p>Content</p>
+                    </div>
                 </article>
                 <article className="bg-dark1 rounded-lg p-2 flex-grow flex flex-col items-center">
                     <Tooltips />

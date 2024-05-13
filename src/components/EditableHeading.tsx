@@ -1,10 +1,11 @@
-import { FC } from "react";
+import { FC, useRef } from "react";
 import EditableItem from "./EditableItem";
 import useDocSettingsStore from "@/stores/useDocSettingsStore";
 import { FaGripVertical, FaPlusCircle, FaTrash } from "react-icons/fa";
 import useResumeEditorStore from "@/stores/useResumeEditorStore";
 import { useSection } from "./Section";
 import DeleteDrag from "./DeleteDrag";
+import Button from "./Button";
 
 interface Props {
     content: string;
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const EditableHeading: FC<Props> = ({ content, setContent }) => {
+    const addItemRef = useRef<HTMLDivElement>(null);
     const headingSize = useDocSettingsStore((state) => state.headingSize);
     const removeSection = useResumeEditorStore((state) => state.removeSection);
     const addExperience = useResumeEditorStore((state) => state.addExperience);
@@ -28,10 +30,35 @@ const EditableHeading: FC<Props> = ({ content, setContent }) => {
     };
 
     const onAddItem = () => {
-        addProject(sectionId); // temporary
-        addExperience(sectionId);
-        addEducation(sectionId);
-        addText(sectionId);
+        if (!addItemRef.current) return;
+        addItemRef.current.style.display = "flex";
+    };
+
+    const onConfirmAddItem = (type: string) => {
+        if (!addItemRef.current) return;
+        addItemRef.current.style.display = "none";
+
+        switch (type) {
+            case "Experience":
+                addExperience(sectionId);
+                break;
+            case "Education":
+                addEducation(sectionId);
+                break;
+            case "Project":
+                addProject(sectionId);
+                break;
+            case "Custom Text":
+                addText(sectionId);
+                break;
+            default:
+                break;
+        }
+    };
+
+    const onCancelAddItem = () => {
+        if (!addItemRef.current) return;
+        addItemRef.current.style.display = "none";
     };
 
     return (
@@ -53,6 +80,49 @@ const EditableHeading: FC<Props> = ({ content, setContent }) => {
                 className="print:hidden w-3 h-3 inline text-primary/50 hover:text-primary duration-300 cursor-pointer"
                 onClick={onAddItem}
             />
+            <div
+                className={`absolute bg-dark2 p-2 rounded-lg top-full gap-2 z-10`}
+                style={{
+                    display: "none",
+                }}
+                ref={addItemRef}
+            >
+                <Button
+                    theme="primary"
+                    className="text-sm font-semibold px-2 py-1"
+                    onClick={() => onConfirmAddItem("Education")}
+                >
+                    Education
+                </Button>
+                <Button
+                    theme="primary"
+                    className="text-sm font-semibold px-2 py-1"
+                    onClick={() => onConfirmAddItem("Experience")}
+                >
+                    Experience
+                </Button>
+                <Button
+                    theme="primary"
+                    className="text-sm font-semibold px-2 py-1"
+                    onClick={() => onConfirmAddItem("Project")}
+                >
+                    Project
+                </Button>
+                <Button
+                    theme="primary"
+                    className="text-sm font-semibold px-2 py-1"
+                    onClick={() => onConfirmAddItem("Custom Text")}
+                >
+                    Custom Text
+                </Button>
+                <Button
+                    theme="danger"
+                    className="text-sm font-semibold px-2 py-1"
+                    onClick={onCancelAddItem}
+                >
+                    Cancel
+                </Button>
+            </div>
         </DeleteDrag>
     );
 };

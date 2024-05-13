@@ -80,11 +80,9 @@ const Tooltips: FC = () => {
                 </TooltipButton>
 
                 <div className="h-8 w-0.5 bg-white/25" />
-                <div
-                    className={`rounded-lg ${isHyperlink ? "bg-primary" : "bg-dark3"} p-2 hover:brightness-150 duration-300 cursor-pointer`}
-                >
+                <TooltipButton enabled={isHyperlink} onClick={() => {}}>
                     <FaLink className="w-4 h-4" />
-                </div>
+                </TooltipButton>
             </div>
             <div className="flex gap-2 relative">
                 <Button
