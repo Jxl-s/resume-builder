@@ -19,13 +19,19 @@ export default function Home() {
         <main>
             <Nav />
             <section className="p-4 flex gap-4">
-                <article className="h-full bg-dark1 rounded-lg p-4 w-full">
+                <article className="h-full bg-dark1 rounded-lg p-4 w-full print:hidden">
                     <h1 className="text-2xl font-semibold">
                         Document Settings
                     </h1>
                     <div className="text-sm my-2">
                         <p>Measurement Unit</p>
+                        <select className="bg-dark2 py-1 px-4">
+                            <option>px</option>
+                            <option>cm</option>
+                            <option>in</option>
+                        </select>
                         <p>Text Spacing</p>
+                        <input type="number" className="bg-dark2" />
                     </div>
                     <h1 className="text-2xl font-semibold">Margin Settings</h1>
                     <div className="text-sm my-2">
@@ -43,7 +49,7 @@ export default function Home() {
                     <Tooltips />
                     <Editor />
                 </article>
-                <article className="h-full bg-dark1 rounded-lg p-4 w-full">
+                <article className="h-full bg-dark1 rounded-lg p-4 w-full print:hidden">
                     <h1 className="text-2xl font-semibold">My Resumes</h1>
                 </article>
             </section>

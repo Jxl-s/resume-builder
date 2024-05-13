@@ -198,9 +198,11 @@ const Tooltips: FC = () => {
                     setAiSearcher({ searching: false, searchResults: [] });
                 }}
             >
-                {aiSearcher.searching && <p>Please wait...</p>}
+                {aiSearcher.searching && (
+                    <p className="print:hidden">Please wait...</p>
+                )}
                 {aiSearcher.searchResults.length > 0 && (
-                    <>
+                    <div className="print:hidden">
                         Select which option to use to replace point.
                         <ul className="list-disc list-inside text-sm">
                             {aiSearcher.searchResults.map((c, i) => (
@@ -264,11 +266,11 @@ const Tooltips: FC = () => {
                                 </li>
                             ))}
                         </ul>
-                    </>
+                    </div>
                 )}
                 {!aiSearcher.searching &&
                     aiSearcher.searchResults.length === 0 && (
-                        <>
+                        <div className="print:hidden">
                             Select which bullet point to fix with AI
                             <ul className="list-disc list-inside text-sm">
                                 {aiHelper.points.map((c, i) => (
@@ -322,10 +324,10 @@ const Tooltips: FC = () => {
                                     </li>
                                 ))}
                             </ul>
-                        </>
+                        </div>
                     )}
             </Modal>
-            <div className="flex justify-between w-full mb-2">
+            <div className="flex justify-between w-full mb-2 print:hidden">
                 <div className="flex gap-2 relative">
                     <div className="rounded-lg bg-dark3 text-sm px-4 flex items-center">
                         Source Sans Pro
@@ -440,6 +442,9 @@ const Tooltips: FC = () => {
                     <Button
                         theme="primary"
                         className="text-sm font-semibold px-5 flex items-center gap-2"
+                        onClick={() => {
+                            print();
+                        }}
                     >
                         <FaDownload className="w-4 h-4" />
                         Download

@@ -6,9 +6,7 @@ import { FaBars } from "react-icons/fa";
 
 const Nav: FC = () => {
     return (
-        <nav
-            className="flex justify-between p-4 bg-dark1"
-        >
+        <nav className="flex justify-between p-4 bg-dark1 print:hidden">
             <ul className="flex gap-8 items-center">
                 <li className="font-bold text-3xl">
                     <FaBars className="w-6 h-6" />
