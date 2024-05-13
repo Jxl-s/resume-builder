@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Ollama } from "ollama";
 import fetch from "node-fetch";
+import { promptMetaLlama } from "@/utils/server/prompt_llm";
 
 const SYSTEM_PROMPT = `
 You are now ResumeExtractor, a bot that will extract information from plain-text resumes.
@@ -38,15 +39,10 @@ The following is the resume to extract data from: __RESUME_TEXT__
 
 const ollama = new Ollama({ host: process.env.OLLAMA_HOST });
 export async function POST(request: NextRequest) {
-    const response = await fetch("http://127.0.0.1:5000/prompt", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            message: SYSTEM_PROMPT.replace(
-                "__RESUME_TEXT__",
-                `Ewen Gueguen
+    const response = await promptMetaLlama({
+        message: SYSTEM_PROMPT.replace(
+            "__RESUME_TEXT__",
+            `Ewen Gueguen
 (438) 855-2381 • ewengue1432@gmail.com • 42 avenue des Frenes, Montreal, Quebec, H9R 0E7
 EDUCATION
 High School (2017-2022)
@@ -100,12 +96,10 @@ Centre
 levels by volunteering over 60 hours
 ● Involved with over 20 hours of one-on-one Math tutoring at the John Abbott Math
 Department`
-            ),
-        }),
+        ),
     });
 
-    const resJson = await response.json();
-    return NextResponse.json(JSON.parse(resJson.message), {
+    return NextResponse.json(JSON.parse(response), {
         status: 200,
     });
 }

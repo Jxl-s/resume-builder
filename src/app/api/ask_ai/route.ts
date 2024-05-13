@@ -1,6 +1,7 @@
 // app/api/route.js 👈🏽
 import { Ollama } from "ollama";
 import { NextRequest, NextResponse } from "next/server";
+import { promptLlama, promptMetaLlama } from "@/utils/server/prompt_llm";
 
 const ollama = new Ollama({ host: process.env.OLLAMA_HOST });
 
@@ -94,22 +95,16 @@ const improveBulletPrompt = (
 export async function POST(request: NextRequest) {
     const body = await request.json();
 
-    const response = await ollama.chat({
-        model: process.env.OLLAMA_MODEL as string,
-        messages: [
-            {
-                role: "user",
-                content: improveBulletPrompt(
-                    body.point,
-                    body.header,
-                    body.otherPoints,
-                    body.job
-                ),
-            },
-        ],
+    const response = await promptMetaLlama({
+        message: improveBulletPrompt(
+            body.point,
+            body.header,
+            body.otherPoints,
+            body.job
+        ),
     });
 
-    let lines = response.message.content.split("\n");
+    let lines = response.split("\n");
     lines = lines.slice(1, 6);
 
     return NextResponse.json(lines, {
