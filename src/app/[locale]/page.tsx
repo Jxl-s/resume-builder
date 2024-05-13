@@ -19,7 +19,7 @@ export default function Home() {
         <main>
             <Nav />
             <section className="p-4 flex gap-4">
-                <article className="h-full bg-dark1 rounded-lg p-4">
+                <article className="h-full bg-dark1 rounded-lg p-4 w-full">
                     <h1 className="text-2xl font-semibold">
                         Document Settings
                     </h1>
@@ -43,12 +43,8 @@ export default function Home() {
                     <Tooltips />
                     <Editor />
                 </article>
-                <article className="h-full bg-dark1 rounded-lg p-4">
-                    <h1 className="text-2xl font-semibold">
-                        Document Settings
-                    </h1>
-                    <h1 className="text-2xl font-semibold">Margin Settings</h1>
-                    <h1 className="text-2xl font-semibold">Font Sizes</h1>
+                <article className="h-full bg-dark1 rounded-lg p-4 w-full">
+                    <h1 className="text-2xl font-semibold">My Resumes</h1>
                 </article>
             </section>
         </main>
