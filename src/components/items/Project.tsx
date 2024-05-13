@@ -100,7 +100,7 @@ const ProjectItem: FC<ProjectItemProps> = ({
             <EditableList
                 items={description}
                 setItems={setDescription}
-                listId={"list-" + itemId}
+                itemId={itemId}
             />
         </DeleteDrag>
     );

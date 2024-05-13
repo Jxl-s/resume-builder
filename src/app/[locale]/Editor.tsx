@@ -96,10 +96,10 @@ const Editor: FC = () => {
             ))}
             <Button
                 onClick={() => addSection("<b></b>")}
-                className="flex items-center justify-center gap-2 w-full text-sm print:hidden"
+                className="flex items-center justify-center gap-2 w-full text-sm print:hidden mt-4"
             >
                 <FaPlusCircle className="w-4 h-4" />
-                <span className="font-semibold py-2">Create new section</span>
+                <span className="font-semibold py-2">Add a New Section</span>
             </Button>
         </div>
     );

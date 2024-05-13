@@ -8,10 +8,17 @@ import {
     FaUnderline,
 } from "react-icons/fa";
 import Button from "./Button";
-import { FaCircleExclamation, FaFileImport, FaHandSparkles } from "react-icons/fa6";
+import {
+    FaCircleExclamation,
+    FaFileImport,
+    FaHandSparkles,
+} from "react-icons/fa6";
 import useStylingStore from "@/stores/useStylingStore";
 import useFocusedListStore from "@/stores/useFocusedListStore";
 import Modal from "./Modal";
+import useResumeEditorStore from "@/stores/useResumeEditorStore";
+import { IExperienceItem, IProjectItem } from "@/types/items";
+import { removeTags } from "@/utils/sanitizeHtml";
 
 interface TooltipButtonProps {
     enabled: boolean;
@@ -39,10 +46,17 @@ const Tooltips: FC = () => {
     const isItalic = useStylingStore((state) => state.isItalic);
     const isUnderline = useStylingStore((state) => state.isUnderline);
     const isHyperlink = useStylingStore((state) => state.isHyperlink);
-    const focusedList = useFocusedListStore((state) => state.focusedList);
+    const updateItem = useResumeEditorStore((state) => state.updateItem);
+
+    const [focusedSectionId, focusedItemId] = useFocusedListStore((state) => [
+        state.focusedSectionId,
+        state.focusedItemId,
+    ]);
 
     const [aiHelper, setAiHelper] = useState({
-        listId: "",
+        sectionId: "",
+        itemId: "",
+        context: "",
         points: [] as string[],
         chosenIndex: -1,
     });
@@ -75,16 +89,57 @@ const Tooltips: FC = () => {
         updateDisplayStyle();
     };
 
-    const onAskAi = (listId: string) => {
-        const list = document.getElementById(listId);
-        if (list) {
-            const points = Array.from(list.children)
-                .filter((child) => child.textContent)
-                .map((child) => child.textContent) as string[];
+    const onAskAi = (sectionId: string, itemId: string) => {
+        if (document.activeElement instanceof HTMLElement) {
+            document.activeElement.blur();
+        }
+
+        const sections = useResumeEditorStore.getState().sections;
+        // find the section and item
+        const section = sections.find((s) => s.id === sectionId);
+        if (!section) return;
+
+        const item = section.items.find((i) => i.id === itemId);
+        if (!item) return;
+
+        // get the type (experience or project)
+        if (item.type === "experience") {
+            const experience = item.value as IExperienceItem;
+
+            const context = [
+                "Experience",
+                removeTags(experience.position),
+                removeTags(experience.company),
+                removeTags(experience.dates),
+                removeTags(experience.location),
+            ].join(",");
 
             setAiHelper({
-                listId,
-                points,
+                sectionId: sectionId,
+                itemId: itemId,
+                points: experience.description,
+                context,
+                chosenIndex: -1,
+            });
+        }
+
+        if (item.type === "project") {
+            const project = item.value as IProjectItem;
+
+            const context = [
+                "Project",
+                project.name,
+                project.dates,
+                project.technologies,
+                project.source,
+                project.demo,
+            ].join(",");
+
+            setAiHelper({
+                sectionId: sectionId,
+                itemId: itemId,
+                points: project.description,
+                context,
                 chosenIndex: -1,
             });
         }
@@ -94,9 +149,15 @@ const Tooltips: FC = () => {
         <>
             <Modal
                 title="AI Helper"
-                visible={aiHelper.listId !== ""}
+                visible={aiHelper.itemId !== "" && aiHelper.sectionId !== ""}
                 onClose={() => {
-                    setAiHelper({ listId: "", points: [], chosenIndex: -1 });
+                    setAiHelper({
+                        sectionId: "",
+                        itemId: "",
+                        points: [],
+                        chosenIndex: -1,
+                        context: "",
+                    });
                     setAiSearcher({ searching: false, searchResults: [] });
                 }}
             >
@@ -109,29 +170,51 @@ const Tooltips: FC = () => {
                                 <li
                                     className="text-primary hover:brightness-125 duration-300 cursor-pointer my-1"
                                     onClick={() => {
-                                        const listId = aiHelper.listId;
-                                        const chosenIndex =
-                                            aiHelper.chosenIndex;
+                                        const sections =
+                                            useResumeEditorStore.getState()
+                                                .sections;
 
-                                        // replace the LI in the list
-                                        const list =
-                                            document.getElementById(listId);
-                                        if (list) {
-                                            // trigger a blur for the list
-                                            list?.focus();
+                                        // find the section and item
+                                        const section = sections.find(
+                                            (s) => s.id === aiHelper.sectionId
+                                        );
+                                        if (!section) return;
 
-                                            const li = list.children[
-                                                chosenIndex
-                                            ] as HTMLLIElement;
-                                            li.textContent = c;
+                                        const item = section.items.find(
+                                            (i) => i.id === aiHelper.itemId
+                                        );
 
-                                            list?.blur();
-                                        }
+                                        if (!item) return;
+                                        const copy = { ...item };
+                                        const value = copy.value as {
+                                            description: string[];
+                                        };
+
+                                        value.description =
+                                            value.description.map(
+                                                (d, index) => {
+                                                    if (
+                                                        index ===
+                                                        aiHelper.chosenIndex
+                                                    )
+                                                        return c;
+                                                    return d;
+                                                }
+                                            );
+
+                                        // update the item's Description array at index chosenIndex
+                                        updateItem(
+                                            aiHelper.sectionId,
+                                            aiHelper.itemId,
+                                            copy
+                                        );
 
                                         setAiHelper({
-                                            listId: "",
+                                            sectionId: "",
+                                            itemId: "",
                                             points: [],
                                             chosenIndex: -1,
+                                            context: "",
                                         });
                                         setAiSearcher({
                                             searching: false,
@@ -169,7 +252,9 @@ const Tooltips: FC = () => {
                                                 .filter(
                                                     (_, index) => index !== i
                                                 )
+                                                .map((p) => removeTags(p))
                                                 .join("\n");
+
                                             const res = await fetch(
                                                 "/api/ask_ai",
                                                 {
@@ -179,8 +264,8 @@ const Tooltips: FC = () => {
                                                             "application/json",
                                                     },
                                                     body: JSON.stringify({
-                                                        point: c,
-                                                        header: "",
+                                                        point: removeTags(c),
+                                                        header: aiHelper.context,
                                                         job: "",
                                                         otherPoints:
                                                             otherPoints,
@@ -232,12 +317,11 @@ const Tooltips: FC = () => {
                     <Button
                         theme="primaryOutline"
                         className="text-sm font-semibold px-4 flex gap-2 items-center"
-                        disabled={focusedList === ""}
+                        disabled={
+                            focusedItemId === "" && focusedSectionId === ""
+                        }
                         onClick={() => {
-                            onAskAi(focusedList);
-                            if (document.activeElement instanceof HTMLElement) {
-                                document.activeElement.blur();
-                            }
+                            onAskAi(focusedSectionId, focusedItemId);
                         }}
                         onMouseDown={(e) => e.preventDefault()}
                     >

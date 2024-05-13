@@ -5,14 +5,17 @@ import "./EditableList.css";
 import { sanitizeHtml } from "@/utils/sanitizeHtml";
 import useStylingStore from "@/stores/useStylingStore";
 import useFocusedListStore from "@/stores/useFocusedListStore";
+import { useSection } from "./Section";
 
 interface Props {
     items: string[];
     setItems: (items: string[]) => void;
-    listId: string;
+    itemId: string;
 }
 
-const EditableList: FC<Props> = ({ items, setItems, listId }) => {
+const EditableList: FC<Props> = ({ items, setItems, itemId }) => {
+    const { sectionId } = useSection();
+
     const ulRef = useRef<HTMLUListElement>(null);
     const divRef = useRef<HTMLDivElement>(null);
     // const aiRef = useRef<HTMLButtonElement>(null);
@@ -49,7 +52,7 @@ const EditableList: FC<Props> = ({ items, setItems, listId }) => {
     };
 
     const handleFocus = (e: React.FocusEvent<HTMLUListElement>) => {
-        setFocusedList(listId);
+        setFocusedList(sectionId, itemId);
 
         if (divRef.current) {
             divRef.current.classList.remove("ce-list-unfocused");
@@ -78,7 +81,7 @@ const EditableList: FC<Props> = ({ items, setItems, listId }) => {
 
     const handleBlur = (e: React.FocusEvent<HTMLUListElement>) => {
         if (!e.relatedTarget || e.relatedTarget.tagName !== "UL") {
-            setFocusedList("");
+            setFocusedList("", "");
         }
 
         if (divRef.current) {
@@ -133,7 +136,6 @@ const EditableList: FC<Props> = ({ items, setItems, listId }) => {
         >
             <div className="relative">
                 <ul
-                    id={listId}
                     ref={ulRef}
                     onKeyDown={handleKeyDown}
                     onFocus={handleFocus}

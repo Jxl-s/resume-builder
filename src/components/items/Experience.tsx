@@ -89,7 +89,7 @@ const ExperienceItem: FC<ExperienceItemProps> = ({
             <EditableList
                 items={description}
                 setItems={setDescription}
-                listId={"list-" + itemId}
+                itemId={itemId}
             />
         </DeleteDrag>
     );

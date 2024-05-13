@@ -8,5 +8,11 @@ export const sanitizeHtml = (html: string, allowBr = false) => {
 
     return DOMPurify.sanitize(html, {
         ALLOWED_TAGS: allowedTags,
-    });
+    }).trim();
+};
+
+export const removeTags = (html: string) => {
+    return DOMPurify.sanitize(html, {
+        ALLOWED_TAGS: [],
+    }).trim();
 };

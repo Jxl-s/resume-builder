@@ -1,13 +1,16 @@
 import { create } from "zustand";
 
 interface FocusedListStore {
-    focusedList: string;
-    setFocusedList: (list: string) => void;
+    focusedSectionId: string;
+    focusedItemId: string;
+    setFocusedList: (sectionId: string, itemId: string) => void;
 }
 
 const useFocusedListStore = create<FocusedListStore>((set) => ({
-    focusedList: "",
-    setFocusedList: (list) => set({ focusedList: list }),
+    focusedSectionId: "",
+    focusedItemId: "",
+    setFocusedList: (sectionId, itemId) =>
+        set(() => ({ focusedSectionId: sectionId, focusedItemId: itemId })),
 }));
 
 export default useFocusedListStore;
