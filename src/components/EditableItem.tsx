@@ -2,7 +2,7 @@ import { sanitizeHtml } from "@/utils/sanitizeHtml";
 import React, { FC, useEffect, useRef } from "react";
 import "./EditableItem.css";
 import type { TextStyle } from "@/types";
-import useStylingStore from "@/stores/useStylingStore";
+import useStylingStore, { updateDisplayStyle } from "@/stores/useStylingStore";
 
 // This would be used by other components that compose of this one
 export interface EditableItemProps {
@@ -80,14 +80,6 @@ const EditableItem: FC<EditableItemProps> = ({
                 document.execCommand(style);
             }
         }
-    };
-
-    const updateDisplayStyle = () => {
-        useStylingStore.setState({
-            isBold: document.queryCommandState("bold"),
-            isItalic: document.queryCommandState("italic"),
-            isUnderline: document.queryCommandState("underline"),
-        });
     };
 
     // Handling placeholder and empty content

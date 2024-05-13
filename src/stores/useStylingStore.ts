@@ -30,8 +30,39 @@ const useStylingStore = create<StylingStore>((set) => ({
 
     toggleBold: () => set((state) => ({ isBold: !state.isBold })),
     toggleItalic: () => set((state) => ({ isItalic: !state.isItalic })),
-    toggleUnderline: () => set((state) => ({ isUnderline: !state.isUnderline })),
-    toggleHyperlink: () => set((state) => ({ isHyperlink: !state.isHyperlink })),
+    toggleUnderline: () =>
+        set((state) => ({ isUnderline: !state.isUnderline })),
+    toggleHyperlink: () =>
+        set((state) => ({ isHyperlink: !state.isHyperlink })),
 }));
 
 export default useStylingStore;
+
+export const queryIsLink = () => {
+    let isLink = false;
+    try {
+        const range = window.getSelection()?.getRangeAt(0);
+        if (range) {
+            let container: any = range.commonAncestorContainer;
+            if (container.nodeType == 3) {
+                container = container.parentNode;
+            }
+
+            console.log(container);
+            if (container.nodeName === "A") {
+                isLink = true;
+            }
+        }
+    } catch (e) {}
+
+    return isLink;
+};
+
+export const updateDisplayStyle = () => {
+    useStylingStore.setState({
+        isBold: document.queryCommandState("bold"),
+        isItalic: document.queryCommandState("italic"),
+        isUnderline: document.queryCommandState("underline"),
+        isHyperlink: queryIsLink(),
+    });
+};

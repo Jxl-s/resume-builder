@@ -3,7 +3,7 @@ import useDocSettingsStore from "@/stores/useDocSettingsStore";
 import React, { FC, useEffect, useRef, useState } from "react";
 import "./EditableList.css";
 import { sanitizeHtml } from "@/utils/sanitizeHtml";
-import useStylingStore from "@/stores/useStylingStore";
+import useStylingStore, { updateDisplayStyle } from "@/stores/useStylingStore";
 import useFocusedListStore from "@/stores/useFocusedListStore";
 import { useSection } from "./Section";
 
@@ -106,14 +106,6 @@ const EditableList: FC<Props> = ({ items, setItems, itemId }) => {
             isBold: false,
             isItalic: false,
             isUnderline: false,
-        });
-    };
-
-    const updateDisplayStyle = () => {
-        useStylingStore.setState({
-            isBold: document.queryCommandState("bold"),
-            isItalic: document.queryCommandState("italic"),
-            isUnderline: document.queryCommandState("underline"),
         });
     };
 

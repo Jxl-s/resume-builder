@@ -1,0 +1,13 @@
+/* make all <a> with href have an underline */
+a[href] {
+  text-decoration: underline;
+}
+
+.new-page-line {
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background-color: black;
+    top: 842pt;
+    left: 0;
+}

@@ -13,31 +13,39 @@ import {
     FaFileImport,
     FaHandSparkles,
 } from "react-icons/fa6";
-import useStylingStore from "@/stores/useStylingStore";
+import useStylingStore, {
+    queryIsLink,
+    updateDisplayStyle,
+} from "@/stores/useStylingStore";
 import useFocusedListStore from "@/stores/useFocusedListStore";
 import Modal from "./Modal";
 import useResumeEditorStore from "@/stores/useResumeEditorStore";
 import { IExperienceItem, IProjectItem } from "@/types/items";
-import { removeTags } from "@/utils/sanitizeHtml";
+import { removeTags, validateLink, validateMailto } from "@/utils/sanitizeHtml";
 
 interface TooltipButtonProps {
     enabled: boolean;
     onClick: () => void;
+    aside?: () => React.ReactNode;
 }
 
 const TooltipButton: FC<PropsWithChildren<TooltipButtonProps>> = ({
     enabled,
     onClick,
     children,
+    aside,
 }) => {
     return (
-        <div
-            className={`rounded-lg ${enabled ? "bg-primary" : "bg-dark3"} p-2 hover:brightness-125 duration-300 cursor-pointer`}
-            onClick={onClick}
-            onMouseDown={(e) => e.preventDefault()}
-        >
-            {children}
-        </div>
+        <>
+            <div
+                className={`rounded-lg ${enabled ? "bg-primary" : "bg-dark3"} p-2 hover:brightness-125 duration-300 cursor-pointer`}
+                onClick={onClick}
+                onMouseDown={(e) => e.preventDefault()}
+            >
+                {children}
+            </div>
+            {aside?.()}
+        </>
     );
 };
 
@@ -66,13 +74,8 @@ const Tooltips: FC = () => {
         searchResults: [] as string[],
     });
 
-    const updateDisplayStyle = () => {
-        useStylingStore.setState({
-            isBold: document.queryCommandState("bold"),
-            isItalic: document.queryCommandState("italic"),
-            isUnderline: document.queryCommandState("underline"),
-        });
-    };
+    const [showHyperlinkMenu, setShowHyperlinkMenu] = useState(false);
+    const [hyperlinkUrl, setHyperlinkUrl] = useState("");
 
     const makeItalic = () => {
         document.execCommand("italic");
@@ -87,6 +90,40 @@ const Tooltips: FC = () => {
     const makeUnderline = () => {
         document.execCommand("underline");
         updateDisplayStyle();
+    };
+
+    const handleHyperlinkClick = () => {
+        if (queryIsLink()) {
+            const selection = window.getSelection();
+            if (!selection) return;
+
+            // Get parent element of the selection
+            const parentElement = selection.anchorNode?.parentElement;
+            if (!parentElement) return;
+
+            const parentNode = parentElement.parentNode;
+            if (!parentNode) return;
+
+            // Check if the parent element is a link
+            if (parentElement.tagName.toLowerCase() === "a") {
+                // Get the text content of the link
+                const linkText = parentElement.textContent ?? "";
+                const textNode = document.createTextNode(linkText);
+
+                // Replace the link with the text node
+                parentNode.replaceChild(textNode, parentElement);
+            }
+        } else {
+            // open hyperlink menu
+            setShowHyperlinkMenu((prev) => !prev);
+            // document.execCommand("createLink", false, "https://google.com");
+        }
+
+        updateDisplayStyle();
+    };
+
+    const makeHyperlink = (url: string) => {
+        document.execCommand("createLink", false, url);
     };
 
     const onAskAi = (sectionId: string, itemId: string) => {
@@ -309,11 +346,67 @@ const Tooltips: FC = () => {
                     </TooltipButton>
 
                     <div className="h-8 w-0.5 bg-white/25" />
-                    <TooltipButton enabled={isHyperlink} onClick={() => {}}>
-                        <FaLink className="w-4 h-4" />
-                    </TooltipButton>
-                    <div className="h-8 w-0.5 bg-white/25" />
+                    <div>
+                        <TooltipButton
+                            enabled={isHyperlink}
+                            onClick={handleHyperlinkClick}
+                            aside={() =>
+                                showHyperlinkMenu && (
+                                    <div
+                                        className="absolute top-full bg-dark3 text-white p-2 rounded-lg"
+                                        style={{
+                                            top: "calc(100% + 0.25rem)",
+                                        }}
+                                    >
+                                        <p className="text-xs text-secondary mb-1">
+                                            Select some text, enter a link,
+                                            click{" "}
+                                            <span className="text-primary font-semibold">
+                                                Add
+                                            </span>
+                                        </p>
+                                        <div className="flex gap-2">
+                                            <input
+                                                type="url"
+                                                className="bg-transparent text-sm"
+                                                placeholder="https://google.com"
+                                                value={hyperlinkUrl}
+                                                onChange={(e) =>
+                                                    setHyperlinkUrl(
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+                                            <Button
+                                                theme="primary"
+                                                className="text-sm font-semibold px-4 py-1"
+                                                disabled={
+                                                    !validateLink(
+                                                        hyperlinkUrl
+                                                    ) &&
+                                                    !validateMailto(
+                                                        hyperlinkUrl
+                                                    )
+                                                }
+                                                onMouseDown={(e) =>
+                                                    e.preventDefault()
+                                                }
+                                                onClick={() =>
+                                                    makeHyperlink(hyperlinkUrl)
+                                                }
+                                            >
+                                                Add
+                                            </Button>
+                                        </div>
+                                    </div>
+                                )
+                            }
+                        >
+                            <FaLink className="w-4 h-4" />
+                        </TooltipButton>
+                    </div>
 
+                    <div className="h-8 w-0.5 bg-white/25" />
                     <Button
                         theme="primaryOutline"
                         className="text-sm font-semibold px-4 flex gap-2 items-center"

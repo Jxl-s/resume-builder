@@ -14,6 +14,7 @@ import useDocSettingsStore from "@/stores/useDocSettingsStore";
 import Header from "@/components/items/Header";
 import useStylingStore from "@/stores/useStylingStore";
 import Modal from "@/components/Modal";
+import "./Editor.css";
 
 const Editor: FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
