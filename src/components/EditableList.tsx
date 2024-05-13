@@ -4,17 +4,21 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import "./EditableList.css";
 import { sanitizeHtml } from "@/utils/sanitizeHtml";
 import useStylingStore from "@/stores/useStylingStore";
+import useFocusedListStore from "@/stores/useFocusedListStore";
 
 interface Props {
     items: string[];
     setItems: (items: string[]) => void;
+    listId: string;
 }
 
-const EditableList: FC<Props> = ({ items, setItems }) => {
+const EditableList: FC<Props> = ({ items, setItems, listId }) => {
     const ulRef = useRef<HTMLUListElement>(null);
     const divRef = useRef<HTMLDivElement>(null);
+    // const aiRef = useRef<HTMLButtonElement>(null);
 
     const contentSize = useDocSettingsStore((state) => state.contentSize);
+    const setFocusedList = useFocusedListStore((state) => state.setFocusedList);
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.ctrlKey || e.metaKey) {
@@ -45,6 +49,8 @@ const EditableList: FC<Props> = ({ items, setItems }) => {
     };
 
     const handleFocus = (e: React.FocusEvent<HTMLUListElement>) => {
+        setFocusedList(listId);
+
         if (divRef.current) {
             divRef.current.classList.remove("ce-list-unfocused");
             divRef.current.classList.add("ce-list-focused");
@@ -71,6 +77,10 @@ const EditableList: FC<Props> = ({ items, setItems }) => {
     };
 
     const handleBlur = (e: React.FocusEvent<HTMLUListElement>) => {
+        if (!e.relatedTarget || e.relatedTarget.tagName !== "UL") {
+            setFocusedList("");
+        }
+
         if (divRef.current) {
             divRef.current.classList.add("ce-list-unfocused");
             divRef.current.classList.remove("ce-list-focused");
@@ -121,22 +131,27 @@ const EditableList: FC<Props> = ({ items, setItems }) => {
             ref={divRef}
             className={`ps-2.5 duration-300 hover:bg-primary/20 ce-list-unfocused`}
         >
-            <ul
-                ref={ulRef}
-                onKeyDown={handleKeyDown}
-                onFocus={handleFocus}
-                onBlur={handleBlur}
-                contentEditable={true}
-                spellCheck={false}
-                suppressContentEditableWarning={true}
-                className={`ce-list ps-2 py-0.5 list-disc list-outside border-none outline-none`}
-                style={{
-                    fontSize: `${contentSize}pt`,
-                }}
-                dangerouslySetInnerHTML={{
-                    __html: innerHtml,
-                }}
-            />
+            <div className="relative">
+                <ul
+                    id={listId}
+                    ref={ulRef}
+                    onKeyDown={handleKeyDown}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
+                    // onPointerOver={handlePointerOver}
+                    // onPointerLeave={handlePointerLeave}
+                    contentEditable={true}
+                    spellCheck={false}
+                    suppressContentEditableWarning={true}
+                    className={`ce-list ps-2 py-0.5 list-disc list-outside border-none outline-none`}
+                    style={{
+                        fontSize: `${contentSize}pt`,
+                    }}
+                    dangerouslySetInnerHTML={{
+                        __html: innerHtml,
+                    }}
+                />
+            </div>
         </div>
     );
 };

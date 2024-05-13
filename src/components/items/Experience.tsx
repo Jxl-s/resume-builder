@@ -69,7 +69,7 @@ const ExperienceItem: FC<ExperienceItemProps> = ({
                     content: dates,
                     setContent: setDates,
                     defaultStyle: ["bold"],
-                    placeholder: "Dates",
+                    placeholder: "Jan 2020 - Jan 2020",
                 }}
             />
             <EditableTwoSide
@@ -86,7 +86,11 @@ const ExperienceItem: FC<ExperienceItemProps> = ({
                     placeholder: "Location",
                 }}
             />
-            <EditableList items={description} setItems={setDescription} />
+            <EditableList
+                items={description}
+                setItems={setDescription}
+                listId={"list-" + itemId}
+            />
         </DeleteDrag>
     );
 };

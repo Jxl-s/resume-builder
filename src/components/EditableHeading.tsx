@@ -6,6 +6,12 @@ import useResumeEditorStore from "@/stores/useResumeEditorStore";
 import { useSection } from "./Section";
 import DeleteDrag from "./DeleteDrag";
 import Button from "./Button";
+import {
+    FaComputer,
+    FaFile,
+    FaGraduationCap,
+    FaSuitcase,
+} from "react-icons/fa6";
 
 interface Props {
     content: string;
@@ -31,10 +37,17 @@ const EditableHeading: FC<Props> = ({ content, setContent }) => {
 
     const onAddItem = () => {
         if (!addItemRef.current) return;
-        addItemRef.current.style.display = "flex";
+        if (addItemRef.current.style.display === "block") {
+            addItemRef.current.style.display = "none";
+            return;
+        } else {
+            addItemRef.current.style.display = "block";
+        }
     };
 
-    const onConfirmAddItem = (type: string) => {
+    const onConfirmAddItem = (
+        type: "Experience" | "Education" | "Project" | "Custom Text"
+    ) => {
         if (!addItemRef.current) return;
         addItemRef.current.style.display = "none";
 
@@ -81,13 +94,51 @@ const EditableHeading: FC<Props> = ({ content, setContent }) => {
                 onClick={onAddItem}
             />
             <div
-                className={`absolute bg-dark2 p-2 rounded-lg top-full gap-2 z-10`}
+                className={`absolute bg-dark2 p-2 rounded-lg z-10`}
                 style={{
                     display: "none",
+                    top: 'calc(100% + 0.25rem)',
                 }}
                 ref={addItemRef}
             >
-                <Button
+                <p className="text-white font-semibold text-center border-b border-white mb-2">
+                    Add a New Item
+                </p>
+                <ul className="text-primary text-sm font-semibold px-3 flex flex-col gap-y-1 gap-x-8">
+                    <li
+                        className="hover:brightness-150 duration-300 cursor-pointer flex items-center gap-2"
+                        onClick={() => onConfirmAddItem("Education")}
+                    >
+                        <FaGraduationCap className="w-4 h-4" /> Education
+                    </li>
+                    <li
+                        className="hover:brightness-150 duration-300 cursor-pointer flex items-center gap-2"
+                        onClick={() => onConfirmAddItem("Experience")}
+                    >
+                        <FaSuitcase className="w-4 h-4" /> Experience
+                    </li>
+                    <li
+                        className="hover:brightness-150 duration-300 cursor-pointer flex items-center gap-2"
+                        onClick={() => onConfirmAddItem("Project")}
+                    >
+                        <FaComputer className="w-4 h-4" />
+                        Project
+                    </li>
+                    <li
+                        className="hover:brightness-150 duration-300 cursor-pointer flex items-center gap-2"
+                        onClick={() => onConfirmAddItem("Custom Text")}
+                    >
+                        <FaFile className="w-4 h-4" />
+                        Custom Text
+                    </li>
+                </ul>
+                <p
+                    className="hover:brightness-150 duration-300 cursor-pointer font-semibold text-danger text-center text-sm mt-2"
+                    onClick={() => onCancelAddItem()}
+                >
+                    Cancel
+                </p>
+                {/* <Button
                     theme="primary"
                     className="text-sm font-semibold px-2 py-1"
                     onClick={() => onConfirmAddItem("Education")}
@@ -121,7 +172,7 @@ const EditableHeading: FC<Props> = ({ content, setContent }) => {
                     onClick={onCancelAddItem}
                 >
                     Cancel
-                </Button>
+                </Button> */}
             </div>
         </DeleteDrag>
     );

@@ -13,6 +13,7 @@ import EditableItem from "@/components/EditableItem";
 import useDocSettingsStore from "@/stores/useDocSettingsStore";
 import Header from "@/components/items/Header";
 import useStylingStore from "@/stores/useStylingStore";
+import Modal from "@/components/Modal";
 
 const Editor: FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);

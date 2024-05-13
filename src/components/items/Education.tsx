@@ -63,7 +63,7 @@ const EducationItem: FC<EducationItemProps> = ({
                     content: date,
                     setContent: setDate,
                     defaultStyle: ["bold"],
-                    placeholder: "Date",
+                    placeholder: "Jan 2020",
                 }}
             />
             <EditableTwoSide

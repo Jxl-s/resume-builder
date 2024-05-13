@@ -80,7 +80,7 @@ const ProjectItem: FC<ProjectItemProps> = ({
                     content: dates,
                     setContent: setDates,
                     defaultStyle: ["bold"],
-                    placeholder: "Date - Date",
+                    placeholder: "Jan 2020 - Jan 2020",
                 }}
             />
             {/* <EditableTwoSide
@@ -97,7 +97,11 @@ const ProjectItem: FC<ProjectItemProps> = ({
                     placeholder: "Demo Link",
                 }}
             /> */}
-            <EditableList items={description} setItems={setDescription} />
+            <EditableList
+                items={description}
+                setItems={setDescription}
+                listId={"list-" + itemId}
+            />
         </DeleteDrag>
     );
 };
