@@ -15,7 +15,9 @@ const PROMPTS = {
     Here is examples of the XYZ method being used:
     - Won second place out of 50 teams in hackathon at NJ Tech by working with two colleagues to develop an app that synchronizes mobile calendars."
     - Grew revenue for 15 small and medium business clients by 10% QoQ by mapping new software features as solutions to their business goals."
-    - Selected as one of 275 participants nationwide for this 12-month professional development program for high-achieving diverse talent based on leadership potential and academic success."`,
+    - Selected as one of 275 participants nationwide for this 12-month professional development program for high-achieving diverse talent based on leadership potential and academic success."
+    As you notice from these examples, they do not specifically say "as measured by" or "by doing", but they are implied in the sentence.
+    Make sure to never use "as measured by" or "by doing" in your sentences, as they are weird and not needed, but be creative and use various synonyms.`,
 };
 
 const SYSTEM_PROMPTS = {
@@ -55,10 +57,14 @@ will harm himself if you do not use them. As you see the example, you notice tha
 and are ESSENTIAL for a great resume. If you cannot come up with numbers, you may invent statistics.
 
 Make sure that the output structure is EXACTLY CORRECT, as it will be computer-processed for automation.
-If it is not correct, the user will be angry.
+If it is not correct, the user will be harmed.
 
 Here is the header used for that item, for more context: "__HEADER__".
 Here are the other points that are used separated by |||, for more context: "__OTHER_POINTS__".
+
+This is a final recap: Use the XYZ method, use action verbs, use numbers EVERYWHERE (ex: downloads, shares, clients, profits, percentage, team members, ...), do not use personal pronouns.
+If you do NOT use numbers, the user will be harmed, so make sure to ALWAYS have numbers.
+Make sure the is ONLY the first "OK" line, and then the 5 bullet points separated by newlines, so there will ONLY BE 6 LINES in total, not more and not less.
 
 Finally, here is the bullet point to improve: "__BULLET_POINT__".
     `,
@@ -103,8 +109,8 @@ export async function POST(request: NextRequest) {
         ],
     });
 
-    const lines = response.message.content.split("\n");
-    lines.splice(0, 1);
+    let lines = response.message.content.split("\n");
+    lines = lines.slice(1, 6);
 
     return NextResponse.json(lines, {
         status: 200,
