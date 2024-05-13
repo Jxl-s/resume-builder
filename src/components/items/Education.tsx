@@ -57,7 +57,7 @@ const EducationItem: FC<EducationItemProps> = ({
                     content: school,
                     setContent: setSchool,
                     defaultStyle: ["bold"],
-                    placeholder: "School",
+                    placeholder: "Harvard University",
                 }}
                 right={{
                     content: date,
@@ -71,13 +71,13 @@ const EducationItem: FC<EducationItemProps> = ({
                     content: degree,
                     setContent: setDegree,
                     defaultStyle: ["italic"],
-                    placeholder: "Degree",
+                    placeholder: "Bachelor's Degree in Y",
                 }}
                 right={{
                     content: location,
                     setContent: setLocation,
                     defaultStyle: ["italic"],
-                    placeholder: "Location",
+                    placeholder: "Toronto, ON",
                 }}
             />
         </DeleteDrag>

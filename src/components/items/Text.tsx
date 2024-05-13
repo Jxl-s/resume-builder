@@ -37,7 +37,7 @@ const TextItem: FC<Props> = ({ itemId, content, setContent }) => {
                 className="w-full inline-block"
                 Component={"div"}
                 allowMultiLine={true}
-                placeholder="Text here"
+                placeholder={`Skills: JavaScript, React, Node.js`}
             />
         </DeleteDrag>
     );

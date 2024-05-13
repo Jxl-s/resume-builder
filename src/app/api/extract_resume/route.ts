@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Ollama } from "ollama";
-import fetch from "node-fetch";
 import { promptMetaLlama } from "@/utils/server/prompt_llm";
 
 const SYSTEM_PROMPT = `
@@ -37,66 +35,9 @@ In summary: no newlines, only JSON, no extra spaces, and make sure it is valid.
 The following is the resume to extract data from: __RESUME_TEXT__
 `;
 
-const ollama = new Ollama({ host: process.env.OLLAMA_HOST });
 export async function POST(request: NextRequest) {
     const response = await promptMetaLlama({
-        message: SYSTEM_PROMPT.replace(
-            "__RESUME_TEXT__",
-            `Ewen Gueguen
-(438) 855-2381 • ewengue1432@gmail.com • 42 avenue des Frenes, Montreal, Quebec, H9R 0E7
-EDUCATION
-High School (2017-2022)
-● DES at College Saint-Louis, graduated in June 2022
-○ Received a prestigious Gold Medal Award for excelling and reaching the highest
-math grade of the year
-● International Baccalaureate (IB) Diploma at College Saint-Louis (2022)
-CEGEP (2022-2024)
-● DEC in Sciences at John Abbott College, graduating in June 2024
-○ Recognized in the Dean’s List of Fall 2022, Winter 2023 and Fall 2023
-○ R-Score of 34.3
-EXPERIENCE
-Data Analyst / Programmer
-NDT Technologies Incorporate (2023)
-● Systematically gathered and administered data obtained through a series of established
-procedures
-● Contributed to the rectification and engineering of specific pages on the corporate
-website
-Personal (2019-Present)
-● Developed a fully functional 2D game which was released to the public and played by
-many individuals
-● Coded educational purposed projects using Java and C#
-● Engineered a Bluetooth-motorized electrical vehicle using Arduino
-COMPETENCE
-Language
-● English – Advanced
-● French – Advanced
-● Mandarin – Intermediate
-● Cantonese – Intermediate
-● Spanish – Intermediate
-Skills
-● Microsoft Excel
-● Microsoft Word
-● Java
-● C#
-● C++
-Qualities
-● Great at working under pressure
-● Patient
-● Hardworking
-● Teamwork
-● Critical Thinking
-● Time Management
-Campus Involvement
-Club Work (2022-2024)
-● Founder and Manager of the John Abbott College Badminton Club for 2 years
-Volunteer Tutoring (2023-2024)
-● Received a Certificate of Achievement of Tutor Training from the Academic Success
-Centre
-● Received Student Involvement Recognition Certificate for Volunteer tutoring at collegial
-levels by volunteering over 60 hours
-● Involved with over 20 hours of one-on-one Math tutoring at the John Abbott Math
-Department`
-        ),
+        message: SYSTEM_PROMPT.replace("__RESUME_TEXT__", "ewen gueguen | 5141234222"),
     });
 
     return NextResponse.json(JSON.parse(response), {

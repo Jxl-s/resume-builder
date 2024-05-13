@@ -63,7 +63,7 @@ const ExperienceItem: FC<ExperienceItemProps> = ({
                     content: position,
                     setContent: setPosition,
                     defaultStyle: ["bold"],
-                    placeholder: "Position",
+                    placeholder: "Product Manager",
                 }}
                 right={{
                     content: dates,
@@ -77,13 +77,13 @@ const ExperienceItem: FC<ExperienceItemProps> = ({
                     content: company,
                     setContent: setCompany,
                     defaultStyle: ["italic"],
-                    placeholder: "Company",
+                    placeholder: "Amazon",
                 }}
                 right={{
                     content: location,
                     setContent: setLocation,
                     defaultStyle: ["italic"],
-                    placeholder: "Location",
+                    placeholder: "Toronto, ON",
                 }}
             />
             <EditableList

@@ -68,13 +68,13 @@ const ProjectItem: FC<ProjectItemProps> = ({
                     content: name,
                     setContent: setName,
                     defaultStyle: ["bold"],
-                    placeholder: "Name",
+                    placeholder: "AI ChatBot",
                 }}
                 afterLeft={{
                     content: technologies,
                     setContent: setTechnologies,
                     defaultStyle: ["italic"],
-                    placeholder: "Tech Stack #1, Tech Stack #2, ...",
+                    placeholder: "Python, TensorFlow, Keras, Flask, Docker, TailwindCSS",
                 }}
                 right={{
                     content: dates,
