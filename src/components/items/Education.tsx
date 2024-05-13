@@ -45,7 +45,7 @@ const EducationItem: FC<EducationItemProps> = ({
 
     return (
         <DeleteDrag
-            className="my-auto mb-2"
+            className="my-auto mb-1"
             onMoved={(dir) => moveItem(sectionId, itemId, dir)}
             style={{
                 fontSize: contentSize + "pt",

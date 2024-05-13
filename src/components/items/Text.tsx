@@ -24,7 +24,7 @@ const TextItem: FC<Props> = ({ itemId, content, setContent }) => {
 
     return (
         <DeleteDrag
-            className="mb-2 relative"
+            className="mb-1 relative"
             style={{
                 fontSize: contentSize + "pt",
             }}

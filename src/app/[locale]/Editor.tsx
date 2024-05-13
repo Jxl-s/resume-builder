@@ -17,7 +17,6 @@ import Modal from "@/components/Modal";
 import "./Editor.css";
 
 const Editor: FC = () => {
-    const containerRef = useRef<HTMLDivElement>(null);
     const sections = useResumeEditorStore((state) => state.sections);
 
     const setSections = useResumeEditorStore((state) => state.setSections);
@@ -38,70 +37,72 @@ const Editor: FC = () => {
     }, [sections]);
 
     return (
-        <div
-            className="bg-white text-black w-[595pt] rounded-lg"
-            ref={containerRef}
-            style={{
-                paddingTop: "10mm",
-                paddingBottom: "10mm",
-                paddingLeft: "10mm",
-                paddingRight: "10mm",
-            }}
-        >
-            <Header />
-            {sections.map((section, i) => (
-                <Section
-                    key={section.id}
-                    sectionId={section.id}
-                    title={section.title}
-                    setTitle={(t) => updateSection(section.id, t)}
-                >
-                    {section.items.map((item, i) => {
-                        if (item.type === "education") {
-                            return (
-                                <EducationItemWithId
-                                    key={item.id}
-                                    itemId={item.id}
-                                />
-                            );
-                        }
-
-                        if (item.type === "experience") {
-                            return (
-                                <ExperienceItemWithId
-                                    key={item.id}
-                                    itemId={item.id}
-                                />
-                            );
-                        }
-
-                        if (item.type === "text") {
-                            return (
-                                <TextItemWithId
-                                    key={item.id}
-                                    itemId={item.id}
-                                />
-                            );
-                        }
-
-                        if (item.type === "project") {
-                            return (
-                                <ProjectItemWithId
-                                    key={item.id}
-                                    itemId={item.id}
-                                />
-                            );
-                        }
-                    })}
-                </Section>
-            ))}
-            <Button
-                onClick={() => addSection("<b></b>")}
-                className="flex items-center justify-center gap-2 w-full text-sm print:hidden mt-4"
+        <div className="bg-white text-black w-[595pt] rounded-lg">
+            <div
+                style={{
+                    marginTop: "10mm",
+                    marginBottom: "10mm",
+                    marginLeft: "10mm",
+                    marginRight: "10mm",
+                }}
             >
-                <FaPlusCircle className="w-4 h-4" />
-                <span className="font-semibold py-2">Add a New Section</span>
-            </Button>
+                <Header />
+                {sections.map((section, i) => (
+                    <Section
+                        key={section.id}
+                        sectionId={section.id}
+                        title={section.title}
+                        setTitle={(t) => updateSection(section.id, t)}
+                    >
+                        {section.items.map((item, i) => {
+                            if (item.type === "education") {
+                                return (
+                                    <EducationItemWithId
+                                        key={item.id}
+                                        itemId={item.id}
+                                    />
+                                );
+                            }
+
+                            if (item.type === "experience") {
+                                return (
+                                    <ExperienceItemWithId
+                                        key={item.id}
+                                        itemId={item.id}
+                                    />
+                                );
+                            }
+
+                            if (item.type === "text") {
+                                return (
+                                    <TextItemWithId
+                                        key={item.id}
+                                        itemId={item.id}
+                                    />
+                                );
+                            }
+
+                            if (item.type === "project") {
+                                return (
+                                    <ProjectItemWithId
+                                        key={item.id}
+                                        itemId={item.id}
+                                    />
+                                );
+                            }
+                        })}
+                    </Section>
+                ))}
+                <Button
+                    onClick={() => addSection("<b></b>")}
+                    className="flex items-center justify-center gap-2 w-full text-sm print:hidden mt-4"
+                >
+                    <FaPlusCircle className="w-4 h-4" />
+                    <span className="font-semibold py-2">
+                        Add a New Section
+                    </span>
+                </Button>
+            </div>
         </div>
     );
 };

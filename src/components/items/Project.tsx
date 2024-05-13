@@ -56,7 +56,7 @@ const ProjectItem: FC<ProjectItemProps> = ({
 
     return (
         <DeleteDrag
-            className="mb-2 relative"
+            className="mb-1 relative"
             style={{
                 fontSize: contentSize + "pt",
             }}
@@ -83,7 +83,7 @@ const ProjectItem: FC<ProjectItemProps> = ({
                     placeholder: "Jan 2020 - Jan 2020",
                 }}
             />
-            {/* <EditableTwoSide
+            <EditableTwoSide
                 left={{
                     content: source ?? "No Source",
                     setContent: setSource,
@@ -92,11 +92,11 @@ const ProjectItem: FC<ProjectItemProps> = ({
                 }}
                 right={{
                     content: demo ?? "No Demo",
-                    setContent: setDates,
+                    setContent: setDemo,
                     defaultStyle: ["italic", "underline"],
                     placeholder: "Demo Link",
                 }}
-            /> */}
+            />
             <EditableList
                 items={description}
                 setItems={setDescription}

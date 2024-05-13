@@ -59,7 +59,7 @@ const Header: FC = () => {
                 content={contact}
                 setContent={setContact}
                 Component={"span"}
-                className="text-center block"
+                className="text-center block mb-2"
                 fontSize={contentSize}
             />
         </>
