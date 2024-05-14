@@ -8,6 +8,7 @@ import education from "./components/education";
 import experience from "./components/experience";
 import project from "./components/project";
 import text from "./components/text";
+import fonts from "../../fonts";
 
 async function htmlToPDF(htmlContent: string, outputPath: string) {
     // Launch a headless browser
@@ -41,6 +42,8 @@ export async function POST(request: NextRequest) {
 
     // Transform the PDF
     transformedPdf = transformedPdf.replace("__NAME__", body.header.name);
+    transformedPdf = transformedPdf.replace("__FONT_EXPORT__", fonts[body.font as keyof typeof fonts].export);
+    transformedPdf = transformedPdf.replace("__FONT_FAMILY__", fonts[body.font as keyof typeof fonts].display);
     transformedPdf = transformedPdf.replace(
         "__SUBTITLE__",
         body.header.subtitle

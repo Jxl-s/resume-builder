@@ -2,6 +2,7 @@ import { FC, useState } from "react";
 import Button from "../Button";
 import useResumeEditorStore from "@/stores/useResumeEditorStore";
 import { FaDownload } from "react-icons/fa";
+import useDocSettingsStore from "../../stores/useDocSettingsStore";
 
 const DownloadResume: FC = () => {
     const [isDownloading, setIsDownloading] = useState(false);
@@ -19,6 +20,7 @@ const DownloadResume: FC = () => {
             body: JSON.stringify({
                 header,
                 sections,
+                font: useDocSettingsStore.getState().font,
             }),
         });
 
