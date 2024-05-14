@@ -24,6 +24,7 @@ import { IExperienceItem, IProjectItem } from "@/types/items";
 import { removeTags, validateLink, validateMailto } from "@/utils/sanitizeHtml";
 import AskAi from "./ui/AskAi";
 import ImportResume from "./ui/ImportResume";
+import DownloadResume from "./ui/DownloadResume";
 
 interface TooltipButtonProps {
     enabled: boolean;
@@ -58,6 +59,9 @@ const Tooltips: FC = () => {
     const isHyperlink = useStylingStore((state) => state.isHyperlink);
     const [showHyperlinkMenu, setShowHyperlinkMenu] = useState(false);
     const [hyperlinkUrl, setHyperlinkUrl] = useState("");
+
+    const header = useResumeEditorStore((state) => state.header);
+    const sections = useResumeEditorStore((state) => state.sections);
 
     const makeItalic = () => {
         document.execCommand("italic");
@@ -203,16 +207,7 @@ const Tooltips: FC = () => {
                         Reset
                     </Button>
                     <ImportResume />
-                    <Button
-                        theme="primary"
-                        className="text-sm font-semibold px-5 flex items-center gap-2"
-                        onClick={() => {
-                            print();
-                        }}
-                    >
-                        <FaDownload className="w-4 h-4" />
-                        Download
-                    </Button>
+                    <DownloadResume />
                 </div>
             </div>
         </>

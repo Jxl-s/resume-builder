@@ -6,9 +6,12 @@ export const sanitizeHtml = (html: string, allowBr = false) => {
         allowedTags.splice(allowedTags.indexOf("br"), 1);
     }
 
-    return DOMPurify.sanitize(html, {
+    const cleanHtml = DOMPurify.sanitize(html, {
         ALLOWED_TAGS: allowedTags,
     }).trim();
+
+    const emptyTagsPattern = /<[^\/>][^>]*><\/[^>]+>/gim;
+    return cleanHtml.replace(emptyTagsPattern, "");
 };
 
 export const removeTags = (html: string) => {

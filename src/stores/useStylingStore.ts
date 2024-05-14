@@ -48,7 +48,6 @@ export const queryIsLink = () => {
                 container = container.parentNode;
             }
 
-            console.log(container);
             if (container.nodeName === "A") {
                 isLink = true;
             }
