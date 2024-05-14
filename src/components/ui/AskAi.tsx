@@ -207,7 +207,7 @@ const AskAi: FC = () => {
                                                     body: JSON.stringify({
                                                         point: removeTags(c),
                                                         header: aiHelper.context,
-                                                        job: "",
+                                                        job: useResumeEditorStore.getState().jobDescription,
                                                         otherPoints:
                                                             otherPoints,
                                                     }),

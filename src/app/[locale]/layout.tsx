@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { Inter, Source_Sans_3 } from "next/font/google";
+import { Open_Sans } from "next/font/google";
 import "../globals.css";
-// const inter = Inter({ subsets: ["latin"] });
-const inter = Source_Sans_3({ subsets: ["latin"] });
+import fonts from "../fonts";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -21,7 +20,7 @@ export default function LocaleLayout({
             <head>
                 <link rel="icon" href="/favicon.ico" sizes="any" />
             </head>
-            <body className={inter.className}>{children}</body>
+            <body className={fonts.openSans.className}>{children}</body>
         </html>
     );
 }

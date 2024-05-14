@@ -25,6 +25,9 @@ interface ResumeEditor {
 
     setHeader: (header: { name: string; subtitle: string; contact: string }) => void;
 
+    jobDescription: string;
+    setJobDescription: (jobDescription: string) => void;
+
     sections: {
         id: string;
         title: string;
@@ -59,6 +62,9 @@ const useResumeEditorStore = create<ResumeEditor>((set) => ({
     },
 
     setHeader: (header) => set({ header }),
+
+    jobDescription: "",
+    setJobDescription: (jobDescription) => set({ jobDescription }),
 
     sections: [],
 

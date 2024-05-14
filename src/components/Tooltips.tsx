@@ -1,22 +1,9 @@
 "use client";
 import { FC, PropsWithChildren, useEffect, useState } from "react";
-import {
-    FaBold,
-    FaDownload,
-    FaItalic,
-    FaLink,
-    FaUnderline,
-} from "react-icons/fa";
+import { FaBold, FaDownload, FaItalic, FaLink, FaUnderline } from "react-icons/fa";
 import Button from "./Button";
-import {
-    FaCircleExclamation,
-    FaFileImport,
-    FaHandSparkles,
-} from "react-icons/fa6";
-import useStylingStore, {
-    queryIsLink,
-    updateDisplayStyle,
-} from "@/stores/useStylingStore";
+import { FaCircleExclamation, FaFileImport, FaHandSparkles } from "react-icons/fa6";
+import useStylingStore, { queryIsLink, updateDisplayStyle } from "@/stores/useStylingStore";
 import useFocusedListStore from "@/stores/useFocusedListStore";
 import Modal from "./Modal";
 import useResumeEditorStore from "@/stores/useResumeEditorStore";
@@ -25,6 +12,8 @@ import { removeTags, validateLink, validateMailto } from "@/utils/sanitizeHtml";
 import AskAi from "./ui/AskAi";
 import ImportResume from "./ui/ImportResume";
 import DownloadResume from "./ui/DownloadResume";
+import fonts from "../app/fonts";
+import useDocSettingsStore from "../stores/useDocSettingsStore";
 
 interface TooltipButtonProps {
     enabled: boolean;
@@ -62,6 +51,8 @@ const Tooltips: FC = () => {
 
     const header = useResumeEditorStore((state) => state.header);
     const sections = useResumeEditorStore((state) => state.sections);
+    const font = useDocSettingsStore((state) => state.font);
+    const setFont = useDocSettingsStore((state) => state.setFont);
 
     const makeItalic = () => {
         document.execCommand("italic");
@@ -116,9 +107,17 @@ const Tooltips: FC = () => {
         <>
             <div className="flex justify-between w-full mb-2 print:hidden">
                 <div className="flex gap-2 relative">
-                    <div className="rounded-lg bg-dark3 text-sm px-4 flex items-center">
-                        Source Sans Pro
-                    </div>
+                    <select
+                        className="rounded-lg bg-dark3 text-sm px-4 flex items-center"
+                        value={font}
+                        onChange={(e) => setFont(e.target.value as keyof typeof fonts)}
+                    >
+                        {Object.entries(fonts).map(([name, font], i) => (
+                            <option key={i} value={name}>
+                                {font.display}
+                            </option>
+                        ))}
+                    </select>
                     <div className="h-8 w-0.5 bg-white/25" />
 
                     <TooltipButton enabled={isBold} onClick={makeBold}>
@@ -127,10 +126,7 @@ const Tooltips: FC = () => {
                     <TooltipButton enabled={isItalic} onClick={makeItalic}>
                         <FaItalic className="w-4 h-4" />
                     </TooltipButton>
-                    <TooltipButton
-                        enabled={isUnderline}
-                        onClick={makeUnderline}
-                    >
+                    <TooltipButton enabled={isUnderline} onClick={makeUnderline}>
                         <FaUnderline className="w-4 h-4" />
                     </TooltipButton>
 
@@ -148,11 +144,8 @@ const Tooltips: FC = () => {
                                         }}
                                     >
                                         <p className="text-xs text-secondary mb-1">
-                                            Select some text, enter a link,
-                                            click{" "}
-                                            <span className="text-primary font-semibold">
-                                                Add
-                                            </span>
+                                            Select some text, enter a link, click{" "}
+                                            <span className="text-primary font-semibold">Add</span>
                                         </p>
                                         <div className="flex gap-2">
                                             <input
@@ -160,29 +153,17 @@ const Tooltips: FC = () => {
                                                 className="bg-transparent text-sm"
                                                 placeholder="https://google.com"
                                                 value={hyperlinkUrl}
-                                                onChange={(e) =>
-                                                    setHyperlinkUrl(
-                                                        e.target.value
-                                                    )
-                                                }
+                                                onChange={(e) => setHyperlinkUrl(e.target.value)}
                                             />
                                             <Button
                                                 theme="primary"
                                                 className="text-sm font-semibold px-4 py-1"
                                                 disabled={
-                                                    !validateLink(
-                                                        hyperlinkUrl
-                                                    ) &&
-                                                    !validateMailto(
-                                                        hyperlinkUrl
-                                                    )
+                                                    !validateLink(hyperlinkUrl) &&
+                                                    !validateMailto(hyperlinkUrl)
                                                 }
-                                                onMouseDown={(e) =>
-                                                    e.preventDefault()
-                                                }
-                                                onClick={() =>
-                                                    makeHyperlink(hyperlinkUrl)
-                                                }
+                                                onMouseDown={(e) => e.preventDefault()}
+                                                onClick={() => makeHyperlink(hyperlinkUrl)}
                                             >
                                                 Add
                                             </Button>

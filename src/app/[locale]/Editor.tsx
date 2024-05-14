@@ -15,6 +15,7 @@ import Header from "@/components/items/Header";
 import useStylingStore from "@/stores/useStylingStore";
 import Modal from "@/components/Modal";
 import "./Editor.css";
+import fonts from "../fonts";
 
 const Editor: FC = () => {
     const sections = useResumeEditorStore((state) => state.sections);
@@ -22,6 +23,8 @@ const Editor: FC = () => {
     const setSections = useResumeEditorStore((state) => state.setSections);
     const addSection = useResumeEditorStore((state) => state.addSection);
     const updateSection = useResumeEditorStore((state) => state.updateSection);
+
+    const font = useDocSettingsStore((state) => state.font);
 
     useEffect(() => {
         const savedSections = window.localStorage.getItem("sections");
@@ -37,7 +40,7 @@ const Editor: FC = () => {
     }, [sections]);
 
     return (
-        <div className="bg-white text-black w-[612pt] rounded-lg">
+        <div className={`bg-white text-black w-[612pt] rounded-lg ${fonts[font].className}`}>
             <div
                 style={{
                     marginTop: "10mm",
@@ -56,39 +59,19 @@ const Editor: FC = () => {
                     >
                         {section.items.map((item, i) => {
                             if (item.type === "education") {
-                                return (
-                                    <EducationItemWithId
-                                        key={item.id}
-                                        itemId={item.id}
-                                    />
-                                );
+                                return <EducationItemWithId key={item.id} itemId={item.id} />;
                             }
 
                             if (item.type === "experience") {
-                                return (
-                                    <ExperienceItemWithId
-                                        key={item.id}
-                                        itemId={item.id}
-                                    />
-                                );
+                                return <ExperienceItemWithId key={item.id} itemId={item.id} />;
                             }
 
                             if (item.type === "text") {
-                                return (
-                                    <TextItemWithId
-                                        key={item.id}
-                                        itemId={item.id}
-                                    />
-                                );
+                                return <TextItemWithId key={item.id} itemId={item.id} />;
                             }
 
                             if (item.type === "project") {
-                                return (
-                                    <ProjectItemWithId
-                                        key={item.id}
-                                        itemId={item.id}
-                                    />
-                                );
+                                return <ProjectItemWithId key={item.id} itemId={item.id} />;
                             }
                         })}
                     </Section>
@@ -98,9 +81,7 @@ const Editor: FC = () => {
                     className="flex items-center justify-center gap-2 w-full text-sm print:hidden mt-4"
                 >
                     <FaPlusCircle className="w-4 h-4" />
-                    <span className="font-semibold py-2">
-                        Add a New Section
-                    </span>
+                    <span className="font-semibold py-2">Add a New Section</span>
                 </Button>
             </div>
         </div>
