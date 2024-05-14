@@ -1,11 +1,6 @@
 import { create } from "zustand";
 import { v4 as uuidv4 } from "uuid";
-import {
-    IEducationItem,
-    IExperienceItem,
-    IProjectItem,
-    ITextItem,
-} from "@/types/items";
+import { IEducationItem, IExperienceItem, IProjectItem, ITextItem } from "@/types/items";
 
 // type: education/experience, custom, project
 interface SectionTypes {
@@ -28,11 +23,7 @@ interface ResumeEditor {
         contact: string;
     };
 
-    setHeader: (header: {
-        name: string;
-        subtitle: string;
-        contact: string;
-    }) => void;
+    setHeader: (header: { name: string; subtitle: string; contact: string }) => void;
 
     sections: {
         id: string;
@@ -40,9 +31,7 @@ interface ResumeEditor {
         items: SectionItem[];
     }[];
 
-    setSections: (
-        sections: { id: string; title: string; items: SectionItem[] }[]
-    ) => void;
+    setSections: (sections: { id: string; title: string; items: SectionItem[] }[]) => void;
     addSection: (title: string) => void;
     removeSection: (sectionId: string) => void;
     updateSection: (sectionId: string, title: string) => void;
@@ -59,19 +48,14 @@ interface ResumeEditor {
     addProject: (sectionId: string) => void;
 
     moveSection: (sectionId: string, direction: "up" | "down") => void;
-    moveItem: (
-        sectionId: string,
-        itemId: string,
-        direction: "up" | "down"
-    ) => void;
+    moveItem: (sectionId: string, itemId: string, direction: "up" | "down") => void;
 }
 
 const useResumeEditorStore = create<ResumeEditor>((set) => ({
     header: {
-        name: "<b>John Doe</b>",
-        subtitle: "Software Engineer",
-        contact:
-            "123-456-7890 | email@email.com | linkedin.com/in/john-die | github.com/John-Doe | johndoe.com",
+        name: "",
+        subtitle: "",
+        contact: "",
     },
 
     setHeader: (header) => set({ header }),
@@ -157,9 +141,7 @@ const useResumeEditorStore = create<ResumeEditor>((set) => ({
             const section = copy.find((s) => s.id === sectionId);
 
             if (section) {
-                const itemIndex = section.items.findIndex(
-                    (i) => i.id === itemId
-                );
+                const itemIndex = section.items.findIndex((i) => i.id === itemId);
 
                 if (itemIndex !== -1) {
                     section.items[itemIndex] = item;
@@ -274,15 +256,13 @@ const useResumeEditorStore = create<ResumeEditor>((set) => ({
 
             // if it's already the first and up don't do anything. if it's already last and down, same.
             const isAlreadyFirst = sectionIndex === 0 && direction === "up";
-            const isAlreadyLast =
-                sectionIndex === copy.length - 1 && direction === "down";
+            const isAlreadyLast = sectionIndex === copy.length - 1 && direction === "down";
 
             if (isAlreadyFirst || isAlreadyLast) {
                 return { sections: copy };
             }
 
-            const targetIndex =
-                direction === "up" ? sectionIndex - 1 : sectionIndex + 1;
+            const targetIndex = direction === "up" ? sectionIndex - 1 : sectionIndex + 1;
             const temp = copy[sectionIndex];
             copy[sectionIndex] = copy[targetIndex];
             copy[targetIndex] = temp;
@@ -302,15 +282,13 @@ const useResumeEditorStore = create<ResumeEditor>((set) => ({
 
             // if it's already the first and up don't do anything. if it's already last and down, same.
             const isAlreadyFirst = itemIndex === 0 && direction === "up";
-            const isAlreadyLast =
-                itemIndex === section.items.length - 1 && direction === "down";
+            const isAlreadyLast = itemIndex === section.items.length - 1 && direction === "down";
 
             if (isAlreadyFirst || isAlreadyLast) {
                 return { sections: copy };
             }
 
-            const targetIndex =
-                direction === "up" ? itemIndex - 1 : itemIndex + 1;
+            const targetIndex = direction === "up" ? itemIndex - 1 : itemIndex + 1;
 
             const temp = section.items[itemIndex];
             section.items[itemIndex] = section.items[targetIndex];

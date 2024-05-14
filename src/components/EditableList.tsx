@@ -116,7 +116,7 @@ const EditableList: FC<Props> = ({ items, setItems, itemId }) => {
     if (innerHtml === "") {
         innerHtml = Array.from({ length: 3 })
             .map(
-                (_, i) => `<li class="opacity-25">Enter bullet point #${i}</li>`
+                (_, i) => `<li class="opacity-50">Enter bullet point #${i}</li>`
             )
             .join("");
     }

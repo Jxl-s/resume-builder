@@ -37,13 +37,22 @@ const ImportResume: FC = () => {
                         const formData = new FormData();
                         formData.append("file", file);
                         setIsUploading(true);
-                        const res = await fetch("/api/extract_resume", {
-                            method: "POST",
-                            body: file,
-                        });
 
-                        setIsUploading(false);
-                        const resJson = await res.json();
+                        let resJson;
+                        try {
+                            const res = await fetch("/api/extract_resume", {
+                                method: "POST",
+                                body: file,
+                            });
+    
+                            setIsUploading(false);
+                            resJson = await res.json();
+                        } catch (e) {
+                            console.error(e);
+                            setIsUploading(false);
+                            return;
+                        }
+                        
                         // Now set some fields
                         setHeader({
                             name: `<b>${resJson.name}</b>`,
@@ -77,6 +86,22 @@ const ImportResume: FC = () => {
                                         location: `<i>${exp.location}</i>`,
                                         position: `<b>${exp.job_title}</b>`,
                                         dates: `<b>${exp.start_date} - ${exp.end_date}</b>`,
+                                        description: exp.description,
+                                    },
+                                })),
+                            },
+                            {
+                                id: uuidv4(),
+                                title: "Projects",
+                                items: resJson.projects.map((exp: any) => ({
+                                    type: "project",
+                                    id: uuidv4(),
+                                    value: {
+                                        name: `<b>${exp.name}</b>`,
+                                        dates: `<b>${exp.start_date} - ${exp.end_date}</b>`,
+                                        technologies: "",
+                                        source: "",
+                                        demo: "",
                                         description: exp.description,
                                     },
                                 })),

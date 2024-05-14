@@ -1,22 +1,22 @@
 .editable-item.empty-content::before {
     content: attr(data-placeholder);
-    color: rgba(0, 0, 0, 0.25);
+    color: rgba(0, 0, 0, 0.5);
 }
 
 .editable-item.empty-content.ce-bold::before {
     content: attr(data-placeholder);
-    color: rgba(0, 0, 0, 0.25);
+    color: rgba(0, 0, 0, 0.5);
     font-weight: bold;
 }
 
 .editable-item.empty-content.ce-italic::before {
     content: attr(data-placeholder);
-    color: rgba(0, 0, 0, 0.25);
+    color: rgba(0, 0, 0, 0.5);
     font-style: italic;
 }
 
 .editable-item.empty-content.ce-underline::before {
     content: attr(data-placeholder);
-    color: rgba(0, 0, 0, 0.25);
+    color: rgba(0, 0, 0, 0.5);
     text-decoration: underline;
 }

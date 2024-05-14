@@ -39,6 +39,7 @@ const Header: FC = () => {
             <EditableItem
                 content={name}
                 setContent={setName}
+                placeholder="John Doe"
                 Component={"span"}
                 defaultStyle={["bold"]}
                 className="text-center block"
@@ -50,6 +51,7 @@ const Header: FC = () => {
             <EditableItem
                 content={subtitle}
                 setContent={setSubtitle}
+                placeholder="Product Manager"
                 Component={"span"}
                 defaultStyle={["italic"]}
                 className="text-center block"
@@ -58,6 +60,7 @@ const Header: FC = () => {
             <EditableItem
                 content={contact}
                 setContent={setContact}
+                placeholder="123-456-7890 | email@email.com | linkedin.com/in/john | github.com/John | john.com"
                 Component={"span"}
                 className="text-center block mb-2"
                 fontSize={contentSize}

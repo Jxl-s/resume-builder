@@ -199,13 +199,6 @@ const Tooltips: FC = () => {
                     <AskAi />
                 </div>
                 <div className="flex gap-2 relative">
-                    <Button
-                        theme="danger"
-                        className="text-sm font-semibold px-5 flex items-center gap-2"
-                    >
-                        <FaCircleExclamation className="w-4 h-4" />
-                        Reset
-                    </Button>
                     <ImportResume />
                     <DownloadResume />
                 </div>
