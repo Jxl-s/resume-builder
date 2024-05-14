@@ -12,7 +12,7 @@ async function htmlToPDF(htmlContent, outputPath) {
     await page.setContent(htmlContent);
 
     // Generate the PDF
-    await page.pdf({ path: outputPath, format: "A4" });
+    await page.pdf({ path: outputPath, format: "Letter", margin: 0 });
 
     // Close the browser
     await browser.close();
