@@ -40,7 +40,7 @@ const Editor: FC = () => {
     }, [sections]);
 
     return (
-        <div className={`bg-white text-black w-[612pt] rounded-lg ${fonts[font].className}`}>
+        <div className={`bg-white text-black w-[612pt] rounded-lg`} style={fonts[font].style}>
             <div
                 style={{
                     marginTop: "10mm",

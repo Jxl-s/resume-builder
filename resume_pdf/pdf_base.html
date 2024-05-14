@@ -11,6 +11,10 @@
         rel="stylesheet">
 
     <style>
+        html {
+            line-height: 1.5;
+        }
+
         body {
             font-family: "__FONT_FAMILY__";
         }
@@ -26,10 +30,12 @@
 
         .content {
             font-size: 10pt;
+            line-height: inherit;
         }
 
         .heading {
             font-size: 12pt;
+            line-height: inherit;
             border-bottom: 1px solid black;
             text-transform: uppercase;
             margin-bottom: 0.25rem;
@@ -78,7 +84,7 @@
 <body style="margin: 10mm" class="content">
     <div class="center title">__NAME__</div>
     <div class="center">__SUBTITLE__</div>
-    <div class="center">__CONTACT__</div>
+    <div class="center" style="margin-bottom: 0.5rem;">__CONTACT__</div>
     __SECTIONS__
 </body>
 

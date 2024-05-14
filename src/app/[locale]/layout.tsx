@@ -20,7 +20,7 @@ export default function LocaleLayout({
             <head>
                 <link rel="icon" href="/favicon.ico" sizes="any" />
             </head>
-            <body className={fonts.openSans.className}>{children}</body>
+            <body style={fonts.openSans.style}>{children}</body>
         </html>
     );
 }

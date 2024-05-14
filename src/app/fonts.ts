@@ -69,47 +69,47 @@ const fonts = {
     openSans: {
         display: "Open Sans",
         export: "Open+Sans:ital,wght@0,300..800;1,300..800",
-        className: openSans.className,
+        style: openSans.style,
     },
     lato: {
         display: "Lato",
         export: "Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900",
-        className: lato.className,
+        style: lato.style,
     },
     roboto: {
         display: "Roboto",
         export: "Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900",
-        className: roboto.className,
+        style: roboto.style,
     },
     sourceSans3: {
         display: "Source Sans 3",
         export: "Source+Sans+3:ital,wght@0,200..900;1,200..900",
-        className: sourceSans3.className,
+        style: sourceSans3.style,
     },
     notoSans: {
         display: "Noto Sans",
         export: "Noto+Sans:ital,wght@0,100..900;1,100..900",
-        className: notoSans.className,
+        style: notoSans.style,
     },
     ptSans: {
         display: "PT Sans",
         export: "PT+Sans:ital,wght@0,400;0,700;1,400;1,700",
-        className: ptSans.className,
+        style: ptSans.style,
     },
     ebGaramond: {
         display: "EB Garamond",
         export: "EB+Garamond:ital,wght@0,400..800;1,400..800",
-        className: ebGaramond.className,
+        style: ebGaramond.style,
     },
     merriweather: {
         display: "Merriweather",
         export: "Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900",
-        className: merriweather.className,
+        style: merriweather.style,
     },
     niramit: {
         display: "Niramit",
         export: "Niramit:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700",
-        className: niramit.className,
+        style: niramit.style,
     },
 };
 
