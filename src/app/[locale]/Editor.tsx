@@ -37,7 +37,7 @@ const Editor: FC = () => {
     }, [sections]);
 
     return (
-        <div className="bg-white text-black w-[595pt] rounded-lg">
+        <div className="bg-white text-black w-[612pt] rounded-lg">
             <div
                 style={{
                     marginTop: "10mm",
