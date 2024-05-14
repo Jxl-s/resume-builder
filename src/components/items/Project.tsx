@@ -87,13 +87,13 @@ const ProjectItem: FC<ProjectItemProps> = ({
                 left={{
                     content: source ?? "No Source",
                     setContent: setSource,
-                    defaultStyle: ["italic", "underline"],
+                    defaultStyle: [],
                     placeholder: "Source Link",
                 }}
                 right={{
                     content: demo ?? "No Demo",
                     setContent: setDemo,
-                    defaultStyle: ["italic", "underline"],
+                    defaultStyle: [],
                     placeholder: "Demo Link",
                 }}
             />

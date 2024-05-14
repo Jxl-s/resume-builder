@@ -1,6 +1,11 @@
 /* make all <a> with href have an underline */
 a[href] {
   text-decoration: underline;
+  cursor: pointer;
+}
+
+a[href]:hover {
+  background-color: rgb(255, 255, 137);
 }
 
 .new-page-line {

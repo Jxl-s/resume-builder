@@ -249,8 +249,8 @@ const useResumeEditorStore = create<ResumeEditor>((set) => ({
                 name: "<b></b>",
                 technologies: "<i></i>",
                 dates: "<i></i>",
-                source: "<i><u></u></i>",
-                demo: "<i><u></u></i>",
+                source: "<a href='https://google.com'>View Source</a>",
+                demo: "<a href='https://google.com'>View Demo</a>",
                 description: [],
             },
         };
