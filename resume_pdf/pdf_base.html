@@ -15,6 +15,10 @@
 
         body {
             font-family: "__FONT_FAMILY__";
+            margin-top: __MARGIN_TOP__pt;
+            margin-bottom: __MARGIN_BOTTOM__pt;
+            margin-left: __MARGIN_LEFT__pt;
+            margin-right: __MARGIN_RIGHT__pt;
         }
 
         .center {
@@ -22,17 +26,17 @@
         }
 
         .title {
-            font-size: 28pt;
-            line-height: 30pt;
+            font-size: __TITLE_SIZE__pt;
+            line-height: __TITLE_HEIGHT__pt;
         }
 
         .content {
-            font-size: 10pt;
+            font-size: __CONTENT_SIZE__pt;
             line-height: inherit;
         }
 
         .heading {
-            font-size: 12pt;
+            font-size: __HEADING_SIZE__pt;
             line-height: inherit;
             border-bottom: 1px solid black;
             text-transform: uppercase;
@@ -82,7 +86,7 @@
     </style>
 </head>
 
-<body style="margin: 10mm" class="content">
+<body class="content">
     <header>
         <div class="center title">__NAME__</div>
         <div class="center">__SUBTITLE__</div>

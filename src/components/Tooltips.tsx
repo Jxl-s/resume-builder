@@ -1,9 +1,22 @@
 "use client";
 import { FC, PropsWithChildren, useEffect, useState } from "react";
-import { FaBold, FaDownload, FaItalic, FaLink, FaUnderline } from "react-icons/fa";
+import {
+    FaBold,
+    FaDownload,
+    FaItalic,
+    FaLink,
+    FaUnderline,
+} from "react-icons/fa";
 import Button from "./Button";
-import { FaCircleExclamation, FaFileImport, FaHandSparkles } from "react-icons/fa6";
-import useStylingStore, { queryIsLink, updateDisplayStyle } from "@/stores/useStylingStore";
+import {
+    FaCircleExclamation,
+    FaFileImport,
+    FaHandSparkles,
+} from "react-icons/fa6";
+import useStylingStore, {
+    queryIsLink,
+    updateDisplayStyle,
+} from "@/stores/useStylingStore";
 import useFocusedListStore from "@/stores/useFocusedListStore";
 import Modal from "./Modal";
 import useResumeEditorStore from "@/stores/useResumeEditorStore";
@@ -14,6 +27,7 @@ import ImportResume from "./ui/ImportResume";
 import DownloadResume from "./ui/DownloadResume";
 import fonts from "../app/fonts";
 import useDocSettingsStore from "../stores/useDocSettingsStore";
+import { saveState } from "@/utils/storage";
 
 interface TooltipButtonProps {
     enabled: boolean;
@@ -111,8 +125,7 @@ const Tooltips: FC = () => {
                         className="rounded-lg bg-dark3 text-sm px-4 flex items-center"
                         value={font}
                         onChange={(e) => {
-                            setFont(e.target.value as keyof typeof fonts)
-                            localStorage.setItem("font", e.target.value);
+                            setFont(e.target.value as keyof typeof fonts);
                         }}
                     >
                         {Object.entries(fonts).map(([name, font], i) => (
@@ -129,7 +142,10 @@ const Tooltips: FC = () => {
                     <TooltipButton enabled={isItalic} onClick={makeItalic}>
                         <FaItalic className="w-4 h-4" />
                     </TooltipButton>
-                    <TooltipButton enabled={isUnderline} onClick={makeUnderline}>
+                    <TooltipButton
+                        enabled={isUnderline}
+                        onClick={makeUnderline}
+                    >
                         <FaUnderline className="w-4 h-4" />
                     </TooltipButton>
 
@@ -147,8 +163,11 @@ const Tooltips: FC = () => {
                                         }}
                                     >
                                         <p className="text-xs text-secondary mb-1">
-                                            Select some text, enter a link, click{" "}
-                                            <span className="text-primary font-semibold">Add</span>
+                                            Select some text, enter a link,
+                                            click{" "}
+                                            <span className="text-primary font-semibold">
+                                                Add
+                                            </span>
                                         </p>
                                         <div className="flex gap-2">
                                             <input
@@ -156,17 +175,29 @@ const Tooltips: FC = () => {
                                                 className="bg-transparent text-sm"
                                                 placeholder="https://google.com"
                                                 value={hyperlinkUrl}
-                                                onChange={(e) => setHyperlinkUrl(e.target.value)}
+                                                onChange={(e) =>
+                                                    setHyperlinkUrl(
+                                                        e.target.value
+                                                    )
+                                                }
                                             />
                                             <Button
                                                 theme="primary"
                                                 className="text-sm font-semibold px-4 py-1"
                                                 disabled={
-                                                    !validateLink(hyperlinkUrl) &&
-                                                    !validateMailto(hyperlinkUrl)
+                                                    !validateLink(
+                                                        hyperlinkUrl
+                                                    ) &&
+                                                    !validateMailto(
+                                                        hyperlinkUrl
+                                                    )
                                                 }
-                                                onMouseDown={(e) => e.preventDefault()}
-                                                onClick={() => makeHyperlink(hyperlinkUrl)}
+                                                onMouseDown={(e) =>
+                                                    e.preventDefault()
+                                                }
+                                                onClick={() =>
+                                                    makeHyperlink(hyperlinkUrl)
+                                                }
                                             >
                                                 Add
                                             </Button>

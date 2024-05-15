@@ -18,21 +18,9 @@ const Header: FC = () => {
     const { name, subtitle, contact } = header;
 
     const setName = (name: string) => setHeader({ ...header, name });
-    const setSubtitle = (subtitle: string) => setHeader({ ...header, subtitle });
+    const setSubtitle = (subtitle: string) =>
+        setHeader({ ...header, subtitle });
     const setContact = (contact: string) => setHeader({ ...header, contact });
-
-    useEffect(() => {
-        const savedHeader = window.localStorage.getItem("header");
-        if (savedHeader) {
-            setHeader(JSON.parse(savedHeader));
-        }
-    }, [setHeader]);
-
-    useEffect(() => {
-        if (didMount) {
-            window.localStorage.setItem("header", JSON.stringify(header));
-        }
-    }, [header, didMount]);
 
     return (
         <>
@@ -45,7 +33,7 @@ const Header: FC = () => {
                 className="text-center block"
                 fontSize={titleSize}
                 style={{
-                    lineHeight: (titleSize * 1.1) + "pt",
+                    lineHeight: titleSize * 1.1 + "pt",
                 }}
             />
             <EditableItem

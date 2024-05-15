@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect, useRef } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import useResumeEditorStore from "@/stores/useResumeEditorStore";
 import { EducationItemWithId } from "../../components/items/Education";
 import { ExperienceItemWithId } from "@/components/items/Experience";
@@ -16,46 +16,47 @@ import useStylingStore from "@/stores/useStylingStore";
 import Modal from "@/components/Modal";
 import "./Editor.css";
 import fonts from "../fonts";
+import { loadState, saveState } from "@/utils/storage";
 
 const Editor: FC = () => {
     const sections = useResumeEditorStore((state) => state.sections);
+    const header = useResumeEditorStore((state) => state.header);
 
-    const setSections = useResumeEditorStore((state) => state.setSections);
     const addSection = useResumeEditorStore((state) => state.addSection);
     const updateSection = useResumeEditorStore((state) => state.updateSection);
+    const [mounted, setMounted] = useState(false);
 
     const font = useDocSettingsStore((state) => state.font);
-    const setFont = useDocSettingsStore((state) => state.setFont);
+
+    // get margins
+    const marginTop = useDocSettingsStore((state) => state.marginTop);
+    const marginBottom = useDocSettingsStore((state) => state.marginBottom);
+    const marginLeft = useDocSettingsStore((state) => state.marginLeft);
+    const marginRight = useDocSettingsStore((state) => state.marginRight);
+
+    // Initial load
+    useEffect(() => {
+        loadState();
+        setMounted(true);
+    }, []);
 
     useEffect(() => {
-        const savedSections = window.localStorage.getItem("sections");
-        if (savedSections) {
-            setSections(JSON.parse(savedSections));
+        if (mounted) {
+            saveState();
         }
-    }, [setSections]);
-
-    useEffect(() => {
-        if (sections.length > 0) {
-            window.localStorage.setItem("sections", JSON.stringify(sections));
-        }
-    }, [sections]);
-
-    // TODO: validate this
-    useEffect(() => {
-        const savedFont = window.localStorage.getItem("font");
-        if (savedFont) {
-            setFont(savedFont as keyof typeof fonts);
-        }
-    }, [setFont]);
+    }, [sections, mounted, font, header]);
 
     return (
-        <div className={`bg-white text-black w-[612pt] rounded-lg`} style={fonts[font].style}>
+        <div
+            className={`bg-white text-black w-[612pt] rounded-lg`}
+            style={fonts[font].style}
+        >
             <div
                 style={{
-                    marginTop: "10mm",
-                    marginBottom: "10mm",
-                    marginLeft: "10mm",
-                    marginRight: "10mm",
+                    marginTop: marginTop,
+                    marginBottom: marginBottom,
+                    marginLeft: marginLeft,
+                    marginRight: marginRight,
                 }}
             >
                 <Header />
@@ -68,19 +69,42 @@ const Editor: FC = () => {
                     >
                         {section.items.map((item, i) => {
                             if (item.type === "education") {
-                                return <EducationItemWithId key={item.id} itemId={item.id} />;
+                                return (
+                                    <EducationItemWithId
+                                        key={item.id}
+                                        itemId={item.id}
+                                    />
+                                );
                             }
 
                             if (item.type === "experience") {
-                                return <ExperienceItemWithId key={item.id} itemId={item.id} />;
+                                return (
+                                    <ExperienceItemWithId
+                                        key={item.id}
+                                        itemId={item.id}
+                                    />
+                                );
                             }
 
                             if (item.type === "text") {
-                                return <TextItemWithId key={item.id} itemId={item.id} />;
+                                return (
+                                    <TextItemWithId
+                                        key={item.id}
+                                        itemId={item.id}
+                                    />
+                                );
                             }
 
-                            if (item.type === "project" || item.type === "project-nolinks") {
-                                return <ProjectItemWithId key={item.id} itemId={item.id} />;
+                            if (
+                                item.type === "project" ||
+                                item.type === "project-nolinks"
+                            ) {
+                                return (
+                                    <ProjectItemWithId
+                                        key={item.id}
+                                        itemId={item.id}
+                                    />
+                                );
                             }
                         })}
                     </Section>
@@ -90,7 +114,9 @@ const Editor: FC = () => {
                     className="flex items-center justify-center gap-2 w-full text-sm print:hidden mt-4"
                 >
                     <FaPlusCircle className="w-4 h-4" />
-                    <span className="font-semibold py-2">Add a New Section</span>
+                    <span className="font-semibold py-2">
+                        Add a New Section
+                    </span>
                 </Button>
             </div>
         </div>

@@ -9,8 +9,17 @@ const DownloadResume: FC = () => {
 
     const onDownload = async () => {
         setIsDownloading(true);
-        const header = useResumeEditorStore.getState().header;
-        const sections = useResumeEditorStore.getState().sections;
+        const { header, sections } = useResumeEditorStore.getState();
+        const {
+            font,
+            titleSize,
+            headingSize,
+            contentSize,
+            marginBottom,
+            marginLeft,
+            marginRight,
+            marginTop,
+        } = useDocSettingsStore.getState();
 
         const resume = await fetch("/api/export_pdf", {
             method: "POST",
@@ -20,7 +29,17 @@ const DownloadResume: FC = () => {
             body: JSON.stringify({
                 header,
                 sections,
-                font: useDocSettingsStore.getState().font,
+                settings: {
+                    font,
+                    titleSize,
+                    headingSize,
+                    contentSize,
+
+                    marginBottom,
+                    marginLeft,
+                    marginRight,
+                    marginTop,
+                },
             }),
         });
 

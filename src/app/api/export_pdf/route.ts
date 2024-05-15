@@ -34,23 +34,71 @@ export async function POST(request: NextRequest) {
     // Get the json body
     const body = await request.json();
 
-    const pdfBase = fs.readFileSync(path.join(process.cwd(), "resume_pdf/pdf_base.html"), "utf8");
+    const pdfBase = fs.readFileSync(
+        path.join(process.cwd(), "resume_pdf/pdf_base.html"),
+        "utf8"
+    );
 
     let transformedPdf = pdfBase;
 
     // Transform the PDF
     transformedPdf = transformedPdf.replace("__NAME__", body.header.name);
     transformedPdf = transformedPdf.replace(
+        "__SUBTITLE__",
+        body.header.subtitle
+    );
+    transformedPdf = transformedPdf.replace("__CONTACT__", body.header.contact);
+
+    // Settings
+    const font = body.settings.font as keyof typeof fonts;
+    transformedPdf = transformedPdf.replace(
         "__FONT_EXPORT__",
-        fonts[body.font as keyof typeof fonts].export
+        fonts[font].export
     );
     transformedPdf = transformedPdf.replace(
         "__FONT_FAMILY__",
-        fonts[body.font as keyof typeof fonts].display
+        fonts[font].display
     );
 
-    transformedPdf = transformedPdf.replace("__SUBTITLE__", body.header.subtitle);
-    transformedPdf = transformedPdf.replace("__CONTACT__", body.header.contact);
+    transformedPdf = transformedPdf.replace(
+        "__TITLE_SIZE__",
+        body.settings.titleSize
+    );
+
+    transformedPdf = transformedPdf.replace(
+        "__TITLE_HEIGHT__",
+        ((body.settings.titleSize as number) * 1.1).toString()
+    );
+
+    transformedPdf = transformedPdf.replace(
+        "__HEADING_SIZE__",
+        body.settings.headingSize
+    );
+
+    transformedPdf = transformedPdf.replace(
+        "__CONTENT_SIZE__",
+        body.settings.contentSize
+    );
+
+    transformedPdf = transformedPdf.replace(
+        "__MARGIN_TOP__",
+        body.settings.marginTop
+    );
+
+    transformedPdf = transformedPdf.replace(
+        "__MARGIN_BOTTOM__",
+        body.settings.marginBottom
+    );
+
+    transformedPdf = transformedPdf.replace(
+        "__MARGIN_LEFT__",
+        body.settings.marginLeft
+    );
+
+    transformedPdf = transformedPdf.replace(
+        "__MARGIN_RIGHT__",
+        body.settings.marginRight
+    );
 
     // Make the sections
     let sectionString = "";
@@ -86,7 +134,11 @@ export async function POST(request: NextRequest) {
     transformedPdf = transformedPdf.replace("__SECTIONS__", sectionString);
 
     const uuid = uuidv4();
-    const outputPath = path.join(process.cwd(), "resume_pdf/builds", `${uuid}.pdf`);
+    const outputPath = path.join(
+        process.cwd(),
+        "resume_pdf/builds",
+        `${uuid}.pdf`
+    );
 
     try {
         await htmlToPDF(transformedPdf, outputPath);
@@ -99,7 +151,10 @@ export async function POST(request: NextRequest) {
         const headers = new Headers();
 
         // remember to change the filename `test.pdf` to whatever you want the downloaded file called
-        headers.append("Content-Disposition", 'attachment; filename="resume.pdf"');
+        headers.append(
+            "Content-Disposition",
+            'attachment; filename="resume.pdf"'
+        );
 
         headers.append("Content-Type", "application/pdf");
         return new Response(buffer, { headers });
