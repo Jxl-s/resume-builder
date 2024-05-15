@@ -82,7 +82,8 @@ const improveBulletPrompt = (
         sendPoint = `
         Here is the job description, so that you can further tailor the points: "${job}".
         Remember it is important to tailor the points to the job description, so that the employer sees that you are a good fit for the job.
-        Make sure that if possible, the points should reflect on the job description.
+        Make sure that if possible, the points should reflect on the job description. For example, if the job mentions proficiency
+        in Python, make sure that it is implicitly said. For example, "Optimized existing Python code to reduce runtime by 70%." or such.
 
         ${sendPoint}`;
     }

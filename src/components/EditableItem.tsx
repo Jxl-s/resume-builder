@@ -97,7 +97,7 @@ const EditableItem: FC<EditableItemProps> = ({
     // Initial placeholder handling
     useEffect(() => {
         if (!itemRef.current) return;
-        if (content === "") {
+        if (itemRef.current.textContent?.trim() === "") {
             itemRef.current.classList.add("empty-content");
         } else {
             itemRef.current.classList.remove("empty-content");
