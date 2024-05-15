@@ -3,7 +3,9 @@ const fs = require("fs");
 
 async function htmlToPDF(htmlContent, outputPath) {
     // Launch a headless browser
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+        product: "firefox",
+    });
 
     // Open a new page
     const page = await browser.newPage();
