@@ -46,6 +46,30 @@ const Editor: FC = () => {
         }
     }, [sections, mounted, font, header]);
 
+    useEffect(() => {
+        // Handler for the resize event
+        function handleResize() {
+            const desiredWidth = 1500; // Set this to your desired width
+            const scaleFactor = window.innerWidth / desiredWidth;
+
+            // @ts-ignore zooming is not in the typescript definitions
+            if (scaleFactor < 1) {
+                // @ts-ignore Zooming to fit the content
+                document.body.style.zoom = scaleFactor;
+            }
+        }
+
+        // Resize it once
+        const dpr = window.devicePixelRatio;
+        window.addEventListener("resize", (e) => {
+            if (window.devicePixelRatio === dpr) {
+                handleResize();
+            }
+        });
+
+        handleResize();
+    }, []);
+
     return (
         <div
             className={`bg-white text-black w-[612pt] rounded-lg`}
