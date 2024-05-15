@@ -29,6 +29,8 @@ interface ProjectItemProps {
 
     description: string[];
     setDescription: (description: string[]) => void;
+
+    hideLinks?: boolean;
 }
 
 const ProjectItem: FC<ProjectItemProps> = ({
@@ -45,6 +47,7 @@ const ProjectItem: FC<ProjectItemProps> = ({
     setDates,
     description,
     setDescription,
+    hideLinks = false,
 }) => {
     const { sectionId } = useSection();
     const contentSize = useDocSettingsStore((state) => state.contentSize);
@@ -83,7 +86,7 @@ const ProjectItem: FC<ProjectItemProps> = ({
                     placeholder: "Jan 2020 - Jan 2020",
                 }}
             />
-            <EditableTwoSide
+            {!hideLinks && <EditableTwoSide
                 left={{
                     content: source ?? "No Source",
                     setContent: setSource,
@@ -96,7 +99,7 @@ const ProjectItem: FC<ProjectItemProps> = ({
                     defaultStyle: [],
                     placeholder: "Demo Link",
                 }}
-            />
+            />}
             <EditableList
                 items={description}
                 setItems={setDescription}
@@ -181,6 +184,7 @@ const ProjectItemWithId: FC<ExperienceItemWithIdProps> = ({ itemId }) => {
             setDates={setDates}
             description={description}
             setDescription={setDescription}
+            hideLinks={projectItem.type === "project-nolinks"}
         />
     );
 };

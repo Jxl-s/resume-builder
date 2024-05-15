@@ -70,7 +70,7 @@ const Editor: FC = () => {
                                 return <TextItemWithId key={item.id} itemId={item.id} />;
                             }
 
-                            if (item.type === "project") {
+                            if (item.type === "project" || item.type === "project-nolinks") {
                                 return <ProjectItemWithId key={item.id} itemId={item.id} />;
                             }
                         })}

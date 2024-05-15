@@ -12,6 +12,7 @@ import {
     FaCircleExclamation,
 } from "react-icons/fa6";
 import LeftBar from "./LeftBar";
+import { Suspense } from "react";
 
 export default function Home() {
     const t = useTranslations("Index");

@@ -7,9 +7,18 @@ interface Props {
     source: string;
     demo: string;
     description: string[];
+    hideLinks?: boolean;
 }
 
-const project = ({ name, technologies, dates, source, demo, description }: Props) => `
+const project = ({
+    name,
+    technologies,
+    dates,
+    source,
+    demo,
+    description,
+    hideLinks = false,
+}: Props) => `
 <article>
     <div class="twoSide">
         <div class="project-left">
@@ -19,10 +28,14 @@ const project = ({ name, technologies, dates, source, demo, description }: Props
         </div>
         <div>${sanitizeHtml(dates)}</div>
     </div>
-    <div class="twoSide">
-        <div>${sanitizeHtml(source ?? "<i>Source Unavailable</i>")}</div>
-        <div>${sanitizeHtml(demo ?? "<i>Source Unavailable</i>")}</div>
-    </div>
+    ${
+        !hideLinks
+            ? `<div class="twoSide">
+            <div>${sanitizeHtml(source ?? "<i>Source Unavailable</i>")}</div>
+            <div>${sanitizeHtml(demo ?? "<i>Source Unavailable</i>")}</div>
+        </div>`
+            : ""
+    }
     <div style="padding-left: 0.625rem">
         <ul>
             ${description.map((desc) => `<li>${sanitizeHtml(desc)}</li>`).join("")}

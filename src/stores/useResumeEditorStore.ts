@@ -8,6 +8,7 @@ interface SectionTypes {
     education: IEducationItem;
     text: ITextItem;
     project: IProjectItem;
+    "project-nolinks": Omit<IProjectItem, "source" | "demo">;
 }
 
 interface SectionItem {
@@ -49,6 +50,7 @@ interface ResumeEditor {
     addExperience: (sectionId: string) => void;
     addText: (sectionId: string) => void;
     addProject: (sectionId: string) => void;
+    addProjectNoLinks: (sectionId: string) => void;
 
     moveSection: (sectionId: string, direction: "up" | "down") => void;
     moveItem: (sectionId: string, itemId: string, direction: "up" | "down") => void;
@@ -239,6 +241,30 @@ const useResumeEditorStore = create<ResumeEditor>((set) => ({
                 dates: "<i></i>",
                 source: "<a href='https://google.com'>View Source</a>",
                 demo: "<a href='https://google.com'>View Demo</a>",
+                description: [],
+            },
+        };
+
+        set((state) => {
+            const copy = [...state.sections];
+            const section = copy.find((s) => s.id === sectionId);
+
+            if (section) {
+                section.items.push(item);
+            }
+
+            return { sections: copy };
+        });
+    },
+
+    addProjectNoLinks: (sectionId: string) => {
+        const item: SectionItem = {
+            type: "project-nolinks",
+            id: uuidv4(),
+            value: {
+                name: "<b></b>",
+                technologies: "<i></i>",
+                dates: "<i></i>",
                 description: [],
             },
         };

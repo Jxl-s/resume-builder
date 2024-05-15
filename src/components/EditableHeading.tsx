@@ -26,6 +26,7 @@ const EditableHeading: FC<Props> = ({ content, setContent }) => {
     const addEducation = useResumeEditorStore((state) => state.addEducation);
     const addText = useResumeEditorStore((state) => state.addText);
     const addProject = useResumeEditorStore((state) => state.addProject);
+    const addProjectNoLinks = useResumeEditorStore((state) => state.addProjectNoLinks);
 
     const moveSection = useResumeEditorStore((state) => state.moveSection);
 
@@ -46,7 +47,7 @@ const EditableHeading: FC<Props> = ({ content, setContent }) => {
     };
 
     const onConfirmAddItem = (
-        type: "Experience" | "Education" | "Project" | "Custom Text"
+        type: "Experience" | "Education" | "Project" | "Project (no links)" | "Custom Text"
     ) => {
         if (!addItemRef.current) return;
         addItemRef.current.style.display = "none";
@@ -60,6 +61,9 @@ const EditableHeading: FC<Props> = ({ content, setContent }) => {
                 break;
             case "Project":
                 addProject(sectionId);
+                break;
+            case "Project (no links)":
+                addProjectNoLinks(sectionId);
                 break;
             case "Custom Text":
                 addText(sectionId);
@@ -123,6 +127,13 @@ const EditableHeading: FC<Props> = ({ content, setContent }) => {
                     >
                         <FaComputer className="w-4 h-4" />
                         Project
+                    </li>
+                    <li
+                        className="hover:brightness-150 duration-300 cursor-pointer flex items-center gap-2"
+                        onClick={() => onConfirmAddItem("Project (no links)")}
+                    >
+                        <FaComputer className="w-4 h-4" />
+                        Project (no links)
                     </li>
                     <li
                         className="hover:brightness-150 duration-300 cursor-pointer flex items-center gap-2"

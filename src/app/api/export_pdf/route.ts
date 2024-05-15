@@ -48,8 +48,8 @@ export async function POST(request: NextRequest) {
         "__FONT_FAMILY__",
         fonts[body.font as keyof typeof fonts].display
     );
-    transformedPdf = transformedPdf.replace("__SUBTITLE__", body.header.subtitle);
 
+    transformedPdf = transformedPdf.replace("__SUBTITLE__", body.header.subtitle);
     transformedPdf = transformedPdf.replace("__CONTACT__", body.header.contact);
 
     // Make the sections
@@ -69,6 +69,10 @@ export async function POST(request: NextRequest) {
 
             if (item.type === "project") {
                 sectionString += project(item.value);
+            }
+
+            if (item.type === "project-nolinks") {
+                sectionString += project({ ...item.value, hideLinks: true });
             }
 
             if (item.type === "text") {
