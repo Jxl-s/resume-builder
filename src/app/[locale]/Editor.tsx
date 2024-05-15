@@ -25,6 +25,7 @@ const Editor: FC = () => {
     const updateSection = useResumeEditorStore((state) => state.updateSection);
 
     const font = useDocSettingsStore((state) => state.font);
+    const setFont = useDocSettingsStore((state) => state.setFont);
 
     useEffect(() => {
         const savedSections = window.localStorage.getItem("sections");
@@ -38,6 +39,14 @@ const Editor: FC = () => {
             window.localStorage.setItem("sections", JSON.stringify(sections));
         }
     }, [sections]);
+
+    // TODO: validate this
+    useEffect(() => {
+        const savedFont = window.localStorage.getItem("font");
+        if (savedFont) {
+            setFont(savedFont as keyof typeof fonts);
+        }
+    }, [setFont]);
 
     return (
         <div className={`bg-white text-black w-[612pt] rounded-lg`} style={fonts[font].style}>

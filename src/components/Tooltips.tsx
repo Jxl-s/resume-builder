@@ -110,7 +110,10 @@ const Tooltips: FC = () => {
                     <select
                         className="rounded-lg bg-dark3 text-sm px-4 flex items-center"
                         value={font}
-                        onChange={(e) => setFont(e.target.value as keyof typeof fonts)}
+                        onChange={(e) => {
+                            setFont(e.target.value as keyof typeof fonts)
+                            localStorage.setItem("font", e.target.value);
+                        }}
                     >
                         {Object.entries(fonts).map(([name, font], i) => (
                             <option key={i} value={name}>
