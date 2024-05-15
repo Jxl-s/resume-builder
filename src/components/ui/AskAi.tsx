@@ -68,7 +68,7 @@ const AskAi: FC = () => {
             });
         }
 
-        if (item.type === "project") {
+        if (item.type === "project" || item.type === "project-nolinks") {
             const project = item.value as IProjectItem;
 
             const context = [
@@ -76,9 +76,11 @@ const AskAi: FC = () => {
                 project.name,
                 project.dates,
                 project.technologies,
-                project.source,
-                project.demo,
-            ].join(",");
+                project.source ?? "",
+                project.demo ?? "",
+            ]
+                .filter((a) => a !== "")
+                .join(",");
 
             setAiHelper({
                 sectionId: sectionId,
