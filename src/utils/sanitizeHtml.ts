@@ -8,6 +8,7 @@ export const sanitizeHtml = (html: string, allowBr = false) => {
 
     const cleanHtml = DOMPurify.sanitize(html, {
         ALLOWED_TAGS: allowedTags,
+        ALLOWED_ATTR: ["href"],
     }).trim();
 
     const emptyTagsPattern = /<[^\/>][^>]*><\/[^>]+>/gim;

@@ -44,7 +44,16 @@ const Editor: FC = () => {
         if (mounted) {
             saveState();
         }
-    }, [sections, mounted, font, header]);
+    }, [
+        sections,
+        mounted,
+        font,
+        header,
+        marginTop,
+        marginBottom,
+        marginLeft,
+        marginRight,
+    ]);
 
     useEffect(() => {
         // Handler for the resize event
@@ -52,7 +61,6 @@ const Editor: FC = () => {
             const desiredWidth = 1500; // Set this to your desired width
             const scaleFactor = window.innerWidth / desiredWidth;
 
-            // @ts-ignore zooming is not in the typescript definitions
             if (scaleFactor < 1) {
                 // @ts-ignore Zooming to fit the content
                 document.body.style.zoom = scaleFactor;

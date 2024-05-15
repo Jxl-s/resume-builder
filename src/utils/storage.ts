@@ -18,6 +18,8 @@ export const saveState = () => {
         marginTop,
     } = useDocSettingsStore.getState();
 
+    console.log(marginBottom);
+
     // Write to local storage
     localStorage.setItem(
         STORAGE_KEY,

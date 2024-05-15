@@ -44,7 +44,9 @@ const TooltipButton: FC<PropsWithChildren<TooltipButtonProps>> = ({
     return (
         <>
             <div
-                className={`rounded-lg ${enabled ? "bg-primary" : "bg-dark3"} p-2 hover:brightness-125 duration-300 cursor-pointer`}
+                className={`rounded-lg ${
+                    enabled ? "bg-primary" : "bg-dark3"
+                } p-2 hover:brightness-125 duration-300 cursor-pointer`}
                 onClick={onClick}
                 onMouseDown={(e) => e.preventDefault()}
             >
