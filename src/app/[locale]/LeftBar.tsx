@@ -72,11 +72,23 @@ const LeftBar: FC = () => {
     const setSContent = (size: number) =>
         setContentSize(convertFromUnit(size, multiplierUnit));
 
+    const spacing = useDocSettingsStore((state) => state.spacing);
+    const setSpacing = useDocSettingsStore((state) => state.setSpacing);
+
     return (
         <section className="w-full">
             <article className="bg-dark1 rounded-lg p-2 w-full print:hidden mb-2 block">
+                <div className="grid grid-cols-2 gap-2 justify-between items-center mb-2">
+                    <span className="ms-2">Spacing</span>
+                    <input
+                        className="bg-dark2 w-full rounded-lg py-2 px-4"
+                        type="number"
+                        value={spacing}
+                        onChange={(e) => setSpacing(Number(e.target.value))}
+                    />
+                </div>
                 <div className="grid grid-cols-2 gap-2 justify-between items-center">
-                    <span className="ms-2">Measurement Unit</span>
+                    <span className="ms-2">Unit</span>
                     <div className="bg-dark2 rounded-lg py-2 px-4 flex justify-between gap-2">
                         <select
                             className="bg-inherit w-full"

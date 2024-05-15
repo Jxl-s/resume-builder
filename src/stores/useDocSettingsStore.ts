@@ -5,6 +5,9 @@ interface DocSettings {
     font: keyof typeof fonts;
     setFont: (font: keyof typeof fonts) => void;
 
+    spacing: number;
+    setSpacing: (size: number) => void;
+
     titleSize: number;
     setTitleSize: (size: number) => void;
     headingSize: number;
@@ -26,14 +29,17 @@ interface DocSettings {
 }
 
 const useDocSettingsStore = create<DocSettings>((set) => ({
-    font: "openSans",
+    font: "sourceSans3",
     setFont: (font) => set({ font }),
+
+    spacing: 1.5,
+    setSpacing: (size) => set({ spacing: size }),
 
     titleSize: 28,
     setTitleSize: (size) => set({ titleSize: size }),
     headingSize: 12,
     setHeadingSize: (size) => set({ headingSize: size }),
-    contentSize: 10,
+    contentSize: 11,
     setContentSize: (size) => set({ contentSize: size }),
 
     marginTop: 28,

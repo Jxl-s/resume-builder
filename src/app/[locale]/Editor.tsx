@@ -28,11 +28,20 @@ const Editor: FC = () => {
 
     const font = useDocSettingsStore((state) => state.font);
 
+    // spacing
+    const spacing = useDocSettingsStore((state) => state.spacing);
+    const multiplierUnit = useDocSettingsStore((state) => state.multiplierUnit);
+
     // get margins
     const marginTop = useDocSettingsStore((state) => state.marginTop);
     const marginBottom = useDocSettingsStore((state) => state.marginBottom);
     const marginLeft = useDocSettingsStore((state) => state.marginLeft);
     const marginRight = useDocSettingsStore((state) => state.marginRight);
+
+    // get sizes
+    const titleSize = useDocSettingsStore((state) => state.titleSize);
+    const headingSize = useDocSettingsStore((state) => state.headingSize);
+    const contentSize = useDocSettingsStore((state) => state.contentSize);
 
     // Initial load
     useEffect(() => {
@@ -47,12 +56,21 @@ const Editor: FC = () => {
     }, [
         sections,
         mounted,
+
         font,
+        spacing,
+
         header,
+        multiplierUnit,
+
         marginTop,
         marginBottom,
         marginLeft,
         marginRight,
+
+        titleSize,
+        headingSize,
+        contentSize,
     ]);
 
     useEffect(() => {
@@ -81,7 +99,10 @@ const Editor: FC = () => {
     return (
         <div
             className={`bg-white text-black w-[612pt] rounded-lg`}
-            style={fonts[font].style}
+            style={{
+                ...fonts[font].style,
+                lineHeight: spacing,
+            }}
         >
             <div
                 style={{

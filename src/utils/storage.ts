@@ -16,6 +16,8 @@ export const saveState = () => {
         marginLeft,
         marginRight,
         marginTop,
+        spacing,
+        multiplierUnit,
     } = useDocSettingsStore.getState();
 
     console.log(marginBottom);
@@ -36,6 +38,9 @@ export const saveState = () => {
                 marginLeft,
                 marginRight,
                 marginTop,
+
+                spacing,
+                multiplierUnit,
             },
         })
     );
