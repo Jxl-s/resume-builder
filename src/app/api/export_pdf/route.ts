@@ -9,6 +9,7 @@ import experience from "./components/experience";
 import project from "./components/project";
 import text from "./components/text";
 import fonts from "../../fonts";
+import heading from "./components/heading";
 
 async function htmlToPDF(htmlContent: string, outputPath: string) {
     // Launch a headless browser
@@ -33,21 +34,21 @@ export async function POST(request: NextRequest) {
     // Get the json body
     const body = await request.json();
 
-    const pdfBase = fs.readFileSync(
-        path.join(process.cwd(), "resume_pdf/pdf_base.html"),
-        "utf8"
-    );
+    const pdfBase = fs.readFileSync(path.join(process.cwd(), "resume_pdf/pdf_base.html"), "utf8");
 
     let transformedPdf = pdfBase;
 
     // Transform the PDF
     transformedPdf = transformedPdf.replace("__NAME__", body.header.name);
-    transformedPdf = transformedPdf.replace("__FONT_EXPORT__", fonts[body.font as keyof typeof fonts].export);
-    transformedPdf = transformedPdf.replace("__FONT_FAMILY__", fonts[body.font as keyof typeof fonts].display);
     transformedPdf = transformedPdf.replace(
-        "__SUBTITLE__",
-        body.header.subtitle
+        "__FONT_EXPORT__",
+        fonts[body.font as keyof typeof fonts].export
     );
+    transformedPdf = transformedPdf.replace(
+        "__FONT_FAMILY__",
+        fonts[body.font as keyof typeof fonts].display
+    );
+    transformedPdf = transformedPdf.replace("__SUBTITLE__", body.header.subtitle);
 
     transformedPdf = transformedPdf.replace("__CONTACT__", body.header.contact);
 
@@ -55,7 +56,7 @@ export async function POST(request: NextRequest) {
     let sectionString = "";
     for (const section of body.sections) {
         sectionString += `<section>`;
-        sectionString += `<div class="heading">${section.title}</div>`;
+        sectionString += heading(section.title);
         // Add the articles
         for (const item of section.items) {
             if (item.type === "education") {
@@ -81,11 +82,7 @@ export async function POST(request: NextRequest) {
     transformedPdf = transformedPdf.replace("__SECTIONS__", sectionString);
 
     const uuid = uuidv4();
-    const outputPath = path.join(
-        process.cwd(),
-        "resume_pdf/builds",
-        `${uuid}.pdf`
-    );
+    const outputPath = path.join(process.cwd(), "resume_pdf/builds", `${uuid}.pdf`);
 
     try {
         await htmlToPDF(transformedPdf, outputPath);
@@ -98,10 +95,7 @@ export async function POST(request: NextRequest) {
         const headers = new Headers();
 
         // remember to change the filename `test.pdf` to whatever you want the downloaded file called
-        headers.append(
-            "Content-Disposition",
-            'attachment; filename="resume.pdf"'
-        );
+        headers.append("Content-Disposition", 'attachment; filename="resume.pdf"');
 
         headers.append("Content-Type", "application/pdf");
         return new Response(buffer, { headers });

@@ -6,9 +6,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=__FONT_EXPORT__&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=__FONT_EXPORT__&display=swap" rel="stylesheet">
 
     <style>
         html {
@@ -38,7 +36,10 @@
             line-height: inherit;
             border-bottom: 1px solid black;
             text-transform: uppercase;
+            margin-block: 0;
+            margin-inline: 0;
             margin-bottom: 0.25rem;
+            font-weight: normal;
         }
 
         .twoSide {
@@ -82,10 +83,14 @@
 </head>
 
 <body style="margin: 10mm" class="content">
-    <div class="center title">__NAME__</div>
-    <div class="center">__SUBTITLE__</div>
-    <div class="center" style="margin-bottom: 0.5rem;">__CONTACT__</div>
-    __SECTIONS__
+    <header>
+        <div class="center title">__NAME__</div>
+        <div class="center">__SUBTITLE__</div>
+        <div class="center" style="margin-bottom: 0.5rem;">__CONTACT__</div>
+    </header>
+    <main>
+        __SECTIONS__
+    </main>
 </body>
 
 </html>

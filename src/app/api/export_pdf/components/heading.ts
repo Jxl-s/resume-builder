@@ -1,5 +1,5 @@
 import { sanitizeHtml } from "@/utils/sanitizeHtml";
 
 const heading = (text: string) =>
-    `<div class="heading">${sanitizeHtml(text)}</div>`;
+    `<h1 class="heading">${sanitizeHtml(text)}</h1>`;
 export default heading;
