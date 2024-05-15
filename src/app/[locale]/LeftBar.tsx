@@ -2,7 +2,10 @@
 
 import { FC } from "react";
 import useResumeEditorStore from "../../stores/useResumeEditorStore";
-import useDocSettingsStore from "@/stores/useDocSettingsStore";
+import useDocSettingsStore, {
+    convertFromUnit,
+    convertToUnit,
+} from "@/stores/useDocSettingsStore";
 
 const LeftBar: FC = () => {
     const [jobDescription, setJobDescription] = useResumeEditorStore(
@@ -46,8 +49,52 @@ const LeftBar: FC = () => {
         state.setContentSize,
     ]);
 
+    // Unit
+    const [multiplierUnit, setMultiplierUnit] = useDocSettingsStore((state) => [
+        state.multiplierUnit,
+        state.setMultiplierUnit,
+    ]);
+
+    // New functions that make use of the unit converter
+    const setMTop = (size: number) =>
+        setMarginTop(convertFromUnit(size, multiplierUnit));
+    const setMBottom = (size: number) =>
+        setMarginBottom(convertFromUnit(size, multiplierUnit));
+    const setMLeft = (size: number) =>
+        setMarginLeft(convertFromUnit(size, multiplierUnit));
+    const setMRight = (size: number) =>
+        setMarginRight(convertFromUnit(size, multiplierUnit));
+
+    const setSTitle = (size: number) =>
+        setTitleSize(convertFromUnit(size, multiplierUnit));
+    const setSHeading = (size: number) =>
+        setHeadingSize(convertFromUnit(size, multiplierUnit));
+    const setSContent = (size: number) =>
+        setContentSize(convertFromUnit(size, multiplierUnit));
+
     return (
         <section className="w-full">
+            <article className="bg-dark1 rounded-lg p-2 w-full print:hidden mb-2 block">
+                <div className="grid grid-cols-2 gap-2 justify-between items-center">
+                    <span className="ms-2">Measurement Unit</span>
+                    <div className="bg-dark2 rounded-lg py-2 px-4 flex justify-between gap-2">
+                        <select
+                            className="bg-inherit w-full"
+                            value={multiplierUnit}
+                            onChange={(e) =>
+                                setMultiplierUnit(
+                                    e.target.value as "pt" | "px" | "in" | "mm"
+                                )
+                            }
+                        >
+                            <option value={"pt"}>pt</option>
+                            <option value={"px"}>px</option>
+                            <option value={"in"}>in</option>
+                            <option value={"mm"}>mm</option>
+                        </select>
+                    </div>
+                </div>
+            </article>
             <article className="bg-dark1 rounded-lg p-4 w-full print:hidden mb-2 block">
                 <h1 className="text-2xl font-semibold">Job Description</h1>
                 <p className="text-sm">
@@ -67,23 +114,19 @@ const LeftBar: FC = () => {
                         <input
                             className="bg-inherit w-full"
                             type="number"
-                            value={marginTop}
-                            onChange={(e) =>
-                                setMarginTop(Number(e.target.value))
-                            }
+                            value={convertToUnit(marginTop, multiplierUnit)}
+                            onChange={(e) => setMTop(Number(e.target.value))}
                         />
-                        <span className="opacity-50">pt</span>
+                        <span className="opacity-50">{multiplierUnit}</span>
                     </div>
                     <div className="bg-dark2 rounded-lg py-2 px-4 flex gap-2">
                         <input
                             className="bg-inherit w-full"
                             type="number"
-                            value={marginBottom}
-                            onChange={(e) =>
-                                setMarginBottom(Number(e.target.value))
-                            }
+                            value={convertToUnit(marginBottom, multiplierUnit)}
+                            onChange={(e) => setMBottom(Number(e.target.value))}
                         />
-                        <span className="opacity-50">pt</span>
+                        <span className="opacity-50">{multiplierUnit}</span>
                     </div>
                 </div>
                 <p className="mt-2">Left-Right Margins</p>
@@ -92,23 +135,19 @@ const LeftBar: FC = () => {
                         <input
                             className="bg-inherit w-full"
                             type="number"
-                            value={marginLeft}
-                            onChange={(e) =>
-                                setMarginLeft(Number(e.target.value))
-                            }
+                            value={convertToUnit(marginLeft, multiplierUnit)}
+                            onChange={(e) => setMLeft(Number(e.target.value))}
                         />
-                        <span className="opacity-50">pt</span>
+                        <span className="opacity-50">{multiplierUnit}</span>
                     </div>
                     <div className="bg-dark2 rounded-lg py-2 px-4 flex gap-2 justify-between">
                         <input
                             className="bg-inherit w-full"
                             type="number"
-                            value={marginRight}
-                            onChange={(e) =>
-                                setMarginRight(Number(e.target.value))
-                            }
+                            value={convertToUnit(marginRight, multiplierUnit)}
+                            onChange={(e) => setMRight(Number(e.target.value))}
                         />
-                        <span className="opacity-50">pt</span>
+                        <span className="opacity-50">{multiplierUnit}</span>
                     </div>
                 </div>
             </article>
@@ -120,12 +159,10 @@ const LeftBar: FC = () => {
                         <input
                             className="bg-inherit w-full"
                             type="number"
-                            value={titleSize}
-                            onChange={(e) =>
-                                setTitleSize(Number(e.target.value))
-                            }
+                            value={convertToUnit(titleSize, multiplierUnit)}
+                            onChange={(e) => setSTitle(Number(e.target.value))}
                         />
-                        <span className="opacity-50">pt</span>
+                        <span className="opacity-50">{multiplierUnit}</span>
                     </div>
                 </div>
                 <div className="grid grid-cols-2 gap-2 mt-2 justify-between items-center">
@@ -134,12 +171,12 @@ const LeftBar: FC = () => {
                         <input
                             className="bg-inherit w-full"
                             type="number"
-                            value={headingSize}
+                            value={convertToUnit(headingSize, multiplierUnit)}
                             onChange={(e) =>
-                                setHeadingSize(Number(e.target.value))
+                                setSHeading(Number(e.target.value))
                             }
                         />
-                        <span className="opacity-50">pt</span>
+                        <span className="opacity-50">{multiplierUnit}</span>
                     </div>
                 </div>
                 <div className="grid grid-cols-2 gap-2 mt-2 justify-between items-center">
@@ -148,12 +185,12 @@ const LeftBar: FC = () => {
                         <input
                             className="bg-inherit w-full"
                             type="number"
-                            value={contentSize}
+                            value={convertToUnit(contentSize, multiplierUnit)}
                             onChange={(e) =>
-                                setContentSize(Number(e.target.value))
+                                setSContent(Number(e.target.value))
                             }
                         />
-                        <span className="opacity-50">pt</span>
+                        <span className="opacity-50">{multiplierUnit}</span>
                     </div>
                 </div>
             </article>
