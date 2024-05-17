@@ -43,4 +43,3 @@ export const validateMailto = (url: string) => {
 
     return !!pattern.test(url);
 };
-//
