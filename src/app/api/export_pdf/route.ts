@@ -14,7 +14,7 @@ import heading from "./components/heading";
 async function htmlToPDF(htmlContent: string, outputPath: string) {
     // Launch a headless browser
     const browser = await puppeteer.launch({
-        product: "firefox",
+        product: process.env.PUPPETEER_PRODUCT,
     });
 
     // Open a new page

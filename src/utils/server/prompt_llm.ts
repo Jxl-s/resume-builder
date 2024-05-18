@@ -1,7 +1,7 @@
 import { Ollama } from "ollama";
 
 export const promptMetaLlama = async ({ message }: { message: string }) => {
-    const response = await fetch("http://127.0.0.1:5000/prompt", {
+    const response = await fetch(process.env.META_HOST + "/prompt", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
