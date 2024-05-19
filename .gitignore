@@ -1,6 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-/resume_pdf/builds
+/resume_pdf/exports/*.pdf
+/resume_pdf/exports/*.html
+/resume_pdf/imports/*.pdf
 
 # dependencies
 /node_modules

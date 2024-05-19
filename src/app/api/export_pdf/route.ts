@@ -138,7 +138,7 @@ export async function POST(request: NextRequest) {
     const uuid = uuidv4();
     const outputPath = path.join(
         process.cwd(),
-        "resume_pdf/builds",
+        "resume_pdf/exports",
         `${uuid}.pdf`
     );
 
