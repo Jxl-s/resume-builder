@@ -2,6 +2,7 @@
 import { Ollama } from "ollama";
 import { NextRequest, NextResponse } from "next/server";
 import { promptLlama, promptMetaLlama } from "@/utils/server/prompt_llm";
+import { ResumeController } from "@/app_server/controllers/ResumeController";
 
 const ollama = new Ollama({ host: process.env.OLLAMA_HOST });
 
@@ -183,23 +184,24 @@ const generateBulletPrompt = (
 };
 
 export async function POST(request: NextRequest) {
-    const body = await request.json();
+    return ResumeController.enhanceBullets(request);
+    // const body = await request.json();
 
-    let prompt = "";
-    if (body.type === "improve") {
-        prompt = improveBulletPrompt(body.point, body.header, body.otherPoints, body.job, body.allPoints);
-    } else if (body.type === "generate") {
-        prompt = generateBulletPrompt(body.header, body.otherPoints, body.job, body.allPoints);
-    }
+    // let prompt = "";
+    // if (body.type === "improve") {
+    //     prompt = improveBulletPrompt(body.point, body.header, body.otherPoints, body.job, body.allPoints);
+    // } else if (body.type === "generate") {
+    //     prompt = generateBulletPrompt(body.header, body.otherPoints, body.job, body.allPoints);
+    // }
 
-    const response = await promptMetaLlama({
-        message: prompt,
-    });
+    // const response = await promptMetaLlama({
+    //     message: prompt,
+    // });
 
-    let lines = response.split("\n");
-    lines = lines.slice(1, 6);
+    // let lines = response.split("\n");
+    // lines = lines.slice(1, 6);
 
-    return NextResponse.json(lines, {
-        status: 200,
-    });
+    // return NextResponse.json(lines, {
+    //     status: 200,
+    // });
 }

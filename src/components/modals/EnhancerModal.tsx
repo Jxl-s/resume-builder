@@ -3,7 +3,12 @@ import Modal from "../Modal";
 import Button from "../Button";
 import { FaHandSparkles } from "react-icons/fa";
 import useResumeEditorStore from "../../stores/useResumeEditorStore";
-import { IEducationItem, IExperienceItem, IProjectItem, ITextItem } from "../../types/items";
+import {
+    IEducationItem,
+    IExperienceItem,
+    IProjectItem,
+    ITextItem,
+} from "../../types/items";
 import { removeTags } from "../../utils/sanitizeHtml";
 
 enum EnhancerScreen {
@@ -128,24 +133,31 @@ const EnhancerModal: FC<Props> = ({ visible, sectionId, itemId, onClose }) => {
             .join("\n");
 
         // Start fetching
-        const res = await fetch("/api/ask_ai", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                type: "improve",
-                point: removeTags(text),
-                header: context,
-                job: useResumeEditorStore.getState().jobDescription,
-                otherPoints: otherPoints,
-                allPoints: allPoints,
-            }),
-        });
+        try {
+            const res = await fetch("/api/bullets/enhance", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    point: removeTags(text),
+                    header: context,
+                    job: useResumeEditorStore.getState().jobDescription,
+                    otherPoints: otherPoints,
+                    allPoints: allPoints,
+                }),
+            });
 
-        const resJson = await res.json();
-        setEnhancerResults(resJson);
-        setScreen(EnhancerScreen.ResultEnhance);
+            if (res.status !== 200) throw new Error("Failed to fetch");
+            const resJson = await res.json();
+            const results = resJson.data;
+
+            setEnhancerResults(results);
+            setScreen(EnhancerScreen.ResultEnhance);
+        } catch (e) {
+            console.error(e);
+            setScreen(EnhancerScreen.Select);
+        }
     };
 
     const onEnhancerSubmit = (index: number, point: string) => {
@@ -178,7 +190,9 @@ const EnhancerModal: FC<Props> = ({ visible, sectionId, itemId, onClose }) => {
         setScreen(EnhancerScreen.WaitGenerate);
 
         const itemValue = item.value as IExperienceItem;
-        const otherPoints = itemValue.description.map((p) => removeTags(p)).join("\n");
+        const otherPoints = itemValue.description
+            .map((p) => removeTags(p))
+            .join("\n");
 
         let allPoints = "";
         document.querySelectorAll("ul[contenteditable=true]").forEach((ul) => {
@@ -193,13 +207,12 @@ const EnhancerModal: FC<Props> = ({ visible, sectionId, itemId, onClose }) => {
             .filter((p) => !p.startsWith("Enter bullet point #"))
             .join("\n");
 
-        const res = await fetch("/api/ask_ai", {
+        const res = await fetch("/api/bullets/generate", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                type: "generate",
                 header: context,
                 job: useResumeEditorStore.getState().jobDescription,
                 otherPoints: otherPoints,
@@ -207,10 +220,13 @@ const EnhancerModal: FC<Props> = ({ visible, sectionId, itemId, onClose }) => {
             }),
         });
 
+        if (res.status !== 200) throw new Error("Failed to fetch");
         const resJson = await res.json();
+        const results = resJson.data;
+
         setGenerator({
-            results: resJson,
-            resultsKeep: resJson.map(() => true),
+            results: results,
+            resultsKeep: results.map(() => true),
         });
 
         setScreen(EnhancerScreen.ResultGenerate);
@@ -243,7 +259,9 @@ const EnhancerModal: FC<Props> = ({ visible, sectionId, itemId, onClose }) => {
         };
 
         // List of points to keep
-        const keptResults = generator.results.filter((_, i) => generator.resultsKeep[i]);
+        const keptResults = generator.results.filter(
+            (_, i) => generator.resultsKeep[i]
+        );
         value.description.push(...keptResults);
 
         // update the item's Description array at index chosenIndex
@@ -255,10 +273,14 @@ const EnhancerModal: FC<Props> = ({ visible, sectionId, itemId, onClose }) => {
         <Modal title="AI Bullet Enhancer" visible={visible} onClose={reset}>
             {/* Waiting messages */}
             {screen === EnhancerScreen.WaitGenerate && (
-                <p className="print:hidden">Please wait while the AI is generating points...</p>
+                <p className="print:hidden">
+                    Please wait while the AI is generating points...
+                </p>
             )}
             {screen === EnhancerScreen.WaitEnhance && (
-                <p className="print:hidden">Please wait for the AI to enhance your point...</p>
+                <p className="print:hidden">
+                    Please wait for the AI to enhance your point...
+                </p>
             )}
             {screen === EnhancerScreen.ResultGenerate && (
                 <div className="print:hidden">
@@ -270,7 +292,9 @@ const EnhancerModal: FC<Props> = ({ visible, sectionId, itemId, onClose }) => {
                                     type="checkbox"
                                     name="kept-generated-points"
                                     checked={generator.resultsKeep[i]}
-                                    onChange={(e) => onKeepChange(i, e.target.checked)}
+                                    onChange={(e) =>
+                                        onKeepChange(i, e.target.checked)
+                                    }
                                 />
                                 {point}
                             </div>
@@ -292,7 +316,9 @@ const EnhancerModal: FC<Props> = ({ visible, sectionId, itemId, onClose }) => {
                         {enhancer.results.map((point, i) => (
                             <li
                                 className="text-primary hover:brightness-125 duration-300 cursor-pointer my-1"
-                                onClick={() => onEnhancerSubmit(enhanceIndex, point)}
+                                onClick={() =>
+                                    onEnhancerSubmit(enhanceIndex, point)
+                                }
                                 key={i}
                             >
                                 {point}
@@ -303,17 +329,21 @@ const EnhancerModal: FC<Props> = ({ visible, sectionId, itemId, onClose }) => {
             )}
             {screen === EnhancerScreen.Select && (
                 <div className="print:hidden">
-                    <p className="text-center mb-1">Select a point to improve with AI</p>
+                    <p className="text-center mb-1">
+                        Select a point to improve with AI
+                    </p>
                     <ul className="list-disc list-inside text-sm">
-                        {(item?.value as IExperienceItem)?.description?.map((c, i) => (
-                            <li
-                                className="text-primary hover:brightness-125 duration-300 cursor-pointer my-1"
-                                onClick={() => onEnhancerSelect(i, c)}
-                                key={i}
-                            >
-                                {c}
-                            </li>
-                        )) ?? []}
+                        {(item?.value as IExperienceItem)?.description?.map(
+                            (c, i) => (
+                                <li
+                                    className="text-primary hover:brightness-125 duration-300 cursor-pointer my-1"
+                                    onClick={() => onEnhancerSelect(i, c)}
+                                    key={i}
+                                >
+                                    {c}
+                                </li>
+                            )
+                        ) ?? []}
                     </ul>
                     <hr className="my-2 opacity-50" />
                     <p className="text-sm text-center mb-1">Or, be creative</p>
