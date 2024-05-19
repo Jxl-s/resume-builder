@@ -1,19 +1,16 @@
 "use client";
 
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import useResumeEditorStore from "@/stores/useResumeEditorStore";
 import { EducationItemWithId } from "../../components/items/Education";
 import { ExperienceItemWithId } from "@/components/items/Experience";
 import Section from "@/components/Section";
 import { FaPlusCircle } from "react-icons/fa";
 import Button from "@/components/Button";
-import TextItem, { TextItemWithId } from "@/components/items/Text";
+import { TextItemWithId } from "@/components/items/Text";
 import { ProjectItemWithId } from "@/components/items/Project";
-import EditableItem from "@/components/EditableItem";
 import useDocSettingsStore from "@/stores/useDocSettingsStore";
 import Header from "@/components/items/Header";
-import useStylingStore from "@/stores/useStylingStore";
-import Modal from "@/components/Modal";
 import "./Editor.css";
 import fonts from "../fonts";
 import { loadState, saveState } from "@/utils/storage";
@@ -121,44 +118,26 @@ const Editor: FC = () => {
                         setTitle={(t) => updateSection(section.id, t)}
                     >
                         {section.items.map((item, i) => {
-                            if (item.type === "education") {
-                                return (
-                                    <EducationItemWithId
-                                        key={item.id}
-                                        itemId={item.id}
-                                    />
-                                );
+                            let Component: FC<{ itemId: string }> | null = null;
+
+                            switch (item.type) {
+                                case "education":
+                                    Component = EducationItemWithId;
+                                    break;
+                                case "experience":
+                                    Component = ExperienceItemWithId;
+                                    break;
+                                case "text":
+                                    Component = TextItemWithId;
+                                    break;
+                                case "project":
+                                case "project-nolinks":
+                                    Component = ProjectItemWithId;
+                                    break;
                             }
 
-                            if (item.type === "experience") {
-                                return (
-                                    <ExperienceItemWithId
-                                        key={item.id}
-                                        itemId={item.id}
-                                    />
-                                );
-                            }
-
-                            if (item.type === "text") {
-                                return (
-                                    <TextItemWithId
-                                        key={item.id}
-                                        itemId={item.id}
-                                    />
-                                );
-                            }
-
-                            if (
-                                item.type === "project" ||
-                                item.type === "project-nolinks"
-                            ) {
-                                return (
-                                    <ProjectItemWithId
-                                        key={item.id}
-                                        itemId={item.id}
-                                    />
-                                );
-                            }
+                            if (!Component) return null;
+                            return <Component key={item.id} itemId={item.id} />;
                         })}
                     </Section>
                 ))}
@@ -167,9 +146,7 @@ const Editor: FC = () => {
                     className="flex items-center justify-center gap-2 w-full text-sm print:hidden mt-4"
                 >
                     <FaPlusCircle className="w-4 h-4" />
-                    <span className="font-semibold py-2">
-                        Add a New Section
-                    </span>
+                    <span className="font-semibold py-2">Add a New Section</span>
                 </Button>
             </div>
         </div>
