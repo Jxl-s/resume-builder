@@ -1,6 +1,6 @@
 "use client";
 import useDocSettingsStore from "@/stores/useDocSettingsStore";
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useRef } from "react";
 import "./EditableList.css";
 import { sanitizeHtml } from "@/utils/sanitizeHtml";
 import useStylingStore, { updateDisplayStyle } from "@/stores/useStylingStore";

@@ -1,14 +1,9 @@
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import EditableItem from "../EditableItem";
 import useDocSettingsStore from "@/stores/useDocSettingsStore";
 import useResumeEditorStore from "@/stores/useResumeEditorStore";
 
 const Header: FC = () => {
-    const [didMount, setDidMount] = useState(false);
-    useEffect(() => {
-        setDidMount(true);
-    }, []);
-
     const titleSize = useDocSettingsStore((state) => state.titleSize);
     const contentSize = useDocSettingsStore((state) => state.contentSize);
 

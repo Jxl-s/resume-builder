@@ -1,33 +1,18 @@
 "use client";
-import { FC, PropsWithChildren, useEffect, useState } from "react";
-import {
-    FaBold,
-    FaDownload,
-    FaItalic,
-    FaLink,
-    FaUnderline,
-} from "react-icons/fa";
+import { FC, PropsWithChildren, useState } from "react";
+import { FaBold, FaItalic, FaLink, FaUnderline } from "react-icons/fa";
 import Button from "./Button";
-import {
-    FaCircleExclamation,
-    FaFileImport,
-    FaHandSparkles,
-} from "react-icons/fa6";
 import useStylingStore, {
     queryIsLink,
     updateDisplayStyle,
 } from "@/stores/useStylingStore";
-import useFocusedListStore from "@/stores/useFocusedListStore";
-import Modal from "./Modal";
 import useResumeEditorStore from "@/stores/useResumeEditorStore";
-import { IExperienceItem, IProjectItem } from "@/types/items";
-import { removeTags, validateLink, validateMailto } from "@/utils/sanitizeHtml";
+import { validateLink, validateMailto } from "@/utils/sanitizeHtml";
 import AskAi from "./ui/AskAi";
 import ImportResume from "./ui/ImportResume";
 import DownloadResume from "./ui/DownloadResume";
 import fonts from "../app/fonts";
 import useDocSettingsStore from "../stores/useDocSettingsStore";
-import { saveState } from "@/utils/storage";
 
 interface TooltipButtonProps {
     enabled: boolean;

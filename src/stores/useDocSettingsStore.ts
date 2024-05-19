@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import fonts from "../app/fonts";
+import { Unit } from "@/types/unit";
 
 interface DocSettings {
     font: keyof typeof fonts;
@@ -24,8 +25,8 @@ interface DocSettings {
     marginRight: number;
     setMarginRight: (size: number) => void;
 
-    multiplierUnit: "pt" | "px" | "in" | "mm";
-    setMultiplierUnit: (unit: "pt" | "px" | "in" | "mm") => void;
+    multiplierUnit: Unit;
+    setMultiplierUnit: (unit: Unit) => void;
 }
 
 const useDocSettingsStore = create<DocSettings>((set) => ({
@@ -59,7 +60,7 @@ const fixFloating = (value: number) => {
     return Math.round(value * 100) / 100;
 };
 
-const convertToUnit = (value: number, unit: "pt" | "px" | "in" | "mm") => {
+const convertToUnit = (value: number, unit: Unit) => {
     switch (unit) {
         case "pt":
             return fixFloating(value);
@@ -72,7 +73,7 @@ const convertToUnit = (value: number, unit: "pt" | "px" | "in" | "mm") => {
     }
 };
 
-const convertFromUnit = (value: number, unit: "pt" | "px" | "in" | "mm") => {
+const convertFromUnit = (value: number, unit: Unit) => {
     switch (unit) {
         case "pt":
             return fixFloating(value);

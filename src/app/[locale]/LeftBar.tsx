@@ -6,6 +6,7 @@ import useDocSettingsStore, {
     convertFromUnit,
     convertToUnit,
 } from "@/stores/useDocSettingsStore";
+import { Unit } from "@/types/unit";
 
 const LeftBar: FC = () => {
     const [jobDescription, setJobDescription] = useResumeEditorStore(
@@ -95,7 +96,7 @@ const LeftBar: FC = () => {
                             value={multiplierUnit}
                             onChange={(e) =>
                                 setMultiplierUnit(
-                                    e.target.value as "pt" | "px" | "in" | "mm"
+                                    e.target.value as Unit
                                 )
                             }
                         >
