@@ -1,107 +1,31 @@
 import { NextRequest } from "next/server";
 import { z } from "zod";
 import { BaseController } from "./BaseController";
-import {
-    generatePrompt,
-    improvePrompt,
-    jobDescriptionPrompt,
-} from "@/utils/server/prompts";
+import { importPrompt } from "@/utils/server/prompts";
 import { promptMetaLlama } from "@/utils/server/prompt_llm";
 
-const enhanceBulletSchema = z.object({
-    point: z.string(),
-    header: z.string(),
-    otherPoints: z.string(),
-    job: z.string(),
-    allPoints: z.string(),
+const exportSchema = z.object({
+    resume: z.string(),
 });
-
-const generateBulletSchema = z.object({
-    header: z.string(),
-    otherPoints: z.string(),
-    job: z.string(),
-    allPoints: z.string(),
-});
-
-type EnhanceBulletSchema = z.infer<typeof enhanceBulletSchema>;
-type GenerateBulletSchema = z.infer<typeof generateBulletSchema>;
 
 export const ResumeController = {
-    async enhanceBullets(req: NextRequest) {
-        const data = BaseController.checkSchema(
-            enhanceBulletSchema,
-            await req.json()
-        );
-        if (!data) {
-            return BaseController.makeStatus(400, "Invalid data");
-        }
+    async importResume(req: NextRequest) {
+        const body = await req.text();
 
-        // Build the prompt
-        let prompt = improvePrompt;
-        if (data.job.length > 0) {
-            prompt = jobDescriptionPrompt + "\n\n" + prompt;
-        }
+        // Make the prompt
+        let prompt = importPrompt;
+        prompt = prompt.replace("__RESUME_TEXT__", body);
 
-        // Build the final prompt
-        prompt = prompt
-            .replace("__JOB_DESCRIPTION__", data.job)
-            .replace("__BULLET_POINT__", data.point)
-            .replace("__HEADER__", data.header)
-            .replace("__OTHER_POINTS__", data.otherPoints)
-            .replace("__OTHER_ITEMS_POINTS__", data.allPoints);
-
-        const aiResponse = await promptMetaLlama({
+        const response = await promptMetaLlama({
             message: prompt,
         });
 
-        const responseLines = aiResponse
-            .split("\n")
-            .filter((line) => line.length > 0);
-
-        if (responseLines[0] === "OK") {
-            responseLines.shift();
-            return BaseController.makeSuccess(200, responseLines);
-        }
-
-        return BaseController.makeStatus(500, "Error enhancing bullet points");
+        return BaseController.makeStatus(200, JSON.parse(response));
     },
-    async generateBullets(req: NextRequest) {
-        const data = BaseController.checkSchema(
-            generateBulletSchema,
-            await req.json()
-        );
+    async exportResume(req: NextRequest) {
+        const data = BaseController.checkSchema(exportSchema, await req.json());
         if (!data) {
             return BaseController.makeStatus(400, "Invalid data");
         }
-
-        // Build the prompt
-        let prompt = generatePrompt;
-        if (data.job.length > 0) {
-            prompt = jobDescriptionPrompt + "\n\n" + prompt;
-        }
-
-        prompt = prompt
-            .replace("__JOB_DESCRIPTION__", data.job)
-            .replace("__HEADER__", data.header)
-            .replace("__OTHER_POINTS__", data.otherPoints)
-            .replace("__OTHER_ITEMS_POINTS__", data.allPoints);
-
-        const aiResponse = await promptMetaLlama({
-            message: prompt,
-        });
-
-        const responseLines = aiResponse
-            .split("\n")
-            .filter((line) => line.length > 0);
-
-        if (responseLines[0] === "OK") {
-            responseLines.shift();
-            return BaseController.makeSuccess(200, responseLines);
-        }
-
-        return BaseController.makeStatus(500, "Error generating bullet points");
     },
-
-    async exportResume(req: NextRequest) {},
-    async importResume(req: NextRequest) {},
 };

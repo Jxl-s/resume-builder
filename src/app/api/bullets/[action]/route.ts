@@ -1,5 +1,5 @@
 import { BaseController } from "@/app_server/controllers/BaseController";
-import { ResumeController } from "@/app_server/controllers/ResumeController";
+import { BulletsController } from "@/app_server/controllers/BulletsController";
 import { NextRequest } from "next/server";
 
 export async function POST(
@@ -7,11 +7,11 @@ export async function POST(
     { params }: { params: { action: string } }
 ) {
     if (params.action === "enhance") {
-        return ResumeController.enhanceBullets(request);
+        return BulletsController.enhanceBullets(request);
     }
 
     if (params.action === "generate") {
-        return ResumeController.generateBullets(request);
+        return BulletsController.generateBullets(request);
     }
 
     return BaseController.makeStatus(400, "Invalid action");
