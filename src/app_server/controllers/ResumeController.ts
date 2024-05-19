@@ -8,6 +8,7 @@ const exportSchema = z.object({
     resume: z.string(),
 });
 
+// would be so much better if i used OpenAI
 export const ResumeController = {
     async importResume(req: NextRequest) {
         const body = await req.text();
@@ -20,7 +21,7 @@ export const ResumeController = {
             message: prompt,
         });
 
-        return BaseController.makeStatus(200, JSON.parse(response));
+        return BaseController.makeSuccess(200, JSON.parse(response));
     },
     async exportResume(req: NextRequest) {
         const data = BaseController.checkSchema(exportSchema, await req.json());

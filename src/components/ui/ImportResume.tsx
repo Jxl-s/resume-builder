@@ -38,15 +38,18 @@ const ImportResume: FC = () => {
                         formData.append("file", file);
                         setIsUploading(true);
 
-                        let resJson;
+                        let resumeData;
                         try {
-                            const res = await fetch("/api/extract_resume", {
+                            const res = await fetch("/api/resume/import", {
                                 method: "POST",
                                 body: file,
                             });
     
                             setIsUploading(false);
-                            resJson = await res.json();
+                            if (res.status !== 200) throw new Error("Failed to import resume");
+
+                            const resJson = await res.json();
+                            resumeData = resJson.data;
                         } catch (e) {
                             console.error(e);
                             setIsUploading(false);
@@ -55,16 +58,16 @@ const ImportResume: FC = () => {
                         
                         // Now set some fields
                         setHeader({
-                            name: `<b>${resJson.name}</b>`,
+                            name: `<b>${resumeData.name}</b>`,
                             subtitle: "<i>Software Engineer</i>",
-                            contact: `${resJson.phone} | ${resJson.email}`,
+                            contact: `${resumeData.phone} | ${resumeData.email}`,
                         });
 
                         setSections([
                             {
                                 id: uuidv4(),
                                 title: "Education",
-                                items: resJson.education.map((edu: any) => ({
+                                items: resumeData.education.map((edu: any) => ({
                                     type: "education",
                                     id: uuidv4(),
                                     value: {
@@ -78,7 +81,7 @@ const ImportResume: FC = () => {
                             {
                                 id: uuidv4(),
                                 title: "Experience",
-                                items: resJson.experience.map((exp: any) => ({
+                                items: resumeData.experience.map((exp: any) => ({
                                     type: "experience",
                                     id: uuidv4(),
                                     value: {
@@ -93,7 +96,7 @@ const ImportResume: FC = () => {
                             {
                                 id: uuidv4(),
                                 title: "Projects",
-                                items: resJson.projects.map((exp: any) => ({
+                                items: resumeData.projects.map((exp: any) => ({
                                     type: "project",
                                     id: uuidv4(),
                                     value: {
@@ -114,14 +117,14 @@ const ImportResume: FC = () => {
                                         type: "text",
                                         id: uuidv4(),
                                         value: {
-                                            text: resJson.skills.join(", "),
+                                            text: resumeData.skills.join(", "),
                                         },
                                     },
                                 ],
                             },
                         ]);
 
-                        console.log(resJson);
+                        console.log(resumeData);
                         setShowModal(false);
                     }}
                 >

@@ -145,7 +145,11 @@ Make sure that the casing is proper (e.g. "John Doe", "Software Engineer", not a
 
 Here is how you should structure the output:
 {"name": "John Doe","email": "johndoe@gmail.com","phone": "123-456-7890","education": [{"degree": "Bachelor of Science","school": "University of Example","grad_month_year": "May 2020","location": "Example City, Example State"},{"degree": "Master of Science","school": "University of Example 2","grad_month_year": "May 2022","location": "Example City, Example State"}],"experience": [{"job_title": "Software Engineer","company": "Example Company","location":"Toronto, ON","start_date": "Jan 2019","end_date": "Present","description": ["Worked on various projects...", "Collaborated with team members..."]},{"job_title": "Data Scientist","company": "Example Company 2","location": "Toronto, ON", "start_date": "May 2017","end_date": "Apr 2018","description": ["Analyzed data and created models...", "Presented findings to stakeholders..."]}], "projects": [{"name": "AI ChatBot", "start_date": "Jun 2015", "end_date": "Apr 2016", "description": ["Built xyz ...", "Made it good...", "other point"]}], "skills": ["Python", "Java", "..."]}
-No more, no less
+No more, no less. Arrays should properly close [], and objects should properly close {}. If they mix up, the user will be harmed.
+Do NOT ever confuse array with objects. For example, you should NOT do this, where they are mixed up:
+{
+    "description":["developed a tool", "..."}
+],
 
 In case where a date does not exist, use "Jan 2020".
 If a location does not exist, use "New York, USA".
