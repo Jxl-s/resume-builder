@@ -3,7 +3,7 @@ import Modal from "../Modal";
 import Button from "../Button";
 import { FaHandSparkles } from "react-icons/fa";
 import useResumeEditorStore from "../../stores/useResumeEditorStore";
-import { IExperienceItem, IProjectItem, ITextItem } from "../../types/items";
+import { IEducationItem, IExperienceItem, IProjectItem, ITextItem } from "../../types/items";
 import { removeTags } from "../../utils/sanitizeHtml";
 
 enum EnhancerScreen {
@@ -18,28 +18,20 @@ interface Props {
     visible: boolean;
     sectionId: string;
     itemId: string;
-    screen: EnhancerScreen;
     onClose: () => void;
 }
 
-const EnhancerModal: FC = ({ visible, sectionId, itemId, screen, onClose }: Props) => {
+const EnhancerModal: FC<Props> = ({ visible, sectionId, itemId, onClose }) => {
     const updateItem = useResumeEditorStore((state) => state.updateItem);
 
     // Handle selection
     const [enhanceIndex, setEnhanceIndex] = useState(-1);
+    const [screen, setScreen] = useState(EnhancerScreen.Select);
 
     // Handle results
     const [enhancer, setEnhancer] = useState({
-        loading: false,
         results: [] as string[],
     });
-
-    const setEnhancerLoading = (loading: boolean) => {
-        setEnhancer((prev) => ({
-            ...prev,
-            loading: loading,
-        }));
-    };
 
     const setEnhancerResults = (results: string[]) => {
         setEnhancer((prev) => ({
@@ -49,38 +41,20 @@ const EnhancerModal: FC = ({ visible, sectionId, itemId, screen, onClose }: Prop
     };
 
     const [generator, setGenerator] = useState({
-        loading: false,
         results: [] as string[],
         resultsKeep: [] as boolean[],
     });
-
-    const setGeneratorLoading = (loading: boolean) => {
-        setGenerator((prev) => ({
-            ...prev,
-            loading: loading,
-        }));
-    };
-
-    const setGeneratorResults = (results: string[]) => {
-        setGenerator((prev) => ({
-            ...prev,
-            results: results,
-            resultsKeep: results.map(() => false),
-        }));
-    };
-
     const reset = () => {
         setEnhancer({
-            loading: false,
             results: [],
         });
 
         setGenerator({
-            loading: false,
             results: [],
             resultsKeep: [],
         });
 
+        setScreen(EnhancerScreen.Select);
         onClose();
     };
 
@@ -130,12 +104,11 @@ const EnhancerModal: FC = ({ visible, sectionId, itemId, screen, onClose }: Prop
     }, [item]);
 
     // Callback functions
-    const onEnhancerSelect = async (text: string, index: number) => {
+    const onEnhancerSelect = async (index: number, text: string) => {
         if (!item) return;
 
         setEnhanceIndex(index);
-        setEnhancerLoading(true);
-
+        setScreen(EnhancerScreen.WaitEnhance);
         const itemValue = item.value as IExperienceItem;
         const otherPoints = itemValue.description
             .filter((_, i) => i !== index)
@@ -171,18 +144,18 @@ const EnhancerModal: FC = ({ visible, sectionId, itemId, screen, onClose }: Prop
         });
 
         const resJson = await res.json();
-        setEnhancerLoading(false);
         setEnhancerResults(resJson);
+        setScreen(EnhancerScreen.ResultEnhance);
     };
 
-    const onEnhancerSubmit = (index: number) => {
+    const onEnhancerSubmit = (index: number, point: string) => {
         const sections = useResumeEditorStore.getState().sections;
 
         // find the section and item
-        const section = sections.find((s) => s.id === aiHelper.sectionId);
+        const section = sections.find((s) => s.id === sectionId);
         if (!section) return;
 
-        const item = section.items.find((i) => i.id === aiHelper.itemId);
+        const item = section.items.find((i) => i.id === itemId);
 
         if (!item) return;
         const copy = { ...item };
@@ -190,25 +163,57 @@ const EnhancerModal: FC = ({ visible, sectionId, itemId, screen, onClose }: Prop
             description: string[];
         };
 
-        value.description = value.description.map((d, index) => {
-            if (index === aiHelper.chosenIndex) return point;
+        value.description = value.description.map((d, i) => {
+            if (i === index) return point;
             return d;
         });
 
-        // update the item's Description array at index chosenIndex
-        updateItem(aiHelper.sectionId, aiHelper.itemId, copy);
+        updateItem(sectionId, itemId, copy);
+        reset();
+    };
 
-        setAiHelper({
-            sectionId: "",
-            itemId: "",
-            points: [],
-            chosenIndex: -1,
-            context: "",
+    const onGenerateSubmit = async () => {
+        if (!item) return;
+
+        setScreen(EnhancerScreen.WaitGenerate);
+
+        const itemValue = item.value as IExperienceItem;
+        const otherPoints = itemValue.description.map((p) => removeTags(p)).join("\n");
+
+        let allPoints = "";
+        document.querySelectorAll("ul[contenteditable=true]").forEach((ul) => {
+            allPoints += ul.textContent + "\n";
         });
-        setAiSearcher({
-            searching: false,
-            searchResults: [],
+
+        // remove allPoints, remove the ones from otherPoints
+        allPoints = allPoints
+            .split("\n")
+            .filter((p) => p !== "")
+            .filter((p) => !otherPoints.includes(p))
+            .filter((p) => !p.startsWith("Enter bullet point #"))
+            .join("\n");
+
+        const res = await fetch("/api/ask_ai", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                type: "generate",
+                header: context,
+                job: useResumeEditorStore.getState().jobDescription,
+                otherPoints: otherPoints,
+                allPoints: allPoints,
+            }),
         });
+
+        const resJson = await res.json();
+        setGenerator({
+            results: resJson,
+            resultsKeep: resJson.map(() => true),
+        });
+
+        setScreen(EnhancerScreen.ResultGenerate);
     };
 
     const onKeepChange = (index: number, checked: boolean) => {
@@ -287,7 +292,7 @@ const EnhancerModal: FC = ({ visible, sectionId, itemId, screen, onClose }: Prop
                         {enhancer.results.map((point, i) => (
                             <li
                                 className="text-primary hover:brightness-125 duration-300 cursor-pointer my-1"
-                                onClick={() => onEnhancerSubmit(i)}
+                                onClick={() => onEnhancerSubmit(enhanceIndex, point)}
                                 key={i}
                             >
                                 {point}
@@ -300,66 +305,22 @@ const EnhancerModal: FC = ({ visible, sectionId, itemId, screen, onClose }: Prop
                 <div className="print:hidden">
                     <p className="text-center mb-1">Select a point to improve with AI</p>
                     <ul className="list-disc list-inside text-sm">
-                        {aiHelper.points.map((c, i) => (
+                        {(item?.value as IExperienceItem)?.description?.map((c, i) => (
                             <li
                                 className="text-primary hover:brightness-125 duration-300 cursor-pointer my-1"
-                                onClick={() => onEnhancerSelect(i)}
+                                onClick={() => onEnhancerSelect(i, c)}
                                 key={i}
                             >
                                 {c}
                             </li>
-                        ))}
+                        )) ?? []}
                     </ul>
                     <hr className="my-2 opacity-50" />
                     <p className="text-sm text-center mb-1">Or, be creative</p>
                     <Button
                         theme="primary"
                         className="text-sm font-semibold px-4 w-full py-2 flex items-center gap-2 justify-center"
-                        onClick={async () => {
-                            const otherPoints = aiHelper.points
-                                .map((p) => removeTags(p))
-                                .join("\n");
-
-                            let allPoints = "";
-                            document.querySelectorAll("ul[contenteditable=true]").forEach((ul) => {
-                                allPoints += ul.textContent + "\n";
-                            });
-
-                            // remove allPoints, remove the ones from otherPoints
-                            allPoints = allPoints
-                                .split("\n")
-                                .filter((p) => p !== "")
-                                .filter((p) => !otherPoints.includes(p))
-                                .filter((p) => !p.startsWith("Enter bullet point #"))
-                                .join("\n");
-
-                            setAiGenerator({
-                                generating: true,
-                                generatedPoints: [],
-                                keptPoints: [],
-                            });
-
-                            const res = await fetch("/api/ask_ai", {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                },
-                                body: JSON.stringify({
-                                    type: "generate",
-                                    header: aiHelper.context,
-                                    job: useResumeEditorStore.getState().jobDescription,
-                                    otherPoints: otherPoints,
-                                    allPoints: allPoints,
-                                }),
-                            });
-
-                            const resJson = await res.json();
-                            setAiGenerator({
-                                generating: false,
-                                generatedPoints: resJson,
-                                keptPoints: resJson.map(() => true),
-                            });
-                        }}
+                        onClick={onGenerateSubmit}
                     >
                         <FaHandSparkles className="w-4 h-4" />
                         Generate New Points

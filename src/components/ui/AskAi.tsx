@@ -6,6 +6,7 @@ import useFocusedListStore from "@/stores/useFocusedListStore";
 import { IExperienceItem, IProjectItem } from "@/types/items";
 import { removeTags } from "@/utils/sanitizeHtml";
 import { FaHandSparkles } from "react-icons/fa";
+import EnhancerModal from "../modals/EnhancerModal";
 
 const AskAi: FC = () => {
     const updateItem = useResumeEditorStore((state) => state.updateItem);
@@ -34,75 +35,31 @@ const AskAi: FC = () => {
         keptPoints: [] as boolean[],
     });
 
+    const [[currentSectionId, currentItemId], setCurrentItem] = useState(["", ""]);
+    const [modalOpened, setModalOpened] = useState(false);
+
     const onAskAi = (sectionId: string, itemId: string) => {
         if (document.activeElement instanceof HTMLElement) {
             document.activeElement.blur();
         }
 
-        const sections = useResumeEditorStore.getState().sections;
-        // find the section and item
-        const section = sections.find((s) => s.id === sectionId);
-        if (!section) return;
-
-        const item = section.items.find((i) => i.id === itemId);
-        if (!item) return;
-
-        // get the type (experience or project)
-        if (item.type === "experience") {
-            const experience = item.value as IExperienceItem;
-
-            const context = [
-                "Experience",
-                removeTags(experience.position),
-                removeTags(experience.company),
-                removeTags(experience.dates),
-                removeTags(experience.location),
-            ].join(",");
-
-            setAiHelper({
-                sectionId: sectionId,
-                itemId: itemId,
-                points: experience.description,
-                context,
-                chosenIndex: -1,
-            });
-        }
-
-        if (item.type === "project" || item.type === "project-nolinks") {
-            const project = item.value as IProjectItem;
-
-            const context = [
-                "Project",
-                project.name,
-                project.dates,
-                project.technologies,
-                project.source ?? "",
-                project.demo ?? "",
-            ]
-                .filter((a) => a !== "")
-                .join(",");
-
-            setAiHelper({
-                sectionId: sectionId,
-                itemId: itemId,
-                points: project.description,
-                context,
-                chosenIndex: -1,
-            });
-        }
+        setCurrentItem([sectionId, itemId]);
+        setModalOpened(true);
     };
 
     return (
         <>
-            
-
+            <EnhancerModal
+                itemId={currentItemId}
+                sectionId={currentSectionId}
+                onClose={() => setModalOpened(false)}
+                visible={modalOpened}
+            />
             <Button
                 theme="primaryOutline"
                 className="text-sm font-semibold px-4 flex gap-2 items-center"
                 disabled={focusedItemId === "" && focusedSectionId === ""}
-                onClick={() => {
-                    onAskAi(focusedSectionId, focusedItemId);
-                }}
+                onClick={() => onAskAi(focusedSectionId, focusedItemId)}
                 onMouseDown={(e) => e.preventDefault()}
             >
                 <FaHandSparkles className="w-4 h-4" />
