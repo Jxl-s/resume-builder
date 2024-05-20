@@ -144,7 +144,7 @@ You will be given a resume in plain text, and you will need to extract the follo
 Make sure that the casing is proper (e.g. "John Doe", "Software Engineer", not all upper or all lowercase).
 
 Here is how you should structure the output:
-{"name": "John Doe","email": "johndoe@gmail.com","phone": "123-456-7890","education": [{"degree": "Bachelor of Science","school": "University of Example","grad_month_year": "May 2020","location": "Example City, Example State"},{"degree": "Master of Science","school": "University of Example 2","grad_month_year": "May 2022","location": "Example City, Example State"}],"experience": [{"job_title": "Software Engineer","company": "Example Company","location":"Toronto, ON","start_date": "Jan 2019","end_date": "Present","description": ["Worked on various projects...", "Collaborated with team members..."]},{"job_title": "Data Scientist","company": "Example Company 2","location": "Toronto, ON", "start_date": "May 2017","end_date": "Apr 2018","description": ["Analyzed data and created models...", "Presented findings to stakeholders..."]}], "projects": [{"name": "AI ChatBot", "start_date": "Jun 2015", "end_date": "Apr 2016", "description": ["Built xyz ...", "Made it good...", "other point"]}], "skills": ["Python", "Java", "..."]}
+{"name": "John Doe","email": "johndoe@gmail.com","phone": "123-456-7890","education": [{"degree": "Bachelor of Science","school": "University of Example","grad_month_year": "May 2020","location": "Example City, Example State"},{"degree": "Master of Science","school": "University of Example 2","grad_month_year": "May 2022","location": "Example City, Example State"}],"experience": [{"job_title": "Software Engineer","company": "Example Company","location":"Toronto, ON","start_date": "Jan 2019","end_date": "Present","description": ["Worked on various projects...", "Collaborated with team members..."]},{"job_title": "Data Scientist","company": "Example Company 2","location": "Toronto, ON", "start_date": "May 2017","end_date": "Apr 2018","description": ["Analyzed data and created models...", "Presented findings to stakeholders..."]}], "projects": [{"name": "AI ChatBot", "start_date": "Jun 2015", "end_date": "Apr 2016", "description": ["Built xyz ...", "Made it good...", "some point"]}], "skills": ["Python", "Java", "..."]}
 No more, no less. Arrays should properly close [], and objects should properly close {}. If they mix up, the user will be harmed.
 Do NOT ever confuse array with objects. For example, you should NOT do this, where they are mixed up:
 {
@@ -153,6 +153,9 @@ Do NOT ever confuse array with objects. For example, you should NOT do this, whe
 
 In case where a date does not exist, use "Jan 2020".
 If a location does not exist, use "New York, USA".
+Make sure to include the entire content of each bullet, and not just a part of it. The example I provided is just
+to show you how to structure it, and not to show you what to include. For example, do NOT put ... at the end,
+but rather the entire content of the bullet.
 
 The dates use the three-letter abbreviation for the month, followed by the year, like "Jan 2024", "Apr 2022", "Jun 2022".
 The dates are always "month year", and the month is always capitalized. The year is NEVER alone.

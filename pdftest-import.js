@@ -5,20 +5,16 @@ const fs = require("fs");
 const path = require("path");
 
 const app = express();
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ dest: "resume_pdf/imports/" });
 
 // Serve the HTML file
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "pdftest-import.html"));
+    res.sendFile(path.join(__dirname, "index.html"));
 });
 
 // Handle PDF file uploads and text extraction
 app.post("/upload", upload.single("pdf"), async (req, res) => {
-    const pdfPath = path.join(
-        __dirname,
-        "resume_pdf/imports",
-        "2c10aa91-6f7f-4fe8-9eb0-9420ebd3844a.pdf"
-    );
+    const pdfPath = path.join(__dirname, "resume_pdf/imports", req.file.filename);
     const dataBuffer = fs.readFileSync(pdfPath);
 
     try {
@@ -31,7 +27,7 @@ app.post("/upload", upload.single("pdf"), async (req, res) => {
     }
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Server started on http://localhost:${PORT}`);
 });

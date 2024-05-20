@@ -10,6 +10,9 @@ const ImportResume: FC = () => {
     const [isUploading, setIsUploading] = useState(false);
 
     const [file, setFile] = useState<File | null>(null);
+    const [text, setText] = useState<string>("");
+    const [usingText, setUsingText] = useState(false);
+
     const setHeader = useResumeEditorStore((state) => state.setHeader);
     const setSections = useResumeEditorStore((state) => state.setSections);
 
@@ -20,23 +23,43 @@ const ImportResume: FC = () => {
                 onClose={() => setShowModal(false)}
                 visible={showModal}
             >
-                <p>Paste the text from the resume to import</p>
+                <p>Select the PDF to be imported</p>
                 <input
                     type="file"
                     accept=".pdf"
                     className="block w-full bg-dark3 disabled:opacity-50 rounded-md py-1 mt-2"
                     onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-                    disabled={isUploading}
+                    disabled={isUploading || usingText}
+                />
+                <p>
+                    <input
+                        type="checkbox"
+                        className="me-2"
+                        checked={usingText}
+                        onChange={(e) => setUsingText(e.target.checked)}
+                    />
+                    or, paste the text from your resume
+                </p>
+                <input
+                    type="text"
+                    className="block w-full bg-dark3 disabled:opacity-50 rounded-md py-1 mt-2"
+                    onChange={(e) => setText(e.target.value)}
+                    disabled={isUploading || !usingText}
                 />
                 <Button
                     theme="primary"
                     className="py-2 w-full mt-2"
-                    disabled={file === null || isUploading}
+                    disabled={(file === null && text === "") || isUploading}
                     onClick={async () => {
-                        if (!file) return;
-
                         const formData = new FormData();
-                        formData.append("file", file);
+                        if (usingText) {
+                            if (text === "") return;
+                            formData.append("text", text);
+                        } else {
+                            if (!file) return;
+                            formData.append("file", file);
+                        }
+
                         setIsUploading(true);
 
                         let resumeData;

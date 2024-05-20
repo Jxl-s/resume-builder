@@ -17,32 +17,38 @@ export const ResumeController = {
     async importResume(req: NextRequest) {
         const formData = await req.formData();
         const file = formData.get("file") as File;
-        const arrayBuffer = await file.arrayBuffer();
-        const buffer = new Uint8Array(arrayBuffer);
+        const textInput = formData.get("text") as string;
 
-        if (file.type !== "application/pdf") {
-            return BaseController.makeStatus(400, "Invalid file type");
-        }
-
-        // Write file to folder
-        const uuid = uuidv4();
-        const outputPath = path.join(
-            process.cwd(),
-            "resume_pdf/imports",
-            `${uuid}.pdf`
-        );
-
-        fs.writeFileSync(outputPath, buffer);
-
-        // Process the written PDF
-        const fileBuffer = fs.readFileSync(outputPath);
         let text = "";
-        try {
-            const data = await pdfParse(fileBuffer);
-            text = data.text;
-        } catch (e) {
-            console.error(e);
-            return BaseController.makeStatus(500, "Failed to parse PDF");
+        if (file) {
+            const arrayBuffer = await file.arrayBuffer();
+            const buffer = new Uint8Array(arrayBuffer);
+
+            if (file.type !== "application/pdf") {
+                return BaseController.makeStatus(400, "Invalid file type");
+            }
+
+            // Write file to folder
+            const uuid = uuidv4();
+            const outputPath = path.join(
+                process.cwd(),
+                "resume_pdf/imports",
+                `${uuid}.pdf`
+            );
+
+            fs.writeFileSync(outputPath, buffer);
+
+            // Process the written PDF
+            const fileBuffer = fs.readFileSync(outputPath);
+            try {
+                const data = await pdfParse(fileBuffer);
+                text = data.text;
+            } catch (e) {
+                console.error(e);
+                return BaseController.makeStatus(500, "Failed to parse PDF");
+            }
+        } else if (textInput) {
+            text = textInput;
         }
 
         // Make the prompt

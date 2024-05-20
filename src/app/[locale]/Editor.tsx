@@ -78,7 +78,7 @@ const Editor: FC = () => {
 
             if (scaleFactor < 1) {
                 // @ts-ignore Zooming to fit the content
-                document.body.style.zoom = scaleFactor;
+                // document.body.style.zoom = scaleFactor;
             }
         }
 
