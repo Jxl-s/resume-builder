@@ -9,7 +9,7 @@ const ImportResume: FC = () => {
     const [showModal, setShowModal] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
 
-    const [file, setFile] = useState<string>("");
+    const [file, setFile] = useState<File | null>(null);
     const setHeader = useResumeEditorStore((state) => state.setHeader);
     const setSections = useResumeEditorStore((state) => state.setSections);
 
@@ -22,9 +22,10 @@ const ImportResume: FC = () => {
             >
                 <p>Paste the text from the resume to import</p>
                 <input
-                    type="text"
+                    type="file"
+                    accept=".pdf"
                     className="block w-full bg-dark3 disabled:opacity-50 rounded-md py-1 mt-2"
-                    onChange={(e) => setFile(e.target.value)}
+                    onChange={(e) => setFile(e.target.files?.[0] ?? null)}
                     disabled={isUploading}
                 />
                 <Button
@@ -42,11 +43,12 @@ const ImportResume: FC = () => {
                         try {
                             const res = await fetch("/api/resume/import", {
                                 method: "POST",
-                                body: file,
+                                body: formData,
                             });
-    
+
                             setIsUploading(false);
-                            if (res.status !== 200) throw new Error("Failed to import resume");
+                            if (res.status !== 200)
+                                throw new Error("Failed to import resume");
 
                             const resJson = await res.json();
                             resumeData = resJson.data;
@@ -55,7 +57,7 @@ const ImportResume: FC = () => {
                             setIsUploading(false);
                             return;
                         }
-                        
+
                         // Now set some fields
                         setHeader({
                             name: `<b>${resumeData.name}</b>`,
@@ -81,17 +83,19 @@ const ImportResume: FC = () => {
                             {
                                 id: uuidv4(),
                                 title: "Experience",
-                                items: resumeData.experience.map((exp: any) => ({
-                                    type: "experience",
-                                    id: uuidv4(),
-                                    value: {
-                                        company: `<i>${exp.company}</i>`,
-                                        location: `<i>${exp.location}</i>`,
-                                        position: `<b>${exp.job_title}</b>`,
-                                        dates: `<b>${exp.start_date} - ${exp.end_date}</b>`,
-                                        description: exp.description,
-                                    },
-                                })),
+                                items: resumeData.experience.map(
+                                    (exp: any) => ({
+                                        type: "experience",
+                                        id: uuidv4(),
+                                        value: {
+                                            company: `<i>${exp.company}</i>`,
+                                            location: `<i>${exp.location}</i>`,
+                                            position: `<b>${exp.job_title}</b>`,
+                                            dates: `<b>${exp.start_date} - ${exp.end_date}</b>`,
+                                            description: exp.description,
+                                        },
+                                    })
+                                ),
                             },
                             {
                                 id: uuidv4(),

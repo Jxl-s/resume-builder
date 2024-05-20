@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Text Extractor</title>
+</head>
+<body>
+    <h1>Upload a PDF File</h1>
+    <form id="upload-form" enctype="multipart/form-data">
+        <input type="file" id="pdf" name="pdf" accept="application/pdf" required>
+        <button type="submit">Upload</button>
+    </form>
+    <pre id="output"></pre>
+
+    <script>
+        document.getElementById('upload-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const formData = new FormData();
+            const fileInput = document.getElementById('pdf');
+            formData.append('pdf', fileInput.files[0]);
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const text = await response.text();
+                    document.getElementById('output').textContent = text;
+                } else {
+                    document.getElementById('output').textContent = 'Error uploading file';
+                }
+            } catch (error) {
+                document.getElementById('output').textContent = 'Error: ' + error.message;
+            }
+        });
+    </script>
+</body>
+</html>
