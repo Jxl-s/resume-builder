@@ -8,7 +8,7 @@ interface Props {
     description: string[];
 }
 
-const experience = ({
+export const experience = ({
     position,
     dates,
     company,
@@ -26,10 +26,10 @@ const experience = ({
     </div>
     <div style="padding-left: 0.625rem">
         <ul>
-            ${description.map((desc) => `<li>${sanitizeHtml(desc)}</li>`).join("")}
+            ${description
+                .map((desc) => `<li>${sanitizeHtml(desc)}</li>`)
+                .join("")}
         </ul>
     </div>
 </article>
 `;
-
-export default experience;

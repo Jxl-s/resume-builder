@@ -7,7 +7,7 @@ interface Props {
     location: string;
 }
 
-const education = ({ school, date, degree, location }: Props) => `
+export const education = ({ school, date, degree, location }: Props) => `
 <article>
     <div class="twoSide">
         <div>${sanitizeHtml(school)}</div>
@@ -18,5 +18,3 @@ const education = ({ school, date, degree, location }: Props) => `
         <div>${sanitizeHtml(location)}</div>
     </div>
 </article>`;
-
-export default education;

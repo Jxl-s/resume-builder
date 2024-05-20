@@ -9,10 +9,10 @@ import fs from "fs";
 import pdfParse from "pdf-parse";
 import puppeteer from "puppeteer";
 import fonts from "@/app/fonts";
-import heading from "../components/heading";
-import education from "../components/education";
-import experience from "../components/experience";
-import project from "../components/project";
+import heading from "../../utils/server/components/heading";
+import education from "../../utils/server/components/education";
+import experience from "../../utils/server/components/experience";
+import project from "../../utils/server/components/project";
 import { text } from "stream/consumers";
 
 const exportSchema = z.object({

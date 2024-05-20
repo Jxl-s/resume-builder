@@ -10,7 +10,7 @@ interface Props {
     hideLinks?: boolean;
 }
 
-const project = ({
+export const project = ({
     name,
     technologies,
     dates,
@@ -38,10 +38,10 @@ const project = ({
     }
     <div style="padding-left: 0.625rem">
         <ul>
-            ${description.map((desc) => `<li>${sanitizeHtml(desc)}</li>`).join("")}
+            ${description
+                .map((desc) => `<li>${sanitizeHtml(desc)}</li>`)
+                .join("")}
         </ul>
     </div>
 </article>
 `;
-
-export default project;
