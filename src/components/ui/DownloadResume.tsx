@@ -21,7 +21,7 @@ const DownloadResume: FC = () => {
             marginTop,
         } = useDocSettingsStore.getState();
 
-        const resume = await fetch("/api/export_pdf", {
+        const resume = await fetch("/api/resume/export", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

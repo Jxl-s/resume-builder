@@ -8,16 +8,10 @@ import { v4 as uuidv4 } from "uuid";
 import fs from "fs";
 import pdfParse from "pdf-parse";
 import puppeteer from "puppeteer";
-import fonts from "@/app/fonts";
-import heading from "../../utils/server/components/heading";
-import education from "../../utils/server/components/education";
-import experience from "../../utils/server/components/experience";
-import project from "../../utils/server/components/project";
-import { text } from "stream/consumers";
+import { pdfSchema, transformPdf } from "@/utils/server/transform_pdf";
 
-const exportSchema = z.object({
-    resume: z.string(),
-});
+const IMPORT_PATH = path.join(process.cwd(), "resume_pdf/imports");
+const EXPORT_PATH = path.join(process.cwd(), "resume_pdf/exports");
 
 async function htmlToPDF(htmlContent: string, outputPath: string) {
     // Launch a headless browser
@@ -52,11 +46,7 @@ export const ResumeController = {
 
             // Write file to folder
             const uuid = uuidv4();
-            const outputPath = path.join(
-                process.cwd(),
-                "resume_pdf/imports",
-                `${uuid}.pdf`
-            );
+            const outputPath = path.join(IMPORT_PATH, `${uuid}.pdf`);
 
             fs.writeFileSync(outputPath, buffer);
 
@@ -85,118 +75,35 @@ export const ResumeController = {
     },
     async exportResume(req: NextRequest) {
         const body = await req.json();
-        const data = BaseController.checkSchema(exportSchema, body);
+        const data = BaseController.checkSchema(pdfSchema, body);
         if (!data) {
             return BaseController.makeStatus(400, "Invalid data");
         }
 
-        // Read the PDF format
-        const pdfBasePath = path.join(
-            process.cwd(),
-            "resume_pdf/pdf_base.html"
-        );
+        const transformed = transformPdf(data);
 
-        const pdfBase = fs.readFileSync(pdfBasePath, "utf8");
+        // Make the output
+        const uuid = uuidv4();
+        const outputPath = path.join(EXPORT_PATH, `${uuid}.pdf`);
 
-        // Start transforming
-        let transformedPdf = pdfBase;
+        try {
+            // Write the PDF, and the HTML
+            await htmlToPDF(transformed, outputPath);
+            fs.writeFileSync(outputPath.replace(".pdf", ".html"), transformed);
 
-        // Transform the PDF
-        transformedPdf = transformedPdf.replace("__NAME__", body.header.name);
-        transformedPdf = transformedPdf.replace(
-            "__SUBTITLE__",
-            body.header.subtitle
-        );
-        transformedPdf = transformedPdf.replace(
-            "__CONTACT__",
-            body.header.contact
-        );
+            // Prepare the file to be downloaded
+            const buffer = fs.readFileSync(outputPath);
+            const headers = new Headers();
 
-        // Settings
-        const font = body.settings.font as keyof typeof fonts;
-        transformedPdf = transformedPdf.replace(
-            "__FONT_EXPORT__",
-            fonts[font].export
-        );
-        transformedPdf = transformedPdf.replace(
-            "__FONT_FAMILY__",
-            fonts[font].display
-        );
+            headers.append(
+                "Content-Disposition",
+                'attachment; filename="resume.pdf"'
+            );
 
-        transformedPdf = transformedPdf.replace(
-            "__TITLE_SIZE__",
-            body.settings.titleSize
-        );
-
-        transformedPdf = transformedPdf.replace(
-            "__TITLE_HEIGHT__",
-            ((body.settings.titleSize as number) * 1.1).toString()
-        );
-
-        transformedPdf = transformedPdf.replace(
-            "__HEADING_SIZE__",
-            body.settings.headingSize
-        );
-
-        transformedPdf = transformedPdf.replace(
-            "__CONTENT_SIZE__",
-            body.settings.contentSize
-        );
-
-        transformedPdf = transformedPdf.replace(
-            "__MARGIN_TOP__",
-            body.settings.marginTop
-        );
-
-        transformedPdf = transformedPdf.replace(
-            "__MARGIN_BOTTOM__",
-            body.settings.marginBottom
-        );
-
-        transformedPdf = transformedPdf.replace(
-            "__MARGIN_LEFT__",
-            body.settings.marginLeft
-        );
-
-        transformedPdf = transformedPdf.replace(
-            "__MARGIN_RIGHT__",
-            body.settings.marginRight
-        );
-
-        // Make the sections
-        let sectionString = "";
-        for (const section of body.sections) {
-            sectionString += `<section>`;
-            sectionString += heading(section.title);
-            // Add the articles
-            for (const item of section.items) {
-                if (item.type === "education") {
-                    sectionString += education(item.value);
-                }
-
-                if (item.type === "experience") {
-                    sectionString += experience(item.value);
-                }
-
-                if (item.type === "project") {
-                    sectionString += project(item.value);
-                }
-
-                if (item.type === "project-nolinks") {
-                    sectionString += project({
-                        ...item.value,
-                        hideLinks: true,
-                    });
-                }
-
-                if (item.type === "text") {
-                    sectionString += text(item.value.text);
-                }
-            }
-
-            sectionString += `</section>`;
+            headers.append("Content-Type", "application/pdf");
+            return new Response(buffer, { headers });
+        } catch (error) {
+            return BaseController.makeStatus(500, "Failed to write PDF");
         }
-
-        transformedPdf = transformedPdf.replace("__SECTIONS__", sectionString);
     },
 };

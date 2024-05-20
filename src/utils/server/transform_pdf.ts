@@ -16,7 +16,8 @@ export const pdfSchema = z.object({
         contact: z.string(),
     }),
     settings: z.object({
-        font: z.string(),
+        // font: z.string(),
+        font: z.enum(Object.keys(fonts) as [keyof typeof fonts]),
         titleSize: z.number(),
         headingSize: z.number(),
         contentSize: z.number(),
@@ -40,7 +41,6 @@ export const pdfSchema = z.object({
 
 export function transformPdf(body: z.infer<typeof pdfSchema>) {
     let transformedPdf = pdfBase;
-
     // Transform the PDF
     transformedPdf = transformedPdf.replace("__NAME__", body.header.name);
     transformedPdf = transformedPdf.replace(
@@ -50,7 +50,7 @@ export function transformPdf(body: z.infer<typeof pdfSchema>) {
     transformedPdf = transformedPdf.replace("__CONTACT__", body.header.contact);
 
     // Settings
-    const font = body.settings.font as keyof typeof fonts;
+    const font = body.settings.font;
     transformedPdf = transformedPdf.replace(
         "__FONT_EXPORT__",
         fonts[font].export

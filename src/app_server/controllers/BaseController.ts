@@ -23,11 +23,12 @@ export const BaseController = {
             }
         );
     },
-    makeSuccess(code: number, data: any) {
+    makeSuccess(code: number, data: any, headers?: Headers) {
         return NextResponse.json(
             { code, data },
             {
                 status: code,
+                headers,
             }
         );
     },
