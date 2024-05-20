@@ -25,6 +25,107 @@ const ImportModal: FC<Props> = ({ visible, onClose }) => {
         onClose();
     };
 
+    const handleSubmit = async () => {
+        const formData = new FormData();
+        if (usingText) {
+            if (text === "") return;
+            formData.append("text", text);
+        } else {
+            if (!file) return;
+            formData.append("file", file);
+        }
+
+        setIsUploading(true);
+
+        let resumeData;
+        try {
+            const res = await fetch("/api/resume/import", {
+                method: "POST",
+                body: formData,
+            });
+
+            setIsUploading(false);
+            if (res.status !== 200) throw new Error("Failed to import resume");
+
+            const resJson = await res.json();
+            resumeData = resJson.data;
+        } catch (e) {
+            console.error(e);
+            setIsUploading(false);
+            return;
+        }
+
+        // Now set some fields
+        setHeader({
+            name: `<b>${resumeData.name}</b>`,
+            subtitle: "<i>Software Engineer</i>",
+            contact: `${resumeData.phone} | ${resumeData.email}`,
+        });
+
+        setSections([
+            {
+                id: uuidv4(),
+                title: "Education",
+                items: resumeData.education.map((edu: any) => ({
+                    type: "education",
+                    id: uuidv4(),
+                    value: {
+                        school: `<b>${edu.school}</b>`,
+                        location: `<i>${edu.location}</i>`,
+                        degree: `<i>${edu.degree}</i>`,
+                        date: `<b>${edu.grad_month_year}</b>`,
+                    },
+                })),
+            },
+            {
+                id: uuidv4(),
+                title: "Experience",
+                items: resumeData.experience.map((exp: any) => ({
+                    type: "experience",
+                    id: uuidv4(),
+                    value: {
+                        company: `<i>${exp.company}</i>`,
+                        location: `<i>${exp.location}</i>`,
+                        position: `<b>${exp.job_title}</b>`,
+                        dates: `<b>${exp.start_date} - ${exp.end_date}</b>`,
+                        description: exp.description,
+                    },
+                })),
+            },
+            {
+                id: uuidv4(),
+                title: "Projects",
+                items: resumeData.projects.map((exp: any) => ({
+                    type: "project",
+                    id: uuidv4(),
+                    value: {
+                        name: `<b>${exp.name}</b>`,
+                        dates: `<b>${exp.start_date} - ${exp.end_date}</b>`,
+                        technologies: "",
+                        source: "",
+                        demo: "",
+                        description: exp.description,
+                    },
+                })),
+            },
+            {
+                id: uuidv4(),
+                title: "Skills",
+                items: [
+                    {
+                        type: "text",
+                        id: uuidv4(),
+                        value: {
+                            text: resumeData.skills.join(", "),
+                        },
+                    },
+                ],
+            },
+        ]);
+
+        reset();
+    };
+
     return (
         <Modal title="Import Resume" onClose={reset} visible={visible}>
             <p>Select the PDF to be imported</p>
@@ -54,107 +155,7 @@ const ImportModal: FC<Props> = ({ visible, onClose }) => {
                 theme="primary"
                 className="py-2 w-full mt-2"
                 disabled={(file === null && text === "") || isUploading}
-                onClick={async () => {
-                    const formData = new FormData();
-                    if (usingText) {
-                        if (text === "") return;
-                        formData.append("text", text);
-                    } else {
-                        if (!file) return;
-                        formData.append("file", file);
-                    }
-
-                    setIsUploading(true);
-
-                    let resumeData;
-                    try {
-                        const res = await fetch("/api/resume/import", {
-                            method: "POST",
-                            body: formData,
-                        });
-
-                        setIsUploading(false);
-                        if (res.status !== 200)
-                            throw new Error("Failed to import resume");
-
-                        const resJson = await res.json();
-                        resumeData = resJson.data;
-                    } catch (e) {
-                        console.error(e);
-                        setIsUploading(false);
-                        return;
-                    }
-
-                    // Now set some fields
-                    setHeader({
-                        name: `<b>${resumeData.name}</b>`,
-                        subtitle: "<i>Software Engineer</i>",
-                        contact: `${resumeData.phone} | ${resumeData.email}`,
-                    });
-
-                    setSections([
-                        {
-                            id: uuidv4(),
-                            title: "Education",
-                            items: resumeData.education.map((edu: any) => ({
-                                type: "education",
-                                id: uuidv4(),
-                                value: {
-                                    school: `<b>${edu.school}</b>`,
-                                    location: `<i>${edu.location}</i>`,
-                                    degree: `<i>${edu.degree}</i>`,
-                                    date: `<b>${edu.grad_month_year}</b>`,
-                                },
-                            })),
-                        },
-                        {
-                            id: uuidv4(),
-                            title: "Experience",
-                            items: resumeData.experience.map((exp: any) => ({
-                                type: "experience",
-                                id: uuidv4(),
-                                value: {
-                                    company: `<i>${exp.company}</i>`,
-                                    location: `<i>${exp.location}</i>`,
-                                    position: `<b>${exp.job_title}</b>`,
-                                    dates: `<b>${exp.start_date} - ${exp.end_date}</b>`,
-                                    description: exp.description,
-                                },
-                            })),
-                        },
-                        {
-                            id: uuidv4(),
-                            title: "Projects",
-                            items: resumeData.projects.map((exp: any) => ({
-                                type: "project",
-                                id: uuidv4(),
-                                value: {
-                                    name: `<b>${exp.name}</b>`,
-                                    dates: `<b>${exp.start_date} - ${exp.end_date}</b>`,
-                                    technologies: "",
-                                    source: "",
-                                    demo: "",
-                                    description: exp.description,
-                                },
-                            })),
-                        },
-                        {
-                            id: uuidv4(),
-                            title: "Skills",
-                            items: [
-                                {
-                                    type: "text",
-                                    id: uuidv4(),
-                                    value: {
-                                        text: resumeData.skills.join(", "),
-                                    },
-                                },
-                            ],
-                        },
-                    ]);
-
-                    reset();
-                }}
+                onClick={handleSubmit}
             >
                 Import
             </Button>
