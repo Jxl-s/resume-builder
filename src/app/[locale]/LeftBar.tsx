@@ -95,9 +95,7 @@ const LeftBar: FC = () => {
                             className="bg-inherit w-full"
                             value={multiplierUnit}
                             onChange={(e) =>
-                                setMultiplierUnit(
-                                    e.target.value as Unit
-                                )
+                                setMultiplierUnit(e.target.value as Unit)
                             }
                         >
                             <option value={"pt"}>pt</option>
@@ -114,7 +112,11 @@ const LeftBar: FC = () => {
                     This will give the AI more context when giving suggestions.
                 </p>
                 <textarea
-                    className="bg-dark2 rounded-lg w-full mt-2 p-2"
+                    className={`bg-dark2 rounded-lg w-full mt-2 p-2 outline-none ${
+                        jobDescription.length > 0
+                            ? "border-2 border-primary"
+                            : ""
+                    }`}
                     onChange={(e) => setJobDescription(e.target.value)}
                     value={jobDescription}
                 />
