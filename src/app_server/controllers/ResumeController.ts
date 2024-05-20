@@ -2,7 +2,7 @@ import { NextRequest } from "next/server";
 import { z } from "zod";
 import { BaseController } from "./BaseController";
 import { importPrompt } from "@/utils/server/prompts";
-import { promptMetaLlama } from "@/utils/server/prompt_llm";
+import { promptLLM } from "@/utils/server/prompt_llm";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
 import fs from "fs";
@@ -67,11 +67,117 @@ export const ResumeController = {
         let prompt = importPrompt;
         prompt = prompt.replace("__RESUME_TEXT__", text);
 
-        const response = await promptMetaLlama({
+        const response = await promptLLM({
             message: prompt,
         });
 
-        return BaseController.makeSuccess(200, JSON.parse(response));
+        // Parse the output
+        const output: Record<string, any> = {
+            name: "",
+            email: "",
+            phone: "",
+            education: [],
+            experience: [],
+            projects: [],
+            skills: "",
+        };
+        let curObject: Record<string, any> | null = null;
+        let curObjectType = "";
+
+        const BLOCKS = ["EDUCATION", "EXPERIENCE", "PROJECT"];
+        const START_BLOCKS = BLOCKS.map((block) => `${block}_START`);
+        const END_BLOCKS = BLOCKS.map((block) => `${block}_END`);
+
+        response.split("\n").forEach((line) => {
+            if (line.startsWith("NAME=")) {
+                output["name"] = line.replace("NAME=", "");
+            }
+
+            if (line.startsWith("PHONE=")) {
+                output["phone"] = line.replace("PHONE=", "");
+            }
+
+            if (line.startsWith("EMAIL=")) {
+                output["email"] = line.replace("EMAIL=", "");
+            }
+
+            if (line.startsWith("SKILLS=")) {
+                output.skills = line.replace("SKILLS=", "");
+            }
+
+            // Education
+            if (line.startsWith("SCHOOL=")) {
+                curObject = curObject || {};
+                curObject.school = line.replace("SCHOOL=", "");
+            }
+
+            if (line.startsWith("DEGREE=")) {
+                curObject = curObject || {};
+                curObject.degree = line.replace("DEGREE=", "");
+            }
+
+            if (line.startsWith("GRAD_DATE=")) {
+                curObject = curObject || {};
+                curObject.grad_month_year = line.replace("GRAD_DATE=", "");
+            }
+
+            if (line.startsWith("LOCATION=")) {
+                curObject = curObject || {};
+                curObject.location = line.replace("LOCATION=", "");
+            }
+
+            // Experience
+            if (line.startsWith("POSITION=")) {
+                curObject = curObject || {};
+                curObject.job_title = line.replace("POSITION=", "");
+            }
+
+            if (line.startsWith("ORGANIZATION=")) {
+                curObject = curObject || {};
+                curObject.company = line.replace("ORGANIZATION=", "");
+            }
+
+            if (line.startsWith("START_DATE=")) {
+                curObject = curObject || {};
+                curObject.start_date = line.replace("START_DATE=", "");
+            }
+
+            if (line.startsWith("END_DATE=")) {
+                curObject = curObject || {};
+                curObject.end_date = line.replace("END_DATE=", "");
+            }
+
+            if (line.startsWith("DESCRIPTION=")) {
+                curObject = curObject || {};
+                curObject.description = curObject.description || [];
+                curObject.description.push(line.replace("DESCRIPTION=", ""));
+            }
+
+            // Projects
+            if (line.startsWith("TITLE=")) {
+                curObject = curObject || {};
+                curObject.title = line.replace("TITLE=", "");
+            }
+
+            if (START_BLOCKS.includes(line)) {
+                curObject = {};
+                curObjectType = line.split("_")[0];
+            }
+
+            if (END_BLOCKS.includes(line)) {
+                if (curObjectType === "EDUCATION") {
+                    output.education.push(curObject);
+                } else if (curObjectType === "EXPERIENCE") {
+                    output.experience.push(curObject);
+                } else if (curObjectType === "PROJECT") {
+                    output.projects.push(curObject);
+                }
+
+                curObject = null;
+            }
+        });
+
+        return BaseController.makeSuccess(200, output);
     },
     async exportResume(req: NextRequest) {
         const body = await req.json();

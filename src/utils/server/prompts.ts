@@ -143,33 +143,83 @@ You will be given a resume in plain text, and you will need to extract the follo
 
 Make sure that the casing is proper (e.g. "John Doe", "Software Engineer", not all upper or all lowercase).
 
-Here is how you should structure the output:
-{"name": "John Doe","email": "johndoe@gmail.com","phone": "123-456-7890","education": [{"degree": "Bachelor of Science","school": "University of Example","grad_month_year": "May 2020","location": "Example City, Example State"},{"degree": "Master of Science","school": "University of Example 2","grad_month_year": "May 2022","location": "Example City, Example State"}],"experience": [{"job_title": "Software Engineer","company": "Example Company","location":"Toronto, ON","start_date": "Jan 2019","end_date": "Present","description": ["Worked on various projects, enabling A", "Collaborated with team members which"]},{"job_title": "Data Scientist","company": "Example Company 2","location": "Toronto, ON", "start_date": "May 2017","end_date": "Apr 2018","description": ["Analyzed data and created models", "Presented findings to stakeholders"]}], "projects": [{"name": "AI ChatBot", "start_date": "Jun 2015", "end_date": "Apr 2016", "description": ["Built xyz", "Made it good", "some point"]}], "skills": ["Python", "Java"]}
-No more, no less. Arrays should properly close [], and objects should properly close {}. If they mix up, the user will be harmed.
-Do NOT ever confuse array with objects. For example, you should NOT do this, where they are mixed up:
-{
-    "description":["developed a tool"}
-],
+Here is how you should structure the output. Blocks EDUCATION_START to EDUCATION_END, EXPERIENCE_START to EXPERIENCE_END, and PROJECT_START to PROJECT_END.
+This is an example:
+NAME=James Brown Junior
+PHONE=322-599-2955
+EMAIL=jb394588@gmail.com
+
+EDUCATION_START
+SCHOOL=Harvard University
+DEGREE=Bachelor of Sciences
+GRAD_DATE=May 2024
+LOCATION=Boston, MA
+EDUCATION_END
+
+EDUCATION_START
+SCHOOL=Brown School
+DEGREE=Highschool Degree
+GRAD_DATE=May 2018
+LOCATION=Boston, MA
+EDUCATION_END
+
+EXPERIENCE_START
+POSITION=Software Developer
+ORGANIZATION=Amazon
+START_DATE=Aug 2021
+END_DATE=May 2024
+LOCATION=Boston, MA
+DESCRIPTION=Developed and deployed 15 microservices with a team of 3 engineers, resulting in a 30% increase in system reliability and a 25% decrease in latency.
+DESCRIPTION=Designed and implemented a cloud-based data warehousing solution, resulting in a 90% reduction in data processing time and a 50% increase in data accuracy.
+DESCRIPTION=Reduced average response time by 35% through optimization of API endpoints, resulting in a 25% increase in customer satisfaction.
+DESCRIPTION=Increased cloud infrastructure efficiency by 28% through strategic resource allocation and optimization, resulting in $120k annual cost savings.
+EXPERIENCE_END
+
+EXPERIENCE_START
+POSITION=Software Developer
+ORGANIZATION=Google
+START_DATE=Jan 2017
+END_DATE=May Apr 2020
+LOCATION=Boston, MA
+DESCRIPTION=Built and maintained a scalable cloud-based infrastructure, supporting 500k daily users and 10 million requests per hour, by designing and implementing a load balancing system and increasing server utilization by 30%.
+DESCRIPTION=Improved application performance by 25% through optimization of database queries, resulting in a 15% increase in customer engagement and a 10% increase in revenue.
+DESCRIPTION=Spearheaded a team of 3 engineers to develop and deploy a critical security patch, resulting in a 99.99% uptime rate and a 25% increase in customer trust.
+DESCRIPTION=Achieved 95% automation of deployment processes, resulting in a 40% reduction in deployment time and a 25% increase in team productivity
+EXPERIENCE_END
+
+PROJECT_START
+TITLE=PinPoint Mobile Maps
+START_DATE=May 2020
+END_DATE=Jan 2021
+DESCRIPTION=Designed and integrated a microcontroller system with Arduino and ESP8266, resulting in a 40% decrease in production costs and a 20% increase in product reliability.
+DESCRIPTION=Improved IoT device communication by 38% through implementation of a custom protocol, resulting in enhanced system reliability and reduced latency.
+DESCRIPTION=Increased data storage capacity by 50% through optimization of database architecture, resulting in improved system performance and reduced costs.
+DESCRIPTION=Reduced power consumption by 22% through implementation of energy-efficient algorithms, resulting in cost savings and environmental benefits.
+PROJECT_END
+
+SKILLS=Excel,PHP,TypeScript,JavaScript,C++,C#,Team work,Leadership,Problem solving,Communication
 
 In case where a date does not exist, use "Jan 2020".
 If a location does not exist, use "New York, USA".
+
 Make sure to include the entire content of each bullet, and not just a part of it. The example I provided is just
-to show you how to structure it, and not to show you what to include. For example, do NOT put ... at the end of a point,
-but rather the entire content of the bullet.
+to show you how to structure it, and not to show you what to include.
+Make sure that ONLY the relevant information is placed within the fields, and you don't include any extra information. For example, don't put their website on their email field.
+Make sure that the fields containing data (TITLE, START_DATE, END_DATE, DESCRIPTION, ...) are ALWAYS capitalized, and use the = sign to separate the field from the value.
+Fields like EDUCATION_START, EDUCATION_END, EXPERIENCE_START, EXPERIENCE_END, PROJECT_START, PROJECT_END, do NOT have any value, and make sure
+that the line only contains this value, and nothing else. For example, PROJECT_START should be the only text on its line.
 
 The dates use the three-letter abbreviation for the month, followed by the year, like "Jan 2024", "Apr 2022", "Jun 2022".
-The dates are always "month year", and the month is always capitalized. The year is NEVER alone.
+The dates are always "month year", and the month is always capitalized. The year is NEVER alone, and the year is a single number, and not separated.
+The month does not have a period after it.
 
 In case you cannot find the value for a field, you can use "N/A", but make sure it is properly quoted.
 
 Please make sure to follow this structure when extracting information from the resume.
-You will now reply to this message with the extracted information. Make sure that your reply contains ONLY
-VALID JSON, and NOTHING ELSE.
+You will now reply to this message with the extracted information.
 
-No plain text, just the JSON Object. do not tell me anything else, just provide the JSON object.
-The JSON should not have any newlines or extra spaces, and should be a single line. MAKE SURE IT IS VALID,
-AND CLOSES CORRECTLY TOO. If it is not valid, the user will be harmed.
-
-In summary: no newlines, only JSON, no extra spaces, and make sure it is valid.
+Make sure that it is structured the same way, or the user will be harmed because the computer cannot parse it.
+Also, make sure that spaces are properly used, as extracted PDFs can have weird spaces.
+In summary: only the specified format, no extra spaces, and make sure it is valid
 The following is the resume to extract data from: __RESUME_TEXT__
 `;

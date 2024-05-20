@@ -6,7 +6,7 @@ import {
     improvePrompt,
     jobDescriptionPrompt,
 } from "@/utils/server/prompts";
-import { promptMetaLlama } from "@/utils/server/prompt_llm";
+import { promptLLM } from "@/utils/server/prompt_llm";
 
 const enhanceBulletSchema = z.object({
     point: z.string(),
@@ -47,7 +47,7 @@ export const BulletsController = {
             .replace("__OTHER_POINTS__", data.otherPoints)
             .replace("__OTHER_ITEMS_POINTS__", data.allPoints);
 
-        const aiResponse = await promptMetaLlama({
+        const aiResponse = await promptLLM({
             message: prompt,
         });
 
@@ -83,7 +83,7 @@ export const BulletsController = {
             .replace("__OTHER_POINTS__", data.otherPoints)
             .replace("__OTHER_ITEMS_POINTS__", data.allPoints);
 
-        const aiResponse = await promptMetaLlama({
+        const aiResponse = await promptLLM({
             message: prompt,
         });
 

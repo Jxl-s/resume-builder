@@ -116,7 +116,7 @@ const ImportModal: FC<Props> = ({ visible, onClose }) => {
                         type: "text",
                         id: uuidv4(),
                         value: {
-                            text: resumeData.skills.join(", "),
+                            text: resumeData.skills,
                         },
                     },
                 ],
