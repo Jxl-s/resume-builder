@@ -4,12 +4,12 @@ import path from "path";
 import puppeteer from "puppeteer";
 import { v4 as uuidv4 } from "uuid";
 import { readFile } from "fs/promises";
-import education from "./components/education";
-import experience from "./components/experience";
-import project from "./components/project";
-import text from "./components/text";
+import education from "../../../app_server/components/education";
+import experience from "../../../app_server/components/experience";
+import project from "../../../app_server/components/project";
+import text from "../../../app_server/components/text";
 import fonts from "../../fonts";
-import heading from "./components/heading";
+import heading from "../../../app_server/components/heading";
 
 async function htmlToPDF(htmlContent: string, outputPath: string) {
     // Launch a headless browser
