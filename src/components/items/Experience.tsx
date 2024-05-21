@@ -1,9 +1,9 @@
 import { FC, use } from "react";
-import EditableTwoSide from "../EditableTwoSide";
+import EditableTwoSide from "../editable/EditableTwoSide";
 import useDocSettingsStore from "@/stores/useDocSettingsStore";
 import useResumeEditorStore from "@/stores/useResumeEditorStore";
 import { IExperienceItem } from "@/types/items";
-import EditableList from "../EditableList";
+import EditableList from "../editable/EditableList";
 import { useSection } from "../Section";
 import { FaGripVertical, FaTrash } from "react-icons/fa";
 import DeleteDrag from "../DeleteDrag";

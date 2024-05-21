@@ -5,7 +5,7 @@ import "./EditableList.css";
 import { sanitizeHtml } from "@/utils/sanitizeHtml";
 import useStylingStore, { updateDisplayStyle } from "@/stores/useStylingStore";
 import useFocusedListStore from "@/stores/useFocusedListStore";
-import { useSection } from "./Section";
+import { useSection } from "../Section";
 
 interface Props {
     items: string[];

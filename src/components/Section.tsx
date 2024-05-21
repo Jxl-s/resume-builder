@@ -1,5 +1,5 @@
 import { FC, PropsWithChildren, useContext, createContext } from "react";
-import EditableHeading from "./EditableHeading";
+import EditableHeading from "./editable/EditableHeading";
 
 interface SectionProps {
     sectionId: string;

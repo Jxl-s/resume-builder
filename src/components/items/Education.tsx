@@ -1,5 +1,5 @@
 import { FC, use } from "react";
-import EditableTwoSide from "../EditableTwoSide";
+import EditableTwoSide from "../editable/EditableTwoSide";
 import useDocSettingsStore from "@/stores/useDocSettingsStore";
 import useResumeEditorStore from "@/stores/useResumeEditorStore";
 import { IEducationItem } from "@/types/items";

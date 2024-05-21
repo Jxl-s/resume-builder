@@ -1,5 +1,5 @@
 import { FC } from "react";
-import EditableItem from "../EditableItem";
+import EditableItem from "../editable/EditableItem";
 import useDocSettingsStore from "@/stores/useDocSettingsStore";
 import useResumeEditorStore from "@/stores/useResumeEditorStore";
 import { useSection } from "../Section";
