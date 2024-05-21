@@ -36,13 +36,17 @@ const RightBar: FC = () => {
                     </li>
                 ))}
             </ol>
-            <button
+            <Button
                 onClick={() => {
-                    addSavedResume(new Date() + " " + Math.random());
+                    addSavedResume(
+                        `${new Date().toDateString()} (${new Date().getTime()})`
+                    );
                 }}
+                theme="primary"
+                className="font-semibold w-full py-2 mt-4"
             >
-                save current
-            </button>
+                Save Current
+            </Button>
         </article>
     );
 };
