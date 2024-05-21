@@ -22,7 +22,11 @@ async function htmlToPDF(htmlContent: string, outputPath: string) {
     // Open a new page
     const page = await browser.newPage();
     await page.setContent(htmlContent);
-    await page.pdf({ path: outputPath, format: "Letter" });
+    await page.pdf({
+        path: outputPath,
+        format: "Letter",
+        preferCSSPageSize: true,
+    });
     await browser.close();
 
     console.log(`PDF saved at: ${outputPath}`);
