@@ -4,7 +4,14 @@ import useResumeEditorStore from "./useResumeEditorStore";
 import useDocSettingsStore from "./useDocSettingsStore";
 
 interface SavedStore {
-    savedResumes: Object[];
+    savedResumes: {
+        name: string;
+        state: {
+            sections: any[];
+            header: any;
+            settings: any;
+        };
+    }[];
     addSavedResume: (name: string) => void;
     loadSavedResume: (name: string) => void;
     deleteSavedResume: (name: string) => void;
