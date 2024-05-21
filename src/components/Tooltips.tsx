@@ -50,8 +50,6 @@ const Tooltips: FC = () => {
     const [showHyperlinkMenu, setShowHyperlinkMenu] = useState(false);
     const [hyperlinkUrl, setHyperlinkUrl] = useState("");
 
-    const header = useResumeEditorStore((state) => state.header);
-    const sections = useResumeEditorStore((state) => state.sections);
     const font = useDocSettingsStore((state) => state.font);
     const setFont = useDocSettingsStore((state) => state.setFont);
 
@@ -94,7 +92,6 @@ const Tooltips: FC = () => {
         } else {
             // open hyperlink menu
             setShowHyperlinkMenu((prev) => !prev);
-            // document.execCommand("createLink", false, "https://google.com");
         }
 
         updateDisplayStyle();

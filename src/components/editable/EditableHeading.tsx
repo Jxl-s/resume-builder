@@ -135,7 +135,7 @@ const EditableHeading: FC<Props> = ({ content, setContent }) => {
                 </ul>
                 <p
                     className="hover:brightness-150 duration-300 cursor-pointer font-semibold text-danger text-center text-sm mt-2"
-                    onClick={() => onCancelAddItem()}
+                    onClick={onCancelAddItem}
                 >
                     Cancel
                 </p>
