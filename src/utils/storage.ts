@@ -1,12 +1,10 @@
 import useDocSettingsStore from "@/stores/useDocSettingsStore";
 import useResumeEditorStore from "@/stores/useResumeEditorStore";
+import useSavedStore from "@/stores/useSavedStore";
 
 const STORAGE_KEY = "resume-editor-state";
-export const saveState = () => {
-    // Get content
+export const getCurrentState = () => {
     const { sections, header } = useResumeEditorStore.getState();
-
-    // Get settings
     const {
         font,
         titleSize,
@@ -20,30 +18,29 @@ export const saveState = () => {
         multiplierUnit,
     } = useDocSettingsStore.getState();
 
-    console.log(marginBottom);
+    return {
+        sections,
+        header,
+        settings: {
+            font,
+            titleSize,
+            headingSize,
+            contentSize,
+            marginBottom,
+            marginLeft,
+            marginRight,
+            marginTop,
+            spacing,
+            multiplierUnit,
+        },
+    };
+};
+
+export const saveState = () => {
+    const currentState = getCurrentState();
 
     // Write to local storage
-    localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify({
-            sections,
-            header,
-            settings: {
-                font,
-                titleSize,
-                headingSize,
-                contentSize,
-
-                marginBottom,
-                marginLeft,
-                marginRight,
-                marginTop,
-
-                spacing,
-                multiplierUnit,
-            },
-        })
-    );
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(currentState));
 };
 
 export const getState = () => {
@@ -62,5 +59,14 @@ export const loadState = () => {
         const { sections, header, settings } = state;
         useResumeEditorStore.setState({ sections, header });
         useDocSettingsStore.setState(settings);
+    }
+
+    // Also load the saved resumes
+    const savedResumes = localStorage.getItem("savedResumes");
+    if (savedResumes) {
+        useSavedStore.setState({ savedResumes: JSON.parse(savedResumes) });
+    } else {
+        useSavedStore.setState({ savedResumes: [] });
+        localStorage.setItem("savedResumes", "[]");
     }
 };

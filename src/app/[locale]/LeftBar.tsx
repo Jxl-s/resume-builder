@@ -77,7 +77,7 @@ const LeftBar: FC = () => {
     const setSpacing = useDocSettingsStore((state) => state.setSpacing);
 
     return (
-        <section className="w-full">
+        <section className="w-full min-w-[306px]">
             <article className="bg-dark1 rounded-lg p-2 w-full print:hidden mb-2 block">
                 <div className="grid grid-cols-2 gap-2 justify-between items-center mb-2">
                     <span className="ms-2">Spacing</span>

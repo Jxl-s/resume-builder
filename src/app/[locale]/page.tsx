@@ -13,6 +13,7 @@ import {
 } from "react-icons/fa6";
 import LeftBar from "./LeftBar";
 import { Suspense } from "react";
+import RightBar from "./RightBar";
 
 export default function Home() {
     const t = useTranslations("Index");
@@ -20,15 +21,18 @@ export default function Home() {
     return (
         <main>
             <Nav />
-            <section className="p-4 flex gap-4">
+            <section
+                className="p-4 flex gap-4"
+                style={{
+                    marginTop: "68px",
+                }}
+            >
                 <LeftBar />
                 <article className="bg-dark1 rounded-lg p-2 flex-grow flex flex-col items-center">
                     <Tooltips />
                     <Editor />
                 </article>
-                <article className="h-full bg-dark1 rounded-lg p-4 w-full print:hidden">
-                    <h1 className="text-2xl font-semibold">My Resumes</h1>
-                </article>
+                <RightBar />
             </section>
         </main>
     );
