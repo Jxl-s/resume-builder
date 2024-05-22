@@ -173,10 +173,11 @@ const LeftBar: FC = () => {
                                 setMultiplierUnit(e.target.value as Unit)
                             }
                         >
-                            <option value={"pt"}>pt</option>
-                            <option value={"px"}>px</option>
-                            <option value={"in"}>in</option>
-                            <option value={"mm"}>mm</option>
+                            {["pt", "px", "in", "mm"].map((unit) => (
+                                <option key={unit} value={unit}>
+                                    {unit}
+                                </option>
+                            ))}
                         </select>
                     </div>
                 </div>
