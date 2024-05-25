@@ -114,7 +114,7 @@ const EditableHeading: FC<Props> = ({ content, setContent }) => {
                 ref={addItemRef}
             >
                 <p className="text-white font-semibold text-center border-b border-white mb-2">
-                    Add a New Item
+                    Item Template
                 </p>
                 <ul className="text-primary text-sm font-semibold px-3 flex flex-col gap-y-1 gap-x-8">
                     {itemChoices.map((item) => (
