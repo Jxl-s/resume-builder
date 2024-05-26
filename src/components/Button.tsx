@@ -6,6 +6,7 @@ interface Props {
     theme?: keyof typeof themes;
     className?: string;
     onMouseDown?: (e: React.MouseEvent) => void;
+    title: string;
 }
 
 const themes = {
@@ -22,9 +23,11 @@ const Button: FC<PropsWithChildren<Props>> = ({
     className = "",
     children,
     onMouseDown,
+    title,
 }) => {
     return (
         <button
+            title={title}
             onClick={onClick}
             className={`${themes[theme]} ${className} rounded-md shadow-md duration-300 enabled:hover:brightness-110 disabled:opacity-50`}
             disabled={disabled}

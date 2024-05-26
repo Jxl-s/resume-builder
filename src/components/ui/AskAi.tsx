@@ -61,6 +61,7 @@ const AskAi: FC = () => {
                 disabled={focusedItemId === "" && focusedSectionId === ""}
                 onClick={() => onAskAi(focusedSectionId, focusedItemId)}
                 onMouseDown={(e) => e.preventDefault()}
+                title="Select a bullet list and click here to get AI suggestions"
             >
                 <FaHandSparkles className="w-4 h-4" />
                 Ask AI
