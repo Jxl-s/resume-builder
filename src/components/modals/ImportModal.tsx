@@ -99,7 +99,7 @@ const ImportModal: FC<Props> = ({ visible, onClose }) => {
                     type: "project",
                     id: uuidv4(),
                     value: {
-                        name: `<b>${exp.name}</b>`,
+                        name: `<b>${exp.title}</b>`,
                         dates: `<b>${exp.start_date} - ${exp.end_date}</b>`,
                         technologies: "",
                         source: "",

@@ -6,7 +6,7 @@ interface Props {
     theme?: keyof typeof themes;
     className?: string;
     onMouseDown?: (e: React.MouseEvent) => void;
-    title: string;
+    title?: string;
 }
 
 const themes = {
