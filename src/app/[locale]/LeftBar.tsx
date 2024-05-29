@@ -201,16 +201,16 @@ const LeftBar: FC = () => {
                 <h1 className="text-2xl font-semibold">Margins</h1>
                 <TwoInputs
                     title="Top-Bottom Margins"
-                    value1={marginTop}
-                    value2={marginBottom}
+                    value1={convertToUnit(marginTop, multiplierUnit)}
+                    value2={convertToUnit(marginBottom, multiplierUnit)}
                     setValue1={setMTop}
                     setValue2={setMBottom}
                     unit={multiplierUnit}
                 />
                 <TwoInputs
                     title="Left-Right Margins"
-                    value1={marginLeft}
-                    value2={marginRight}
+                    value1={convertToUnit(marginLeft, multiplierUnit)}
+                    value2={convertToUnit(marginRight, multiplierUnit)}
                     setValue1={setMLeft}
                     setValue2={setMRight}
                     unit={multiplierUnit}
