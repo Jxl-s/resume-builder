@@ -25,6 +25,7 @@ export const pdfSchema = z.object({
         marginBottom: z.number(),
         marginLeft: z.number(),
         marginRight: z.number(),
+        spacing: z.number(),
     }),
     sections: z.array(
         z.object({
@@ -60,6 +61,10 @@ export function transformPdf(body: z.infer<typeof pdfSchema>) {
         fonts[font].display
     );
 
+    transformedPdf = transformedPdf.replace(
+        "__SPACING__",
+        body.settings.spacing.toString()
+    );
     transformedPdf = transformedPdf.replace(
         "__TITLE_SIZE__",
         body.settings.titleSize.toString()

@@ -12,6 +12,7 @@ const DownloadResume: FC = () => {
         const { header, sections } = useResumeEditorStore.getState();
         const {
             font,
+            spacing,
             titleSize,
             headingSize,
             contentSize,
@@ -31,6 +32,7 @@ const DownloadResume: FC = () => {
                 sections,
                 settings: {
                     font,
+                    spacing,
                     titleSize,
                     headingSize,
                     contentSize,
