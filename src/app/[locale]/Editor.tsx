@@ -95,7 +95,7 @@ const Editor: FC = () => {
 
     return (
         <div
-            className={`bg-white text-black w-[612pt] rounded-lg`}
+            className={`bg-white text-black w-[612pt] print:w-full rounded-lg`}
             style={{
                 ...fonts[font].style,
                 lineHeight: spacing,
@@ -108,7 +108,27 @@ const Editor: FC = () => {
                     marginLeft: marginLeft,
                     marginRight: marginRight,
                 }}
+                id="resume-container"
             >
+                <style>
+                    {`
+                        @media print {
+                            div {
+                                padding: 0 !important;
+                                margin: 0 !important;
+                            }
+                        }
+
+                        // only content of resume-container should be visible, rest is hidden
+                        body {
+                            display: none;
+                        }
+
+                        #resume-container {
+                            display: block;
+                        }
+                    `}
+                </style>
                 <Header />
                 {sections.map((section, i) => (
                     <Section
@@ -146,7 +166,9 @@ const Editor: FC = () => {
                     className="flex items-center justify-center gap-2 w-full text-sm print:hidden mt-4"
                 >
                     <FaPlusCircle className="w-4 h-4" />
-                    <span className="font-semibold py-2">Add a New Section</span>
+                    <span className="font-semibold py-2">
+                        Add a New Section
+                    </span>
                 </Button>
             </div>
         </div>

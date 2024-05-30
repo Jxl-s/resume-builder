@@ -19,7 +19,7 @@ export default function Home() {
     const t = useTranslations("Index");
 
     return (
-        <main>
+        <main className="m-0 p-0">
             <Nav />
             <section
                 className="p-4 flex gap-4"

@@ -155,8 +155,8 @@ const LeftBar: FC = () => {
     const setSpacing = useDocSettingsStore((state) => state.setSpacing);
 
     return (
-        <section className="w-full min-w-[306px]">
-            <article className="bg-dark1 rounded-lg p-2 w-full print:hidden mb-2 block">
+        <section className="w-full min-w-[306px] print:hidden">
+            <article className="bg-dark1 rounded-lg p-2 w-full mb-2 block">
                 <LeftInput
                     title="Spacing"
                     value={spacing}
