@@ -11,6 +11,7 @@ This project is composed of two parts:
 
 -   **Resume Builder**: Create a clean resume through an intuitive interface.
 -   **AI Helper**: Generate suggestions and new bullet points for your resume using AI. They can be tailored to a certain job posting.
+-   **Importing**: Import your resume from a PDF or a text document. It uses the LLM to extract fields.
 -   **Exporting**: Export your resume as a PDF.
 
 ## Demo
