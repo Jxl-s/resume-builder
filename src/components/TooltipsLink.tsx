@@ -1,7 +1,13 @@
 import fonts, { defaultFont } from "@/app/fonts";
 import { validateLink } from "@/utils/sanitizeHtml";
 import { FC, useEffect, useRef, useState } from "react";
-import { FaPenToSquare, FaX, FaEraser, FaCheck } from "react-icons/fa6";
+import {
+    FaPenToSquare,
+    FaX,
+    FaEraser,
+    FaCheck,
+    FaXmark,
+} from "react-icons/fa6";
 
 const TooltipsLink: FC<{
     resumeContainerRef: React.RefObject<HTMLDivElement>;
@@ -136,6 +142,15 @@ const TooltipsLink: FC<{
         setLastAnchor(null);
     };
 
+    const handleExit = () => {
+        setLastAnchor(null);
+        setIsEditing(false);
+
+        if (linkEditorRef.current) {
+            linkEditorRef.current.style.display = "none";
+        }
+    };
+
     return (
         <div
             ref={linkEditorRef}
@@ -155,24 +170,36 @@ const TooltipsLink: FC<{
                 disabled={!isEditing}
             />
             {isEditing ? (
-                <FaCheck
-                    className={`w-5 h-5 text-primary  hover:brightness-125 duration-300 ${
-                        validateLink(linkEditorValue)
-                            ? "cursor-pointer"
-                            : "opacity-50"
-                    }`}
-                    onClick={handleEdit}
-                />
+                <>
+                    <FaCheck
+                        className={`w-5 h-5 text-primary  hover:brightness-125 duration-300 ${
+                            validateLink(linkEditorValue)
+                                ? "cursor-pointer"
+                                : "opacity-50"
+                        }`}
+                        onClick={handleEdit}
+                        title="Save"
+                    />
+                    <FaXmark
+                        className="w-5 h-5 text-danger cursor-pointer hover:brightness-125 duration-300"
+                        onClick={handleExit}
+                        title="Cancel"
+                    />
+                </>
             ) : (
-                <FaPenToSquare
-                    className="w-5 h-5 text-primary cursor-pointer hover:brightness-125 duration-300"
-                    onClick={() => setIsEditing(true)}
-                />
+                <>
+                    <FaPenToSquare
+                        className="w-5 h-5 text-primary cursor-pointer hover:brightness-125 duration-300"
+                        onClick={() => setIsEditing(true)}
+                        title="Edit"
+                    />
+                    <FaEraser
+                        className="w-5 h-5 text-danger cursor-pointer hover:brightness-125 duration-300"
+                        onClick={handleErase}
+                        title="Delete"
+                    />
+                </>
             )}
-            <FaEraser
-                className="w-5 h-5 text-danger cursor-pointer hover:brightness-125 duration-300"
-                onClick={handleErase}
-            />
         </div>
     );
 };
