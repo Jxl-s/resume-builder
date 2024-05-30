@@ -9,7 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "express": "^4.19.2",
     "isomorphic-dompurify": "^2.9.0",
+    "multer": "^1.4.5-lts.1",
     "next": "14.2.3",
     "next-intl": "^3.12.2",
     "node-fetch": "^3.3.2",

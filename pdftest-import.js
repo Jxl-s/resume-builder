@@ -9,7 +9,7 @@ const upload = multer({ dest: "resume_pdf/imports/" });
 
 // Serve the HTML file
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "index.html"));
+    res.sendFile(path.join(__dirname, "pdftest-import.html"));
 });
 
 // Handle PDF file uploads and text extraction
