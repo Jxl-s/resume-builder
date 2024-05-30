@@ -334,10 +334,10 @@ const EnhancerModal: FC<Props> = ({ visible, sectionId, itemId, onClose }) => {
                             (c, i) => (
                                 <li
                                     className="text-primary hover:brightness-125 duration-300 cursor-pointer my-1"
-                                    onClick={() => onEnhancerSelect(i, c)}
+                                    onClick={() => onEnhancerSelect(i, removeTags(c))}
                                     key={i}
                                 >
-                                    {c}
+                                    {removeTags(c)}
                                 </li>
                             )
                         ) ?? []}
