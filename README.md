@@ -15,13 +15,17 @@ https://resume-builder-green-five.vercel.app
 
 Locally hosting the project is recommended for the full experience.
 
-## Requirements
+## Installation
+
+Here are the steps to run the project locally.
+
+### Requirements
 
 -   Node.JS
 -   Python
 -   Yarn (npm i -g yarn)
 
-## Installation
+### Instructions
 
 Clone the repository
 
