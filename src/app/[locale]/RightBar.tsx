@@ -45,7 +45,7 @@ const RightBar: FC = () => {
                 theme="primary"
                 className="font-semibold w-full py-2 mt-4"
             >
-                Save Current
+                Take Snapshot
             </Button>
         </article>
     );

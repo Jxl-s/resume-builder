@@ -15,7 +15,7 @@ const Nav: FC = () => {
                     <li className="font-bold text-3xl">ResumeBuilder</li>
                     <li className="font-semibold text-primary">Resume</li>
                 </ul>
-                <Button className="font-semibold px-8">Sign In</Button>
+                {/* <Button className="font-semibold px-8">Sign In</Button> */}
             </nav>
             {/* <div
                 style={{
