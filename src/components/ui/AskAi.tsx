@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Button from "../Button";
 import Modal from "../Modal";
 import useResumeEditorStore from "@/stores/useResumeEditorStore";
@@ -16,26 +16,12 @@ const AskAi: FC = () => {
         state.focusedItemId,
     ]);
 
-    const [aiHelper, setAiHelper] = useState({
-        sectionId: "",
-        itemId: "",
-        context: "",
-        points: [] as string[],
-        chosenIndex: -1,
-    });
+    const [aiOnline, setAiOnline] = useState<boolean | null>(null);
 
-    const [aiSearcher, setAiSearcher] = useState({
-        searching: false,
-        searchResults: [] as string[],
-    });
-
-    const [aiGenerator, setAiGenerator] = useState({
-        generating: false,
-        generatedPoints: [] as string[],
-        keptPoints: [] as boolean[],
-    });
-
-    const [[currentSectionId, currentItemId], setCurrentItem] = useState(["", ""]);
+    const [[currentSectionId, currentItemId], setCurrentItem] = useState([
+        "",
+        "",
+    ]);
     const [modalOpened, setModalOpened] = useState(false);
 
     const onAskAi = (sectionId: string, itemId: string) => {
@@ -46,6 +32,20 @@ const AskAi: FC = () => {
         setCurrentItem([sectionId, itemId]);
         setModalOpened(true);
     };
+
+    useEffect(() => {
+        // Check if the API is online
+        async function checkApi() {
+            const res = await fetch("/api/status/ai");
+            if (res.status === 200) {
+                setAiOnline(true);
+            } else {
+                setAiOnline(false);
+            }
+        }
+
+        checkApi();
+    }, []);
 
     return (
         <>
@@ -58,13 +58,17 @@ const AskAi: FC = () => {
             <Button
                 theme="primaryOutline"
                 className="text-sm font-semibold px-4 flex gap-2 items-center"
-                disabled={focusedItemId === "" && focusedSectionId === ""}
+                disabled={!aiOnline || (focusedItemId === "" && focusedSectionId === "")}
                 onClick={() => onAskAi(focusedSectionId, focusedItemId)}
                 onMouseDown={(e) => e.preventDefault()}
                 title="Select a bullet list and click here to get AI suggestions"
             >
                 <FaHandSparkles className="w-4 h-4" />
-                Ask AI
+                {aiOnline === null
+                    ? "Checking ..."
+                    : aiOnline
+                    ? "Ask AI"
+                    : "AI is Offline"}
             </Button>
         </>
     );
