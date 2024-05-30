@@ -122,7 +122,7 @@ const TooltipsLink: FC<{
         }
 
         // find first parent with contenteditable
-        let parent = lastAnchor.parentElement;
+        let parent = text.parentElement;
         while (parent && !parent.getAttribute("contenteditable")) {
             parent = parent.parentElement;
         }
