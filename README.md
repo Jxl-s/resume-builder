@@ -17,7 +17,7 @@ This project is composed of two parts:
 
 A limited demo is available on Vercel. Features requiring the LLM and the headless browser are disabled. For downloading resumes through the demo, you can print the page as PDF using default margins, and it'll work similarly (though the formatting may be slightly different).
 
-https://resume-builder-green-five.vercel.app
+https://resume-builder.demo.jiaxuan-li.com
 
 Locally hosting the project is recommended for the full experience.
 
