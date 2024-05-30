@@ -22,10 +22,7 @@ export default function Home() {
         <main className="m-0 p-0">
             <Nav />
             <section
-                className="p-4 flex gap-4"
-                style={{
-                    marginTop: "68px",
-                }}
+                className="p-4 mt-[68px] flex gap-4 print:p-0 print:m-0"
             >
                 <LeftBar />
                 <article className="bg-dark1 rounded-lg p-2 print:p-0 flex-grow flex flex-col items-center">
