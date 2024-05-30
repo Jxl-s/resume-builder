@@ -6,11 +6,14 @@ export async function GET(
     { params }: { params: { type: string } }
 ) {
     if (params.type === "ai") {
-        const res = await fetch(process.env.META_HOST + "/status");
-        console.log(res);
-        return BaseController.makeSuccess(
-            res.status,
-            res.status === 200 ? "Online" : "Offline"
-        );
+        try {
+            const res = await fetch(process.env.META_HOST + "/status");
+            return BaseController.makeSuccess(
+                res.status,
+                res.status === 200 ? "Online" : "Offline"
+            );
+        } catch (e) {
+            return BaseController.makeStatus(500, "Offline");
+        }
     }
 }
