@@ -4,7 +4,7 @@ import useResumeEditorStore from "@/stores/useResumeEditorStore";
 import { FaDownload } from "react-icons/fa";
 import useDocSettingsStore from "../../stores/useDocSettingsStore";
 
-const DownloadResume: FC = () => {
+const DownloadResume: FC<{ enabled: boolean }> = ({ enabled }) => {
     const [isDownloading, setIsDownloading] = useState(false);
 
     const onDownload = async () => {
@@ -67,9 +67,10 @@ const DownloadResume: FC = () => {
     return (
         <Button
             theme="primary"
-            disabled={isDownloading}
+            disabled={!enabled || isDownloading}
             className="text-sm font-semibold px-5 flex items-center gap-2"
             onClick={onDownload}
+            title={enabled ? "" : "Run the project locally to be able to download"}
         >
             <FaDownload className="w-4 h-4" />
             {isDownloading ? "Please wait..." : "Download"}

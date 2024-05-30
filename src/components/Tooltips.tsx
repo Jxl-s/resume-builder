@@ -101,6 +101,8 @@ const Tooltips: FC = () => {
         document.execCommand("createLink", false, url);
     };
 
+    // Get whether this is a demo or is local
+    const isLocal = process.env.NEXT_PUBLIC_IS_LOCAL === "true";
     return (
         <>
             <div className="flex justify-between w-full mb-2 print:hidden">
@@ -198,8 +200,8 @@ const Tooltips: FC = () => {
                     <AskAi />
                 </div>
                 <div className="flex gap-2 relative">
-                    <ImportResume />
-                    <DownloadResume />
+                    <ImportResume enabled={isLocal}/>
+                    <DownloadResume enabled={isLocal}/>
                 </div>
             </div>
         </>
