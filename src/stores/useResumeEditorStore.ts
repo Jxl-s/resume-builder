@@ -11,7 +11,7 @@ interface SectionTypes {
     "project-nolinks": Omit<IProjectItem, "source" | "demo">;
 }
 
-interface SectionItem {
+export interface SectionItem {
     type: keyof SectionTypes;
     id: string;
     value: Object;
