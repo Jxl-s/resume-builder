@@ -7,18 +7,46 @@ import path from "path";
 import { v4 as uuidv4 } from "uuid";
 import fs from "fs";
 import pdfParse from "pdf-parse";
-import puppeteer from "puppeteer";
 import { pdfSchema, transformPdf } from "@/utils/server/transform_pdf";
 import { PDFDocument } from "pdf-lib";
+
+let chrome: any = {};
+let puppeteer: any;
+
+if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+    // running on the Vercel platform.
+    chrome = require("chrome-aws-lambda");
+    puppeteer = require("puppeteer-core");
+} else {
+    // running locally.
+    puppeteer = require("puppeteer");
+}
 
 const IMPORT_PATH = path.join(process.cwd(), "resume_pdf/imports");
 const EXPORT_PATH = path.join(process.cwd(), "resume_pdf/exports");
 
 async function htmlToPDF(htmlContent: string, outputPath: string) {
     // Launch a headless browser
-    const browser = await puppeteer.launch({
-        product: process.env.PUPPETEER_PRODUCT as "chrome" | "firefox",
-    });
+    let browser;
+
+    if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+        browser = await puppeteer.launch({
+            product: process.env.PUPPETEER_PRODUCT as "chrome" | "firefox",
+            args: [
+                ...chrome.args,
+                "--hide-scrollbars",
+                "--disable-web-security",
+            ],
+            defaultViewport: chrome.defaultViewport,
+            executablePath: await chrome.executablePath,
+            headless: true,
+            ignoreHTTPSErrors: true,
+        });
+    } else {
+        browser = await puppeteer.launch({
+            product: process.env.PUPPETEER_PRODUCT as "chrome" | "firefox",
+        });
+    }
 
     // Open a new page
     const page = await browser.newPage();

@@ -4,7 +4,12 @@ const withNextIntl = createNextIntlPlugin();
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     experimental: {
-        serverComponentsExternalPackages: ["pdf-parse"],
+        serverComponentsExternalPackages: [
+            "pdf-parse",
+            "puppeteer",
+            "puppeteer-core",
+            "chrome-aws-lambda",
+        ],
     },
 };
 
