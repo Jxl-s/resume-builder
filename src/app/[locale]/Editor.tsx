@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import useResumeEditorStore from "@/stores/useResumeEditorStore";
 import { EducationItemWithId } from "../../components/items/Education";
 import { ExperienceItemWithId } from "@/components/items/Experience";
@@ -14,8 +14,12 @@ import Header from "@/components/items/Header";
 import "./Editor.css";
 import fonts from "../fonts";
 import { loadState, saveState } from "@/utils/storage";
+import { FaPenToSquare, FaX } from "react-icons/fa6";
+import TooltipsLink from "@/components/TooltipsLink";
 
 const Editor: FC = () => {
+    const resumeContainerRef = useRef<HTMLDivElement>(null);
+    
     const sections = useResumeEditorStore((state) => state.sections);
     const header = useResumeEditorStore((state) => state.header);
 
@@ -93,6 +97,7 @@ const Editor: FC = () => {
         handleResize();
     }, []);
 
+
     return (
         <div
             className={`bg-white text-black w-[612pt] print:w-full rounded-lg`}
@@ -109,7 +114,9 @@ const Editor: FC = () => {
                     marginRight: marginRight,
                 }}
                 id="resume-container"
+                ref={resumeContainerRef}
             >
+                <TooltipsLink resumeContainerRef={resumeContainerRef} />
                 <style>
                     {`
                         @page {
@@ -165,7 +172,10 @@ const Editor: FC = () => {
                     className="flex items-center justify-center gap-2 w-full text-sm mt-4 print:hidden"
                 >
                     <FaPlusCircle className="w-4 h-4" />
-                    <span className="font-semibold py-2">
+                    <span
+                        className="font-semibold py-2"
+                        style={fonts.openSans.style}
+                    >
                         Add a New Section
                     </span>
                 </Button>
