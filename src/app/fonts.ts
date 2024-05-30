@@ -113,4 +113,7 @@ const fonts = {
     },
 } as const;
 
+export const defaultFont = fonts.niramit;
+export const defaultEditorFont: keyof typeof fonts = "ebGaramond";
+
 export default fonts;

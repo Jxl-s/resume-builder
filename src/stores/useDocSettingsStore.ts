@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import fonts from "../app/fonts";
+import fonts, { defaultEditorFont } from "../app/fonts";
 import { Unit } from "@/types/unit";
 
 interface DocSettings {
@@ -30,7 +30,7 @@ interface DocSettings {
 }
 
 const useDocSettingsStore = create<DocSettings>((set) => ({
-    font: "sourceSans3",
+    font: defaultEditorFont,
     setFont: (font) => set({ font }),
 
     spacing: 1.5,

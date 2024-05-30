@@ -11,7 +11,7 @@ import {
     FaGraduationCap,
     FaSuitcase,
 } from "react-icons/fa6";
-import fonts from "@/app/fonts";
+import fonts, { defaultFont } from "@/app/fonts";
 
 interface Props {
     content: string;
@@ -92,7 +92,6 @@ const EditableHeading: FC<Props> = ({ content, setContent }) => {
             onDelete={onRemoveSection}
             onMoved={(dir) => moveSection(sectionId, dir)}
             className="border-b border-b-black outline-none mb-1 flex items-center gap-2"
-            style={fonts.openSans.style}
         >
             <EditableItem
                 Component={"h1"}
@@ -112,6 +111,7 @@ const EditableHeading: FC<Props> = ({ content, setContent }) => {
                 style={{
                     display: "none",
                     top: "calc(100% + 0.25rem)",
+                    ...defaultFont.style,
                 }}
                 ref={addItemRef}
             >
@@ -138,6 +138,7 @@ const EditableHeading: FC<Props> = ({ content, setContent }) => {
                 <p
                     className="hover:brightness-150 duration-300 cursor-pointer font-semibold text-danger text-center text-sm mt-2"
                     onClick={onCancelAddItem}
+                    style={defaultFont.style}
                 >
                     Cancel
                 </p>

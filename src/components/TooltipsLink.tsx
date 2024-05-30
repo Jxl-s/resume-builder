@@ -1,4 +1,5 @@
-import fonts from "@/app/fonts";
+import fonts, { defaultFont } from "@/app/fonts";
+import { validateLink } from "@/utils/sanitizeHtml";
 import { FC, useEffect, useRef, useState } from "react";
 import { FaPenToSquare, FaX, FaEraser, FaCheck } from "react-icons/fa6";
 
@@ -138,16 +139,16 @@ const TooltipsLink: FC<{
     return (
         <div
             ref={linkEditorRef}
-            className="fixed print:hidden rounded-md bg-black/75 text-white p-2 z-10 flex items-center gap-2 text-sm"
+            className="fixed print:hidden rounded-md bg-black/75 text-white p-2 z-10 flex items-center gap-2 text-xs"
             style={{
                 display: "none",
-                ...fonts.openSans.style,
+                ...defaultFont.style,
             }}
         >
             <input
                 value={linkEditorValue}
                 onChange={(e) => setLinkEditorValue(e.target.value)}
-                className={`bg-transparent ${
+                className={`bg-transparent w-full ${
                     isEditing ? "text-yellow-200" : "text-white"
                 }`}
                 readOnly={!isEditing}
@@ -155,7 +156,11 @@ const TooltipsLink: FC<{
             />
             {isEditing ? (
                 <FaCheck
-                    className="w-5 h-5 text-primary cursor-pointer hover:brightness-125 duration-300"
+                    className={`w-5 h-5 text-primary  hover:brightness-125 duration-300 ${
+                        validateLink(linkEditorValue)
+                            ? "cursor-pointer"
+                            : "opacity-50"
+                    }`}
                     onClick={handleEdit}
                 />
             ) : (

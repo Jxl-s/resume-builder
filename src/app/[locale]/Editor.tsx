@@ -12,7 +12,7 @@ import { ProjectItemWithId } from "@/components/items/Project";
 import useDocSettingsStore from "@/stores/useDocSettingsStore";
 import Header from "@/components/items/Header";
 import "./Editor.css";
-import fonts from "../fonts";
+import fonts, { defaultFont } from "../fonts";
 import { loadState, saveState } from "@/utils/storage";
 import { FaPenToSquare, FaX } from "react-icons/fa6";
 import TooltipsLink from "@/components/TooltipsLink";
@@ -174,7 +174,7 @@ const Editor: FC = () => {
                     <FaPlusCircle className="w-4 h-4" />
                     <span
                         className="font-semibold py-2"
-                        style={fonts.openSans.style}
+                        style={defaultFont.style}
                     >
                         Add a New Section
                     </span>

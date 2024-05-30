@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import "../globals.css";
-import fonts from "../fonts";
+import fonts, { defaultFont } from "../fonts";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -20,7 +20,7 @@ export default function LocaleLayout({
             <head>
                 <link rel="icon" href="/favicon.ico" sizes="any" />
             </head>
-            <body style={fonts.openSans.style}>{children}</body>
+            <body style={defaultFont.style}>{children}</body>
         </html>
     );
 }
