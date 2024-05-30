@@ -182,7 +182,7 @@ const LeftBar: FC = () => {
                     </div>
                 </div>
             </article>
-            <article className="bg-dark1 rounded-lg p-4 w-full print:hidden mb-2 block">
+            <article className="bg-dark1 rounded-lg p-4 w-full mb-2 block">
                 <h1 className="text-2xl font-semibold">Job Description</h1>
                 <p className="text-sm">
                     This will give the AI more context when giving suggestions.
@@ -197,7 +197,7 @@ const LeftBar: FC = () => {
                     value={jobDescription}
                 />
             </article>
-            <article className="bg-dark1 rounded-lg p-4 w-full print:hidden mb-2 block">
+            <article className="bg-dark1 rounded-lg p-4 w-full mb-2 block">
                 <h1 className="text-2xl font-semibold">Margins</h1>
                 <TwoInputs
                     title="Top-Bottom Margins"
@@ -216,7 +216,7 @@ const LeftBar: FC = () => {
                     unit={multiplierUnit}
                 />
             </article>
-            <article className="bg-dark1 rounded-lg p-4 w-full print:hidden mb-2 block">
+            <article className="bg-dark1 rounded-lg p-4 w-full mb-2 block">
                 <h1 className="text-2xl font-semibold">Font Sizes</h1>
                 <LeftInput
                     title="Title Size"

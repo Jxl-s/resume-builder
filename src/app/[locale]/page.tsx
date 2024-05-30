@@ -28,7 +28,7 @@ export default function Home() {
                 }}
             >
                 <LeftBar />
-                <article className="bg-dark1 rounded-lg p-2 flex-grow flex flex-col items-center">
+                <article className="bg-dark1 rounded-lg p-2 print:p-0 flex-grow flex flex-col items-center">
                     <Tooltips />
                     <Editor />
                 </article>

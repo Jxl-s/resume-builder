@@ -16,7 +16,7 @@ const Modal: FC<PropsWithChildren<Props>> = ({
     return (
         visible && (
             <div
-                className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50 flex justify-center items-center z-20 print:hidden"
+                className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50 flex justify-center items-center z-20"
                 onClick={onClose}
             >
                 <div

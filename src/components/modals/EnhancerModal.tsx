@@ -273,17 +273,17 @@ const EnhancerModal: FC<Props> = ({ visible, sectionId, itemId, onClose }) => {
         <Modal title="AI Bullet Enhancer" visible={visible} onClose={reset}>
             {/* Waiting messages */}
             {screen === EnhancerScreen.WaitGenerate && (
-                <p className="print:hidden">
+                <p>
                     Please wait while the AI is generating points...
                 </p>
             )}
             {screen === EnhancerScreen.WaitEnhance && (
-                <p className="print:hidden">
+                <p>
                     Please wait for the AI to enhance your point...
                 </p>
             )}
             {screen === EnhancerScreen.ResultGenerate && (
-                <div className="print:hidden">
+                <div>
                     <p>Select which points to keep</p>
                     <div className="text-sm flex flex-col gap-2 mt-2">
                         {generator.results.map((point, i) => (
@@ -310,7 +310,7 @@ const EnhancerModal: FC<Props> = ({ visible, sectionId, itemId, onClose }) => {
                 </div>
             )}
             {screen === EnhancerScreen.ResultEnhance && (
-                <div className="print:hidden">
+                <div>
                     Select which option to use to replace point.
                     <ul className="list-disc list-inside text-sm">
                         {enhancer.results.map((point, i) => (
@@ -328,7 +328,7 @@ const EnhancerModal: FC<Props> = ({ visible, sectionId, itemId, onClose }) => {
                 </div>
             )}
             {screen === EnhancerScreen.Select && (
-                <div className="print:hidden">
+                <div>
                     <p className="text-center mb-1">
                         Select a point to improve with AI
                     </p>

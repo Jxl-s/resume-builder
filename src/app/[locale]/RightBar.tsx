@@ -11,7 +11,7 @@ const RightBar: FC = () => {
     const deleteSavedResume = useSavedStore((state) => state.deleteSavedResume);
 
     return (
-        <article className="h-full bg-dark1 rounded-lg p-4 w-full print:hidden min-w-[306pt]">
+        <article className="h-full bg-dark1 rounded-lg p-4 w-full min-w-[306pt] print:hidden">
             <h1 className="text-2xl font-semibold">My Resumes</h1>
             <ol className="list-decimal list-outside px-4">
                 {savedResumes.map((resume, i) => (

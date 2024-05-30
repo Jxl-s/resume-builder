@@ -112,20 +112,12 @@ const Editor: FC = () => {
             >
                 <style>
                     {`
+
                         @media print {
-                            div {
+                            #resume-container {
                                 padding: 0 !important;
                                 margin: 0 !important;
                             }
-                        }
-
-                        // only content of resume-container should be visible, rest is hidden
-                        body {
-                            display: none;
-                        }
-
-                        #resume-container {
-                            display: block;
                         }
                     `}
                 </style>
@@ -163,7 +155,7 @@ const Editor: FC = () => {
                 ))}
                 <Button
                     onClick={() => addSection("<b></b>")}
-                    className="flex items-center justify-center gap-2 w-full text-sm print:hidden mt-4"
+                    className="flex items-center justify-center gap-2 w-full text-sm mt-4 print:hidden"
                 >
                     <FaPlusCircle className="w-4 h-4" />
                     <span className="font-semibold py-2">
