@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# AI Resume Builder
 
-## Getting Started
+A resume builder website made using Next.JS, React, and Tailwind CSS, making use of AI to enhance and generate bullet points.
 
-First, run the development server:
+This project is composed of two parts:
+
+-   A web application using Next.JS
+-   A small Flask server to handle LLM requests
+
+## Demo
+
+A limited demo is available on Vercel. Features requiring the LLM and the headless browser are disabled. For downloading resumes, you can print the page as PDF, and it'll work just fine.
+
+https://resume-builder-green-five.vercel.app
+
+Locally hosting the project is recommended for the full experience.
+
+## Requirements
+
+-   Node.JS
+-   Python
+-   Yarn (npm i -g yarn)
+
+## Installation
+
+Clone the repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/Jxl-s/resume-builder
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create a file `.env.local`, contaning the following environment variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# Choose Meta, or Ollama for the LLM
+LLM=meta
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+# Host for Ollama (can be left as is if not used)
+OLLAMA_HOST="http://127.0.0.1:11434"
+OLLAMA_MODEL="llama3"
 
-## Learn More
+# Python application
+META_HOST=http://0.0.0.0:5001
 
-To learn more about Next.js, take a look at the following resources:
+# chrome or firefox
+PUPPETEER_PRODUCT=chrome
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Set to true if running locally
+NEXT_PUBLIC_IS_LOCAL=true
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Install dependencies
 
-## Deploy on Vercel
+```bash
+yarn install
+pip install -r requirements.txt
+npx puppeteer browsers install chrome # or firefox
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Start the Flask server
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```bash
+python meta.py
+```
+
+Start the Next.JS application in a separate terminal
+
+```bash
+yarn dev
+```

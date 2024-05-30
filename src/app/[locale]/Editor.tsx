@@ -118,6 +118,14 @@ const Editor: FC = () => {
                                 padding: 0 !important;
                                 margin: 0 !important;
                             }
+
+                            @page {
+                                size: Letter portrait;
+                                margin-top: ${marginTop}pt;
+                                margin-bottom: ${marginBottom}pt;
+                                margin-left: ${marginLeft}pt;
+                                margin-right: ${marginRight}pt;
+                            }
                         }
                     `}
                 </style>

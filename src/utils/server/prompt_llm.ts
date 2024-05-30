@@ -1,6 +1,6 @@
 import { Ollama } from "ollama";
 
-const USE_WHICH: "ollama" | "meta" = "meta";
+const USE_WHICH: "ollama" | "meta" = process.env.LLM as "ollama" | "meta";
 const promptMetaLlama = async ({ message }: { message: string }) => {
     console.log(message);
 

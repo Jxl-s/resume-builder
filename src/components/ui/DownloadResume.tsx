@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Button from "../Button";
 import useResumeEditorStore from "@/stores/useResumeEditorStore";
 import { FaDownload } from "react-icons/fa";
@@ -70,7 +70,7 @@ const DownloadResume: FC<{ enabled: boolean }> = ({ enabled }) => {
             disabled={!enabled || isDownloading}
             className="text-sm font-semibold px-5 flex items-center gap-2"
             onClick={onDownload}
-            title={enabled ? "" : "Run the project locally to be able to download"}
+            title={enabled ? "" : "Use browser print features to save as PDF)"}
         >
             <FaDownload className="w-4 h-4" />
             {isDownloading ? "Please wait..." : "Download"}
