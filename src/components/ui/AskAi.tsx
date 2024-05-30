@@ -52,13 +52,19 @@ const AskAi: FC = () => {
             <EnhancerModal
                 itemId={currentItemId}
                 sectionId={currentSectionId}
-                onClose={() => setModalOpened(false)}
+                onClose={() => {
+                    setCurrentItem(["", ""]);
+                    setModalOpened(false);
+                }}
                 visible={modalOpened}
             />
             <Button
                 theme="primaryOutline"
                 className="text-sm font-semibold px-4 flex gap-2 items-center"
-                disabled={!aiOnline || (focusedItemId === "" && focusedSectionId === "")}
+                disabled={
+                    !aiOnline ||
+                    (focusedItemId === "" && focusedSectionId === "")
+                }
                 onClick={() => onAskAi(focusedSectionId, focusedItemId)}
                 onMouseDown={(e) => e.preventDefault()}
                 title="Select a bullet list and click here to get AI suggestions"

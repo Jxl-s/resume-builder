@@ -1,8 +1,10 @@
-import { FC, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import Modal from "../Modal";
 import Button from "../Button";
 import { FaHandSparkles } from "react-icons/fa";
-import useResumeEditorStore from "../../stores/useResumeEditorStore";
+import useResumeEditorStore, {
+    SectionItem,
+} from "../../stores/useResumeEditorStore";
 import {
     IEducationItem,
     IExperienceItem,
@@ -32,6 +34,7 @@ const EnhancerModal: FC<Props> = ({ visible, sectionId, itemId, onClose }) => {
     // Handle selection
     const [enhanceIndex, setEnhanceIndex] = useState(-1);
     const [screen, setScreen] = useState(EnhancerScreen.Select);
+    const [item, setItem] = useState<SectionItem | null>(null);
 
     // Handle results
     const [enhancer, setEnhancer] = useState({
@@ -64,7 +67,7 @@ const EnhancerModal: FC<Props> = ({ visible, sectionId, itemId, onClose }) => {
     };
 
     // Get the current object
-    const item = useMemo(() => {
+    useEffect(() => {
         const sections = useResumeEditorStore.getState().sections;
 
         // find the section and item
@@ -72,9 +75,7 @@ const EnhancerModal: FC<Props> = ({ visible, sectionId, itemId, onClose }) => {
         if (!section) return;
 
         const item = section.items.find((i) => i.id === itemId);
-
-        if (!item) return;
-        return item;
+        setItem(item ?? null);
     }, [sectionId, itemId]);
 
     // More context for AI
@@ -273,14 +274,10 @@ const EnhancerModal: FC<Props> = ({ visible, sectionId, itemId, onClose }) => {
         <Modal title="AI Bullet Enhancer" visible={visible} onClose={reset}>
             {/* Waiting messages */}
             {screen === EnhancerScreen.WaitGenerate && (
-                <p>
-                    Please wait while the AI is generating points...
-                </p>
+                <p>Please wait while the AI is generating points...</p>
             )}
             {screen === EnhancerScreen.WaitEnhance && (
-                <p>
-                    Please wait for the AI to enhance your point...
-                </p>
+                <p>Please wait for the AI to enhance your point...</p>
             )}
             {screen === EnhancerScreen.ResultGenerate && (
                 <div>
