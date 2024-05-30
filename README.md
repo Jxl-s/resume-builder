@@ -1,15 +1,21 @@
-# AI Resume Builder
+# 📝 AI Resume Builder
 
-A resume builder website made using Next.JS, React, and Tailwind CSS, making use of AI to enhance and generate bullet points.
+A web-based resume builder application made using Next.JS, React, and Tailwind CSS, making use of AI to enhance and generate bullet points.
 
 This project is composed of two parts:
 
 -   A web application using Next.JS
 -   A small Flask server to handle LLM requests
 
+## Features
+
+-   **Resume Builder**: Create a clean resume through an intuitive interface.
+-   **AI Helper**: Generate suggestions and new bullet points for your resume using AI. They can be tailored to a certain job posting.
+-   **Exporting**: Export your resume as a PDF.
+
 ## Demo
 
-A limited demo is available on Vercel. Features requiring the LLM and the headless browser are disabled. For downloading resumes, you can print the page as PDF, and it'll work just fine.
+A limited demo is available on Vercel. Features requiring the LLM and the headless browser are disabled. For downloading resumes through the demo, you can print the page as PDF using default margins, and it'll work normally.
 
 https://resume-builder-green-five.vercel.app
 
@@ -72,3 +78,9 @@ Start the Next.JS application in a separate terminal
 ```bash
 yarn dev
 ```
+
+## Images
+
+The example PDF can be found [here](/assets/resume.pdf), with my phone number hidden for privacy reasons. Note that this is a sample resume and not my actual resume.
+
+![Home Page](/assets/editor.png)
