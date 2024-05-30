@@ -20,7 +20,9 @@ A limited demo is available on Vercel. Features requiring the LLM and the headle
 
 https://resume-builder.demo.jiaxuan-li.com
 
-Locally hosting the project is recommended for the full experience.
+You may also find my locally hosted version through my cloudflare tunnel. Note that it may not always be up.
+
+https://resume.jiaxuan-li.com
 
 ## Installation
 
