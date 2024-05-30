@@ -54,19 +54,8 @@
             }
 
             .twoSide {
-                text-align: justify;
-            }
-
-            /* Make child divs display inline-block */
-            .twoSide > div {
-                display: inline-block;
-            }
-
-            /* Adjust spacing between child divs */
-            .twoSide:after {
-                content: "";
-                display: inline-block;
-                width: 100%;
+                display: flex;
+                justify-content: space-between;
             }
 
             section,

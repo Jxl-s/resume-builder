@@ -9,6 +9,7 @@ import fs from "fs";
 import pdfParse from "pdf-parse";
 import puppeteer from "puppeteer";
 import { pdfSchema, transformPdf } from "@/utils/server/transform_pdf";
+import { PDFDocument } from "pdf-lib";
 
 const IMPORT_PATH = path.join(process.cwd(), "resume_pdf/imports");
 const EXPORT_PATH = path.join(process.cwd(), "resume_pdf/exports");
@@ -22,14 +23,16 @@ async function htmlToPDF(htmlContent: string, outputPath: string) {
     // Open a new page
     const page = await browser.newPage();
     await page.setContent(htmlContent);
-    await page.pdf({
+    const puppeteerPdf = await page.pdf({
         path: outputPath,
         format: "Letter",
         preferCSSPageSize: true,
     });
+
     await browser.close();
 
     console.log(`PDF saved at: ${outputPath}`);
+    return puppeteerPdf;
 }
 
 // would be so much better if i used OpenAI
@@ -203,6 +206,15 @@ export const ResumeController = {
 
             // Prepare the file to be downloaded
             const buffer = fs.readFileSync(outputPath);
+            const pdfDoc = await PDFDocument.load(buffer);
+            pdfDoc.setTitle("Resume");
+            pdfDoc.setAuthor("Local");
+            pdfDoc.setSubject("My resume");
+            pdfDoc.setCreator("https://resume.jiaxuan-li.com");
+            pdfDoc.setProducer("https://resume.jiaxuan-li.com");
+
+            const pdfBytes = await pdfDoc.save();
+
             const headers = new Headers();
 
             headers.append(
@@ -211,7 +223,7 @@ export const ResumeController = {
             );
 
             headers.append("Content-Type", "application/pdf");
-            return new Response(buffer, { headers });
+            return new Response(pdfBytes, { headers });
         } catch (error) {
             return BaseController.makeStatus(500, "Failed to write PDF");
         }
