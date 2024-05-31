@@ -1,5 +1,5 @@
 import fonts, { defaultFont } from "@/app/fonts";
-import { validateLink } from "@/utils/sanitizeHtml";
+import { validateLink, validateMailto } from "@/utils/sanitizeHtml";
 import { FC, useEffect, useRef, useState } from "react";
 import {
     FaPenToSquare,
@@ -151,10 +151,12 @@ const TooltipsLink: FC<{
         }
     };
 
+    const validInput =
+        validateLink(linkEditorValue) || validateMailto(linkEditorValue);
     return (
         <div
             ref={linkEditorRef}
-            className="fixed print:hidden rounded-md bg-black/75 text-white p-2 z-10 flex items-center gap-2 text-xs"
+            className="fixed print:hidden rounded-md bg-black/75 text-white z-10 flex items-center gap-2 text-xs -translate-y-2 p-2"
             style={{
                 display: "none",
                 ...defaultFont.style,
@@ -164,7 +166,13 @@ const TooltipsLink: FC<{
                 value={linkEditorValue}
                 onChange={(e) => setLinkEditorValue(e.target.value)}
                 className={`bg-transparent w-full ${
-                    isEditing ? "text-yellow-200" : "text-white"
+                    isEditing
+                        ? `${
+                              validInput
+                                  ? "text-yellow-200"
+                                  : "text-red-400 underline"
+                          }`
+                        : "text-white"
                 }`}
                 readOnly={!isEditing}
                 disabled={!isEditing}
@@ -173,9 +181,7 @@ const TooltipsLink: FC<{
                 <>
                     <FaCheck
                         className={`w-5 h-5 text-primary  hover:brightness-125 duration-300 ${
-                            validateLink(linkEditorValue)
-                                ? "cursor-pointer"
-                                : "opacity-50"
+                            validInput ? "cursor-pointer" : "opacity-50"
                         }`}
                         onClick={handleEdit}
                         title="Save"
