@@ -7,6 +7,7 @@ import {
     jobDescriptionPrompt,
 } from "@/utils/server/prompts";
 import { promptLLM } from "@/utils/server/prompt_llm";
+import { textReplace } from "@/utils/textReplace";
 
 const enhanceBulletSchema = z.object({
     point: z.string(),
@@ -40,15 +41,16 @@ export const BulletsController = {
         }
 
         // Build the final prompt
-        prompt = prompt
-            .replace("__JOB_DESCRIPTION__", data.job)
-            .replace("__BULLET_POINT__", data.point)
-            .replace("__HEADER__", data.header)
-            .replace("__OTHER_POINTS__", data.otherPoints)
-            .replace("__OTHER_ITEMS_POINTS__", data.allPoints);
+        const finalPrompt = textReplace(prompt, [
+            ["__JOB_DESCRIPTION__", data.job],
+            ["__BULLET_POINT__", data.point],
+            ["__HEADER__", data.header],
+            ["__OTHER_POINTS__", data.otherPoints],
+            ["__OTHER_ITEMS_POINTS__", data.allPoints],
+        ]);
 
         const aiResponse = await promptLLM({
-            message: prompt,
+            message: finalPrompt,
         });
 
         const responseLines = aiResponse
@@ -77,14 +79,15 @@ export const BulletsController = {
             prompt = jobDescriptionPrompt + "\n\n" + prompt;
         }
 
-        prompt = prompt
-            .replace("__JOB_DESCRIPTION__", data.job)
-            .replace("__HEADER__", data.header)
-            .replace("__OTHER_POINTS__", data.otherPoints)
-            .replace("__OTHER_ITEMS_POINTS__", data.allPoints);
+        const finalPrompt = textReplace(prompt, [
+            ["__JOB_DESCRIPTION__", data.job],
+            ["__HEADER__", data.header],
+            ["__OTHER_POINTS__", data.otherPoints],
+            ["__OTHER_ITEMS_POINTS__", data.allPoints],
+        ]);
 
         const aiResponse = await promptLLM({
-            message: prompt,
+            message: finalPrompt,
         });
 
         const responseLines = aiResponse

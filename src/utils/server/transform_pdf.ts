@@ -3,6 +3,7 @@ import fs from "fs";
 import fonts from "@/app/fonts";
 import { education, experience, heading, project, text } from "./components";
 import { z } from "zod";
+import { textReplace } from "../textReplace";
 
 const pdfBase = fs.readFileSync(
     path.join(process.cwd(), "resume_pdf/pdf_base.html"),
@@ -41,70 +42,6 @@ export const pdfSchema = z.object({
 });
 
 export function transformPdf(body: z.infer<typeof pdfSchema>) {
-    let transformedPdf = pdfBase;
-    // Transform the PDF
-    transformedPdf = transformedPdf.replace("__NAME__", body.header.name);
-    transformedPdf = transformedPdf.replace(
-        "__SUBTITLE__",
-        body.header.subtitle
-    );
-    transformedPdf = transformedPdf.replace("__CONTACT__", body.header.contact);
-
-    // Settings
-    const font = body.settings.font;
-    transformedPdf = transformedPdf.replace(
-        "__FONT_EXPORT__",
-        fonts[font].export
-    );
-    transformedPdf = transformedPdf.replace(
-        "__FONT_FAMILY__",
-        fonts[font].display
-    );
-
-    transformedPdf = transformedPdf.replace(
-        "__SPACING__",
-        body.settings.spacing.toString()
-    );
-    transformedPdf = transformedPdf.replace(
-        "__TITLE_SIZE__",
-        body.settings.titleSize.toString()
-    );
-
-    transformedPdf = transformedPdf.replace(
-        "__TITLE_HEIGHT__",
-        ((body.settings.titleSize as number) * 1.1).toString()
-    );
-
-    transformedPdf = transformedPdf.replace(
-        "__HEADING_SIZE__",
-        body.settings.headingSize.toString()
-    );
-
-    transformedPdf = transformedPdf.replace(
-        "__CONTENT_SIZE__",
-        body.settings.contentSize.toString()
-    );
-
-    transformedPdf = transformedPdf.replace(
-        "__MARGIN_TOP__",
-        body.settings.marginTop.toString()
-    );
-
-    transformedPdf = transformedPdf.replace(
-        "__MARGIN_BOTTOM__",
-        body.settings.marginBottom.toString()
-    );
-
-    transformedPdf = transformedPdf.replace(
-        "__MARGIN_LEFT__",
-        body.settings.marginLeft.toString()
-    );
-
-    transformedPdf = transformedPdf.replace(
-        "__MARGIN_RIGHT__",
-        body.settings.marginRight.toString()
-    );
-
     // Make the sections
     let sectionString = "";
     for (const section of body.sections) {
@@ -136,6 +73,27 @@ export function transformPdf(body: z.infer<typeof pdfSchema>) {
         sectionString += `</section>`;
     }
 
-    transformedPdf = transformedPdf.replace("__SECTIONS__", sectionString);
+    const font = body.settings.font;
+    const transformedPdf = textReplace(pdfBase, [
+        ["__NAME__", body.header.name],
+        ["__SUBTITLE__", body.header.subtitle],
+        ["__CONTACT__", body.header.contact],
+        ["__FONT_EXPORT__", fonts[font].export],
+        ["__FONT_FAMILY__", fonts[font].display],
+        ["__SPACING__", body.settings.spacing.toString()],
+        ["__TITLE_SIZE__", body.settings.titleSize.toString()],
+        [
+            "__TITLE_HEIGHT__",
+            ((body.settings.titleSize as number) * 1.1).toString(),
+        ],
+        ["__HEADING_SIZE__", body.settings.headingSize.toString()],
+        ["__CONTENT_SIZE__", body.settings.contentSize.toString()],
+        ["__MARGIN_TOP__", body.settings.marginTop.toString()],
+        ["__MARGIN_BOTTOM__", body.settings.marginBottom.toString()],
+        ["__MARGIN_LEFT__", body.settings.marginLeft.toString()],
+        ["__MARGIN_RIGHT__", body.settings.marginRight.toString()],
+        ["__SECTIONS__", sectionString],
+    ]);
+
     return transformedPdf;
 }
