@@ -156,7 +156,7 @@ const TooltipsLink: FC<{
     return (
         <div
             ref={linkEditorRef}
-            className="fixed print:hidden rounded-md bg-black/75 text-white z-10 flex items-center gap-2 text-xs -translate-y-2 p-2"
+            className="fixed print:hidden rounded-md bg-black/75 text-white z-10 flex items-center gap-2 text-xs -translate-y-1 p-2"
             style={{
                 display: "none",
                 ...defaultFont.style,
