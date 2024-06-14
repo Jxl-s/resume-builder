@@ -87,3 +87,7 @@ yarn dev
 The example PDF can be found [here](/assets/resume.pdf), with my phone number hidden for privacy reasons. Note that this is a sample resume and not my actual resume.
 
 ![Home Page](/assets/editor.png)
+
+## To-Do
+
+- Support for other languages
