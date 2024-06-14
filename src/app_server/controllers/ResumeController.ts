@@ -207,11 +207,11 @@ export const ResumeController = {
             // Prepare the file to be downloaded
             const buffer = fs.readFileSync(outputPath);
             const pdfDoc = await PDFDocument.load(buffer);
-            pdfDoc.setTitle("Resume");
-            pdfDoc.setAuthor("Local");
-            pdfDoc.setSubject("My resume");
-            pdfDoc.setCreator("https://resume.jiaxuan-li.com");
-            pdfDoc.setProducer("https://resume.jiaxuan-li.com");
+            pdfDoc.setTitle("Resume PDF");
+            pdfDoc.setSubject("Resume PDF");
+            pdfDoc.setAuthor("Me");
+            pdfDoc.setCreator("Resume Builder");
+            pdfDoc.setProducer("Resume Builder");
 
             const pdfBytes = await pdfDoc.save();
 
