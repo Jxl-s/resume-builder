@@ -5,6 +5,7 @@ import useResumeEditorStore from "../../stores/useResumeEditorStore";
 import useDocSettingsStore, {
     convertFromUnit,
     convertToUnit,
+    units,
 } from "@/stores/useDocSettingsStore";
 import { Unit } from "@/types/unit";
 
@@ -173,7 +174,7 @@ const LeftBar: FC = () => {
                                 setMultiplierUnit(e.target.value as Unit)
                             }
                         >
-                            {["pt", "px", "in", "mm"].map((unit) => (
+                            {units.map((unit) => (
                                 <option key={unit} value={unit}>
                                     {unit}
                                 </option>

@@ -60,6 +60,7 @@ const fixFloating = (value: number) => {
     return Math.round(value * 100) / 100;
 };
 
+const units = ["pt", "px", "in", "mm"] as const;
 const convertToUnit = (value: number, unit: Unit) => {
     switch (unit) {
         case "pt":
@@ -87,4 +88,4 @@ const convertFromUnit = (value: number, unit: Unit) => {
 };
 
 export default useDocSettingsStore;
-export { convertToUnit, convertFromUnit };
+export { units, convertToUnit, convertFromUnit };
