@@ -1,23 +1,10 @@
 import Editor from "@/app/[locale]/Editor";
-import Button from "@/components/Button";
 import Nav from "@/components/Nav";
 import Tooltips from "@/components/Tooltips";
-import { useTranslations } from "next-intl";
-import {
-    FaBold,
-    FaUnderline,
-    FaItalic,
-    FaLink,
-    FaDownload,
-    FaCircleExclamation,
-} from "react-icons/fa6";
 import LeftBar from "./LeftBar";
-import { Suspense } from "react";
 import RightBar from "./RightBar";
 
 export default function Home() {
-    const t = useTranslations("Index");
-
     return (
         <main className="m-0 p-0">
             <Nav />
