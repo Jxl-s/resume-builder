@@ -10,14 +10,23 @@ interface Props {
 
 const SnapshotModal: FC<Props> = ({ onClose, visible }) => {
     const [snapshotName, setSnapshotName] = useState("");
+    const [formError, setFormError] = useState("");
+
+    const savedResumes = useSavedStore((state) => state.savedResumes);
     const addSavedResume = useSavedStore((state) => state.addSavedResume);
 
     const reset = () => {
         onClose();
         setSnapshotName("");
+        setFormError("");
     };
 
     const handleSaveSnapshot = () => {
+        if (savedResumes.find((resume) => resume.name === snapshotName)) {
+            setFormError("Snapshot names must be unique");
+            return;
+        }
+
         addSavedResume(snapshotName);
         reset();
     };
@@ -30,6 +39,7 @@ const SnapshotModal: FC<Props> = ({ onClose, visible }) => {
                 value={snapshotName}
                 onChange={(e) => setSnapshotName(e.target.value)}
             />
+            {formError && <p className="text-danger">{formError}</p>}
             <Button
                 theme="primary"
                 className="py-2 w-full mt-2"
