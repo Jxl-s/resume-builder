@@ -103,7 +103,7 @@ const EditableHeading: FC<Props> = ({ content, setContent }) => {
                 className="inline uppercase"
             />
             <FaPlusCircle
-                className="w-3 h-3 inline text-primary/50 hover:text-primary duration-300 cursor-pointer"
+                className="w-3 h-3 inline text-primary/50 hover:text-primary duration-300 cursor-pointer print:hidden"
                 onClick={onAddItem}
             />
             <div

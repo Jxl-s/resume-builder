@@ -9,6 +9,14 @@ const DownloadResume: FC<{ enabled: boolean }> = ({ enabled }) => {
 
     const onDownload = async () => {
         setIsDownloading(true);
+
+        if (!enabled) {
+            // do a browser print
+            window.print();
+            setIsDownloading(false);
+            return;;
+        }
+
         const { header, sections } = useResumeEditorStore.getState();
         const {
             font,
@@ -67,10 +75,9 @@ const DownloadResume: FC<{ enabled: boolean }> = ({ enabled }) => {
     return (
         <Button
             theme="primary"
-            disabled={!enabled || isDownloading}
+            disabled={isDownloading}
             className="text-sm font-semibold px-5 flex items-center gap-2"
             onClick={onDownload}
-            title={enabled ? "" : "Use browser print features to save as PDF)"}
         >
             <FaDownload className="w-4 h-4" />
             {isDownloading ? "Please wait..." : "Download"}
