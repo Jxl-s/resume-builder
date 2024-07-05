@@ -15,26 +15,29 @@ const RightBar: FC = () => {
     return (
         <article className="h-full bg-dark1 rounded-lg p-4 w-full min-w-[306pt] print:hidden">
             <h1 className="text-2xl font-semibold">My Resumes</h1>
-            <ol className="list-decimal list-outside px-4">
+            <ol className="list-decimal list-outside px-2">
                 {savedResumes.map((resume, i) => (
-                    <li className="mt-4" key={i}>
+                    <li className="mt-4 flex gap-2" key={i}>
+                        <span className="me-2">{i + 1}.</span>
                         {resume.name}
-                        <span
-                            className="text-primary underline cursor-pointer ms-4"
-                            onClick={() => {
-                                loadSavedResume(resume.name);
-                            }}
-                        >
-                            Load
-                        </span>
-                        <span
-                            className="text-danger underline cursor-pointer ms-2"
-                            onClick={() => {
-                                deleteSavedResume(resume.name);
-                            }}
-                        >
-                            Delete
-                        </span>
+                        <div className="flex-grow flex justify-end">
+                            <span
+                                className="text-primary underline cursor-pointer ms-2"
+                                onClick={() => {
+                                    loadSavedResume(resume.name);
+                                }}
+                            >
+                                Load
+                            </span>
+                            <span
+                                className="text-danger underline cursor-pointer ms-2"
+                                onClick={() => {
+                                    deleteSavedResume(resume.name);
+                                }}
+                            >
+                                Delete
+                            </span>
+                        </div>
                     </li>
                 ))}
             </ol>
