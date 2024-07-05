@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@/components/Button";
+import SnapshotDeleteModal from "@/components/modals/SnapshotDeleteModal";
 import SnapshotModal from "@/components/modals/SnapshotModal";
 import useSavedStore from "@/stores/useSavedStore";
 import { FC, useState } from "react";
@@ -8,9 +9,9 @@ import { FC, useState } from "react";
 const RightBar: FC = () => {
     const savedResumes = useSavedStore((state) => state.savedResumes);
     const loadSavedResume = useSavedStore((state) => state.loadSavedResume);
-    const deleteSavedResume = useSavedStore((state) => state.deleteSavedResume);
 
     const [snapModalVisible, setSnapModalVisible] = useState(false);
+    const [deletingModal, setDeletingModal] = useState("");
 
     return (
         <article className="h-full bg-dark1 rounded-lg p-4 w-full min-w-[306pt] print:hidden">
@@ -32,7 +33,7 @@ const RightBar: FC = () => {
                             <span
                                 className="text-danger underline cursor-pointer ms-2"
                                 onClick={() => {
-                                    deleteSavedResume(resume.name);
+                                    setDeletingModal(resume.name);
                                 }}
                             >
                                 Delete
@@ -51,6 +52,11 @@ const RightBar: FC = () => {
             <SnapshotModal
                 visible={snapModalVisible}
                 onClose={() => setSnapModalVisible(false)}
+            />
+            <SnapshotDeleteModal
+                visible={deletingModal !== ""}
+                onClose={() => setDeletingModal("")}
+                snapshotName={deletingModal}
             />
         </article>
     );
