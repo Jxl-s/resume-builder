@@ -189,11 +189,15 @@ const LeftBar: FC = () => {
                     This will give the AI more context when giving suggestions.
                 </p>
                 <textarea
-                    className={`bg-dark2 rounded-lg w-full mt-2 p-2 outline-none ${
-                        jobDescription.length > 0
-                            ? "border-2 border-primary"
-                            : ""
-                    }`}
+                    className="bg-dark2 rounded-lg w-full mt-2 p-2 outline-none duration-300"
+                    style={{
+                        // make the border glow with a fade
+                        boxShadow: `0 0 0 2px ${
+                            jobDescription.length > 0
+                                ? "rgba(0, 255, 255, 0.5)"
+                                : "transparent"
+                        }`,
+                    }}
                     onChange={(e) => setJobDescription(e.target.value)}
                     value={jobDescription}
                 />
