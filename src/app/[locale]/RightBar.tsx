@@ -12,6 +12,7 @@ const RightBar: FC = () => {
 
     const [snapModalVisible, setSnapModalVisible] = useState(false);
     const [deletingModal, setDeletingModal] = useState("");
+    const [updatingModal, setUpdatingModal] = useState("");
 
     return (
         <article className="h-full bg-dark1 rounded-lg p-4 w-full min-w-[306pt] print:hidden">
@@ -22,22 +23,24 @@ const RightBar: FC = () => {
                         <span className="me-2">{i + 1}.</span>
                         {resume.name}
                         <div className="flex-grow flex justify-end">
-                            <span
+                            <button
                                 className="text-primary underline cursor-pointer ms-2"
-                                onClick={() => {
-                                    loadSavedResume(resume.name);
-                                }}
+                                onClick={() => loadSavedResume(resume.name)}
                             >
                                 Load
-                            </span>
-                            <span
+                            </button>
+                            <button
+                                className="text-secondary underline cursor-pointer ms-2"
+                                onClick={() => setUpdatingModal(resume.name)}
+                            >
+                                Update
+                            </button>
+                            <button
                                 className="text-danger underline cursor-pointer ms-2"
-                                onClick={() => {
-                                    setDeletingModal(resume.name);
-                                }}
+                                onClick={() => setDeletingModal(resume.name)}
                             >
                                 Delete
-                            </span>
+                            </button>
                         </div>
                     </li>
                 ))}
@@ -58,6 +61,11 @@ const RightBar: FC = () => {
                 onClose={() => setDeletingModal("")}
                 snapshotName={deletingModal}
             />
+            {/* <SnapshotUpdateModal
+                visible={updatingModal !== ""}
+                onClose={() => setUpdatingModal("")}
+                snapshotName={updatingModal}
+            /> */}
         </article>
     );
 };
