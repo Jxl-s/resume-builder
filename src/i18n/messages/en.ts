@@ -18,6 +18,12 @@ const messages = {
         heading_size: "Heading Size",
         content_size: "Content Size",
     },
+    ToolBar: {
+        ai_offline: "AI is Offline",
+        ai_ask: "Ask AI",
+        import: "Import",
+        download: "Download"
+    }
 };
 
 export default messages;
