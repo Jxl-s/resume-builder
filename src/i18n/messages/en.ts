@@ -21,9 +21,11 @@ const messages = {
     ToolBar: {
         ai_offline: "AI is Offline",
         ai_ask: "Ask AI",
+        hyperlink_desc: "Select some text, enter a link, click Add.",
+        add: "Add",
         import: "Import",
-        download: "Download"
-    }
+        download: "Download",
+    },
 };
 
 export default messages;
