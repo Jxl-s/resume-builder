@@ -35,6 +35,20 @@ const messages = {
         project_nolinks: "Project (no links)",
         custom_text: "Custom Text",
     },
+    Right: {
+        my_resumes: "My Resumes",
+        take_snapshot: "Take Snapshot",
+        create_snapshot: "Create Snapshot",
+        enter_snapshot_name: "Enter the new snapshot's name",
+        save_snapshot: "Save Snapshot",
+        load: "Load",
+        delete: "Delete",
+        update: "Update",
+        delete_snapshot: "Delete Snapshot",
+        delete_snapshot_desc: "Are you sure you want to delete this snapshot?",
+        yes_delete: "Yes, delete it",
+        cancel: "Cancel",
+    },
 };
 
 export default messages;
