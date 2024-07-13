@@ -26,6 +26,15 @@ const messages = {
         import: "Import",
         download: "Download",
     },
+    Editor: {
+        new_section: "Add a New Section",
+        item_template: "Item Template",
+        education: "Education",
+        experience: "Experience",
+        project: "Project",
+        project_nolinks: "Project (no links)",
+        custom_text: "Custom Text",
+    },
 };
 
 export default messages;
