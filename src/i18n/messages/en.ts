@@ -34,6 +34,24 @@ const messages = {
         project: "Project",
         project_nolinks: "Project (no links)",
         custom_text: "Custom Text",
+
+        default_name: "John Doe",
+        default_title: "Software Engineer",
+        default_contact: '123-456-7890 | email@gmail.com | linkedin.com/in/john | github.com/John | john.com',
+        
+        default_heading: "Heading",
+
+        // Default values that repeat
+        default_date: "Jan 2020 - Present",
+        default_location: "Toronto, ON",
+        
+        default_edu_school: "Harvard University",
+        default_edu_degree: "Bachelor of Science in Y",
+        default_edu_desc: "GPA: 3.8/4.0",
+        default_edu_date: "Jan 2020",
+
+        default_exp_company: "Google",
+        default_exp_title: "Software Engineer",
     },
     Right: {
         my_resumes: "My Resumes",
