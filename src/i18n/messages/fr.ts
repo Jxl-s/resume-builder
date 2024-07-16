@@ -19,12 +19,12 @@ const messages = {
         content_size: "Taille du contenu",
     },
     ToolBar: {
-        ai_offline: "AI is Offline",
-        ai_ask: "Ask AI",
-        hyperlink_desc: "Select some text, enter a link, click Add.",
-        add: "Add",
-        import: "Import",
-        download: "Download",
+        ai_offline: "IA Hors Ligne",
+        ai_ask: "Demander IA",
+        hyperlink_desc: "Sélectionnez du texte, entrez un lien, cliquez sur Ajouter.",
+        add: "Ajouter",
+        import: "Importer",
+        download: "Télécharger",
     },
     Editor: {
         new_section: "Add a New Section",
