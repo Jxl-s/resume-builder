@@ -8,6 +8,7 @@ import useDocSettingsStore, {
     units,
 } from "@/stores/useDocSettingsStore";
 import { Unit } from "@/types/unit";
+import { useTranslations } from "next-intl";
 
 interface LeftInputProps {
     title: string;
@@ -155,17 +156,18 @@ const LeftBar: FC = () => {
     const spacing = useDocSettingsStore((state) => state.spacing);
     const setSpacing = useDocSettingsStore((state) => state.setSpacing);
 
+    const t = useTranslations("Left");
     return (
         <section className="w-full min-w-[306px] print:hidden">
             <article className="bg-dark1 rounded-lg p-2 w-full mb-2 block">
                 <LeftInput
-                    title="Spacing"
+                    title={t("spacing")}
                     value={spacing}
                     setValue={setSpacing}
                     className="my-2"
                 />
                 <div className="grid grid-cols-2 gap-2 justify-between items-center">
-                    <span className="ms-2">Unit</span>
+                    <span className="ms-2">{t("unit")}</span>
                     <div className="bg-dark2 rounded-lg py-2 px-4 flex justify-between gap-2">
                         <select
                             className="bg-inherit w-full"
@@ -184,10 +186,10 @@ const LeftBar: FC = () => {
                 </div>
             </article>
             <article className="bg-dark1 rounded-lg p-4 w-full mb-2 block">
-                <h1 className="text-2xl font-semibold">Job Description</h1>
-                <p className="text-sm">
-                    This will give the AI more context when giving suggestions.
-                </p>
+                <h1 className="text-2xl font-semibold">
+                    {t("job_description")}
+                </h1>
+                <p className="text-sm">{t("job_description_desc")}</p>
                 <textarea
                     className="bg-dark2 rounded-lg w-full mt-2 p-2 outline-none duration-300"
                     style={{
@@ -203,9 +205,9 @@ const LeftBar: FC = () => {
                 />
             </article>
             <article className="bg-dark1 rounded-lg p-4 w-full mb-2 block">
-                <h1 className="text-2xl font-semibold">Margins</h1>
+                <h1 className="text-2xl font-semibold">{t("margins")}</h1>
                 <TwoInputs
-                    title="Top-Bottom Margins"
+                    title={t("top_bottom_margins")}
                     value1={convertToUnit(marginTop, multiplierUnit)}
                     value2={convertToUnit(marginBottom, multiplierUnit)}
                     setValue1={setMTop}
@@ -213,7 +215,7 @@ const LeftBar: FC = () => {
                     unit={multiplierUnit}
                 />
                 <TwoInputs
-                    title="Left-Right Margins"
+                    title={t("left_right_margins")}
                     value1={convertToUnit(marginLeft, multiplierUnit)}
                     value2={convertToUnit(marginRight, multiplierUnit)}
                     setValue1={setMLeft}
@@ -222,23 +224,23 @@ const LeftBar: FC = () => {
                 />
             </article>
             <article className="bg-dark1 rounded-lg p-4 w-full mb-2 block">
-                <h1 className="text-2xl font-semibold">Font Sizes</h1>
+                <h1 className="text-2xl font-semibold">{t("font_sizes")}</h1>
                 <LeftInput
-                    title="Title Size"
+                    title={t("title_size")}
                     value={convertToUnit(titleSize, multiplierUnit)}
                     setValue={setSTitle}
                     unit={multiplierUnit}
                     className="mt-2"
                 />
                 <LeftInput
-                    title="Heading Size"
+                    title={t("heading_size")}
                     value={convertToUnit(headingSize, multiplierUnit)}
                     setValue={setSHeading}
                     unit={multiplierUnit}
                     className="mt-2"
                 />
                 <LeftInput
-                    title="Content Size"
+                    title={t("content_size")}
                     value={convertToUnit(contentSize, multiplierUnit)}
                     setValue={setSContent}
                     unit={multiplierUnit}
