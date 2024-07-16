@@ -3,20 +3,20 @@ const messages = {
         resume: "Resume",
     },
     Left: {
-        spacing: "Spacing",
-        unit: "Unit",
-        job_description: "Job Description",
+        spacing: "Espacement",
+        unit: "Unité",
+        job_description: "Description du poste",
         job_description_desc:
-            "This will give the AI more context when giving suggestions.",
+            "Cela donnera plus de contexte à l'IA lors de la suggestion de contenu.",
 
-        margins: "Margins",
-        top_bottom_margins: "Top-Bottom Margins",
-        left_right_margins: "Left-Right Margins",
+        margins: "Marges",
+        top_bottom_margins: "Marges Haut-Bas",
+        left_right_margins: "Marges Gauche-Droite",
 
-        font_sizes: "Font Sizes",
-        title_size: "Title Size",
-        heading_size: "Heading Size",
-        content_size: "Content Size",
+        font_sizes: "Tailles de police",
+        title_size: "Taille du titre",
+        heading_size: "Taille des en-têtes",
+        content_size: "Taille du contenu",
     },
     ToolBar: {
         ai_offline: "AI is Offline",
