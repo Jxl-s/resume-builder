@@ -62,6 +62,18 @@ PUPPETEER_PRODUCT=chrome
 NEXT_PUBLIC_IS_LOCAL=true
 ```
 
+#### Using Docker
+
+This will set up the Flask server and the Next.JS application in a Docker container, as well as the headless browser.
+```
+docker compose up
+```
+
+#### Manual Setup
+
+This will require Python and Node.JS to be installed
+on the system.
+
 Install dependencies
 
 ```bash
