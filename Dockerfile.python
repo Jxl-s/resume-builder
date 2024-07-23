@@ -1,0 +1,12 @@
+# Use the official Python image from the Docker Hub
+FROM python:3.11.9-slim
+
+WORKDIR /app
+
+COPY requirements.txt meta.py ./
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+EXPOSE 5001
+
+CMD ["python", "meta.py"]

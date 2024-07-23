@@ -18,6 +18,7 @@ async function htmlToPDF(htmlContent: string, outputPath: string) {
     // Launch a headless browser
     const browser = await puppeteer.launch({
         product: process.env.PUPPETEER_PRODUCT as "chrome" | "firefox",
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
 
     // Open a new page

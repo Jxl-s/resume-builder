@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+    node-api:
+        build:
+            context: .
+            dockerfile: Dockerfile.node
+        ports:
+            - "3000:3000"
+        env_file:
+            - .env.local
+        environment:
+            - META_HOST=http://meta-server:5001
+        networks:
+            - app-network
+
+    meta-server:
+        build:
+            context: .
+            dockerfile: Dockerfile.python
+        ports:
+            - "5001:5001"
+        networks:
+            - app-network
+
+networks:
+    app-network:
