@@ -18,7 +18,7 @@ export default function Home() {
                 </article>
                 <RightBar />
             </section>
-            {!isLocal && <div className="fixed bottom-2 left-2 animate-pulse">
+            {!isLocal && <div className="fixed bottom-2 left-2 animate-pulse print:hidden">
                 <div className="bg-danger text-white text-3xl p-4 rounded-md">
                     This is a <b>demo</b> version, run the project{" "}
                     <b>locally</b> for the full feature set.
