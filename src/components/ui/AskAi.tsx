@@ -72,7 +72,7 @@ const AskAi: FC = () => {
             >
                 <FaHandSparkles className="w-4 h-4" />
                 {aiOnline === null
-                    ? "Checking ..."
+                    ? t("checking")
                     : aiOnline
                     ? t("ask_ai")
                     : t("ai_offline")}

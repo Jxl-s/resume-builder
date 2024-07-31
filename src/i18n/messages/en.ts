@@ -25,6 +25,7 @@ const messages = {
         add: "Add",
         import: "Import",
         download: "Download",
+        checking: "Checking ...",
     },
     Editor: {
         new_section: "Add a New Section",

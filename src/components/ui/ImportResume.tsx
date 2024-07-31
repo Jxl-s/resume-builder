@@ -5,8 +5,10 @@ import Modal from "../Modal";
 import useResumeEditorStore from "@/stores/useResumeEditorStore";
 import { v4 as uuidv4 } from "uuid";
 import ImportModal from "../modals/ImportModal";
+import { useTranslations } from "next-intl";
 
 const ImportResume: FC<{ enabled: boolean }> = ({ enabled }) => {
+    const t = useTranslations("ToolBar");
     const [showModal, setShowModal] = useState(false);
 
     return (
@@ -27,7 +29,7 @@ const ImportResume: FC<{ enabled: boolean }> = ({ enabled }) => {
                 }
             >
                 <FaFileImport className="w-4 h-4" />
-                Import
+                {t("import")}
             </Button>
         </>
     );

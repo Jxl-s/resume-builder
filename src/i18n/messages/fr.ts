@@ -26,6 +26,7 @@ const messages = {
         add: "Ajouter",
         import: "Importer",
         download: "Télécharger",
+        checking: "Vérification...",
     },
     Editor: {
         new_section: "Nouvelle Section",

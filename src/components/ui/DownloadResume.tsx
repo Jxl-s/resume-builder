@@ -3,9 +3,11 @@ import Button from "../Button";
 import useResumeEditorStore from "@/stores/useResumeEditorStore";
 import { FaDownload } from "react-icons/fa";
 import useDocSettingsStore from "../../stores/useDocSettingsStore";
+import { useTranslations } from "next-intl";
 
 const DownloadResume: FC<{ enabled: boolean }> = ({ enabled }) => {
     const [isDownloading, setIsDownloading] = useState(false);
+    const t = useTranslations("ToolBar");
 
     const onDownload = async () => {
         setIsDownloading(true);
@@ -80,7 +82,7 @@ const DownloadResume: FC<{ enabled: boolean }> = ({ enabled }) => {
             onClick={onDownload}
         >
             <FaDownload className="w-4 h-4" />
-            {isDownloading ? "Please wait..." : "Download"}
+            {isDownloading ? "Please wait..." : t("download")}
         </Button>
     );
 };
