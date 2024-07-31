@@ -64,6 +64,7 @@ const messages = {
         default_custom_text: "Skills: JavaScript, Python, React, Node.js",
 
         enter_bullet_point: "Enter bullet point",
+        cancel: "Cancel",
     },
     Right: {
         my_resumes: "My Resumes",

@@ -16,10 +16,12 @@ import fonts, { defaultFont } from "../fonts";
 import { loadState, saveState } from "@/utils/storage";
 import { FaPenToSquare, FaX } from "react-icons/fa6";
 import TooltipsLink from "@/components/TooltipsLink";
+import { useTranslations } from "next-intl";
 
 const Editor: FC = () => {
+    const t = useTranslations("Editor");
     const resumeContainerRef = useRef<HTMLDivElement>(null);
-    
+
     const sections = useResumeEditorStore((state) => state.sections);
     const header = useResumeEditorStore((state) => state.header);
 
@@ -152,7 +154,7 @@ const Editor: FC = () => {
                         className="font-semibold py-2"
                         style={defaultFont.style}
                     >
-                        Add a New Section
+                        {t("new_section")}
                     </span>
                 </Button>
             </div>

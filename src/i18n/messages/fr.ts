@@ -65,6 +65,7 @@ const messages = {
         default_custom_text: "Compétences: JavaScript, Python, React, Node.js",
 
         enter_bullet_point: "Entrez un point",
+        cancel: "Annuler",
     },
     Right: {
         my_resumes: "Mes resumés",

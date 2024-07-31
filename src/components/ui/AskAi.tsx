@@ -7,9 +7,10 @@ import { IExperienceItem, IProjectItem } from "@/types/items";
 import { removeTags } from "@/utils/sanitizeHtml";
 import { FaHandSparkles } from "react-icons/fa";
 import EnhancerModal from "../modals/EnhancerModal";
+import { useTranslations } from "next-intl";
 
 const AskAi: FC = () => {
-    const updateItem = useResumeEditorStore((state) => state.updateItem);
+    const t = useTranslations("ToolBar");
 
     const [focusedSectionId, focusedItemId] = useFocusedListStore((state) => [
         state.focusedSectionId,
@@ -73,8 +74,8 @@ const AskAi: FC = () => {
                 {aiOnline === null
                     ? "Checking ..."
                     : aiOnline
-                    ? "Ask AI"
-                    : "AI is Offline"}
+                    ? t("ask_ai")
+                    : t("ai_offline")}
             </Button>
         </>
     );

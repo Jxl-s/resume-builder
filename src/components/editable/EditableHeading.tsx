@@ -12,6 +12,7 @@ import {
     FaSuitcase,
 } from "react-icons/fa6";
 import fonts, { defaultFont } from "@/app/fonts";
+import { useTranslations } from "next-intl";
 
 interface Props {
     content: string;
@@ -19,6 +20,8 @@ interface Props {
 }
 
 const EditableHeading: FC<Props> = ({ content, setContent }) => {
+    const t = useTranslations("Editor");
+
     const addItemRef = useRef<HTMLDivElement>(null);
     const headingSize = useDocSettingsStore((state) => state.headingSize);
     const removeSection = useResumeEditorStore((state) => state.removeSection);
@@ -51,31 +54,31 @@ const EditableHeading: FC<Props> = ({ content, setContent }) => {
     // TODO: display goes in i18n
     const itemChoices = [
         {
-            display: "Education",
+            display: t("education"),
             name: "education",
             action: addEducation,
             icon: FaGraduationCap,
         },
         {
-            display: "Experience",
+            display: t("experience"),
             name: "experience",
             action: addExperience,
             icon: FaSuitcase,
         },
         {
-            display: "Project",
+            display: t("project"),
             name: "project",
             action: addProject,
             icon: FaComputer,
         },
         {
-            display: "Project (no links)",
+            display: t("project_nolinks"),
             name: "projectNoLinks",
             action: addProjectNoLinks,
             icon: FaComputer,
         },
         {
-            display: "Custom Text",
+            display: t("custom_text"),
             name: "customText",
             action: addText,
             icon: FaFile,
@@ -140,7 +143,7 @@ const EditableHeading: FC<Props> = ({ content, setContent }) => {
                     onClick={onCancelAddItem}
                     style={defaultFont.style}
                 >
-                    Cancel
+                    {t("cancel")}
                 </p>
             </div>
         </DeleteDrag>
