@@ -81,6 +81,11 @@ const messages = {
         yes_delete: "Yes, delete it",
         cancel: "Cancel",
     },
+    AiModal: {
+        title: "AI Bullet Enhancer",
+        select_point: "Select a point to improve with AI",
+        be_creative: "or, be creative",
+    },
 };
 
 export default messages;

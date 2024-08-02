@@ -74,7 +74,7 @@ const AskAi: FC = () => {
                 {aiOnline === null
                     ? t("checking")
                     : aiOnline
-                    ? t("ask_ai")
+                    ? t("ai_ask")
                     : t("ai_offline")}
             </Button>
         </>
