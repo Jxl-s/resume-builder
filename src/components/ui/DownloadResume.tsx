@@ -16,7 +16,7 @@ const DownloadResume: FC<{ enabled: boolean }> = ({ enabled }) => {
             // do a browser print
             window.print();
             setIsDownloading(false);
-            return;;
+            return;
         }
 
         const { header, sections } = useResumeEditorStore.getState();
@@ -82,7 +82,7 @@ const DownloadResume: FC<{ enabled: boolean }> = ({ enabled }) => {
             onClick={onDownload}
         >
             <FaDownload className="w-4 h-4" />
-            {isDownloading ? "Please wait..." : t("download")}
+            {isDownloading ? t("please_wait") : t("download")}
         </Button>
     );
 };

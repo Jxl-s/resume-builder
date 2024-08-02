@@ -25,6 +25,7 @@ const messages = {
         add: "Add",
         import: "Import",
         download: "Download",
+        please_wait: "Please wait ...",
         checking: "Checking ...",
     },
     Editor: {
@@ -81,10 +82,17 @@ const messages = {
         yes_delete: "Yes, delete it",
         cancel: "Cancel",
     },
+    ImportModal: {
+        title: "Import Resume",
+        select_file: "Select the PDF to be imported",
+        paste_resume: "or, paste the text from your resume",
+        import: "Import",
+    },
     AiModal: {
         title: "AI Bullet Enhancer",
         select_point: "Select a point to improve with AI",
         be_creative: "or, be creative",
+        gen_points: "Generate Points",
     },
 };
 

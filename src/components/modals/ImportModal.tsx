@@ -3,6 +3,7 @@ import Modal from "../Modal";
 import useResumeEditorStore from "@/stores/useResumeEditorStore";
 import Button from "../Button";
 import { v4 as uuidv4 } from "uuid";
+import { useTranslations } from "next-intl";
 
 interface Props {
     visible: boolean;
@@ -10,6 +11,8 @@ interface Props {
 }
 
 const ImportModal: FC<Props> = ({ visible, onClose }) => {
+    const t = useTranslations("ImportModal");
+
     const [file, setFile] = useState<File | null>(null);
     const [text, setText] = useState<string>("");
     const [usingText, setUsingText] = useState(false);
@@ -127,8 +130,8 @@ const ImportModal: FC<Props> = ({ visible, onClose }) => {
     };
 
     return (
-        <Modal title="Import Resume" onClose={reset} visible={visible}>
-            <p>Select the PDF to be imported</p>
+        <Modal title={t("title")} onClose={reset} visible={visible}>
+            <p>{t("select_file")}</p>
             <input
                 type="file"
                 accept=".pdf"
@@ -143,7 +146,7 @@ const ImportModal: FC<Props> = ({ visible, onClose }) => {
                     checked={usingText}
                     onChange={(e) => setUsingText(e.target.checked)}
                 />
-                or, paste the text from your resume
+                {t("paste_resume")}
             </p>
             <input
                 type="text"
@@ -157,7 +160,7 @@ const ImportModal: FC<Props> = ({ visible, onClose }) => {
                 disabled={(file === null && text === "") || isUploading}
                 onClick={handleSubmit}
             >
-                Import
+                {t("import")}
             </Button>
         </Modal>
     );

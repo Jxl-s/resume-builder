@@ -12,6 +12,7 @@ import {
     ITextItem,
 } from "../../types/items";
 import { removeTags } from "../../utils/sanitizeHtml";
+import { useTranslations } from "next-intl";
 
 enum EnhancerScreen {
     Select,
@@ -29,6 +30,7 @@ interface Props {
 }
 
 const EnhancerModal: FC<Props> = ({ visible, sectionId, itemId, onClose }) => {
+    const t = useTranslations("AiModal");
     const updateItem = useResumeEditorStore((state) => state.updateItem);
 
     // Handle selection
@@ -271,7 +273,7 @@ const EnhancerModal: FC<Props> = ({ visible, sectionId, itemId, onClose }) => {
     };
 
     return (
-        <Modal title="AI Bullet Enhancer" visible={visible} onClose={reset}>
+        <Modal title={t("title")} visible={visible} onClose={reset}>
             {/* Waiting messages */}
             {screen === EnhancerScreen.WaitGenerate && (
                 <p>Please wait while the AI is generating points...</p>
@@ -326,15 +328,15 @@ const EnhancerModal: FC<Props> = ({ visible, sectionId, itemId, onClose }) => {
             )}
             {screen === EnhancerScreen.Select && (
                 <div>
-                    <p className="text-center mb-1">
-                        Select a point to improve with AI
-                    </p>
+                    <p className="text-center mb-1">{t("select_point")}</p>
                     <ul className="list-disc list-inside text-sm">
                         {(item?.value as IExperienceItem)?.description?.map(
                             (c, i) => (
                                 <li
                                     className="text-primary hover:brightness-125 duration-300 cursor-pointer my-1"
-                                    onClick={() => onEnhancerSelect(i, removeTags(c))}
+                                    onClick={() =>
+                                        onEnhancerSelect(i, removeTags(c))
+                                    }
                                     key={i}
                                 >
                                     {removeTags(c)}
@@ -343,14 +345,16 @@ const EnhancerModal: FC<Props> = ({ visible, sectionId, itemId, onClose }) => {
                         ) ?? []}
                     </ul>
                     <hr className="my-2 opacity-50" />
-                    <p className="text-sm text-center mb-1">Or, be creative</p>
+                    <p className="text-sm text-center mb-1">
+                        {t("be_creative")}
+                    </p>
                     <Button
                         theme="primary"
                         className="text-sm font-semibold px-4 w-full py-2 flex items-center gap-2 justify-center"
                         onClick={onGenerateSubmit}
                     >
                         <FaHandSparkles className="w-4 h-4" />
-                        Generate New Points
+                        {t("gen_points")}
                     </Button>
                 </div>
             )}

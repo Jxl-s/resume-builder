@@ -26,6 +26,7 @@ const messages = {
         add: "Ajouter",
         import: "Importer",
         download: "Télécharger",
+        please_wait: "Veuillez patienter...",
         checking: "Vérification...",
     },
     Editor: {
@@ -81,6 +82,18 @@ const messages = {
         delete_snapshot_desc: "Êtes-vous sûr de vouloir supprimer ce snapshot?",
         yes_delete: "Oui, supprimer",
         cancel: "Annuler",
+    },
+    ImportModal: {
+        title: "Importer un CV",
+        select_file: "Sélectionnez le PDF à importer",
+        paste_resume: "ou, collez le texte de votre CV",
+        import: "Importer",
+    },
+    AiModal: {
+        title: "Améliorateur IA",
+        select_point: "Sélectionnez un point à améliorer avec l'IA",
+        be_creative: "ou, soyez créatif",
+        gen_points: "Générer des points",
     },
 };
 
