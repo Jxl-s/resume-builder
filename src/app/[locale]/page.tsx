@@ -5,7 +5,7 @@ import LeftBar from "./LeftBar";
 import RightBar from "./RightBar";
 
 export default function Home() {
-    const isLocal = process.env.NEXT_PUBLIC_IS_LOCAL === "true";
+    // const isLocal = process.env.NEXT_PUBLIC_IS_LOCAL === "true";
 
     return (
         <main className="m-0 p-0">
@@ -18,7 +18,7 @@ export default function Home() {
                 </article>
                 <RightBar />
             </section>
-            {!isLocal && <div className="fixed bottom-2 left-2 animate-pulse print:hidden">
+            {/* {!isLocal && <div className="fixed bottom-2 left-2 animate-pulse print:hidden">
                 <div className="bg-danger text-white text-3xl p-4 rounded-md">
                     This is a <b>demo</b> version, run the project{" "}
                     <b>locally</b> for the full feature set.
@@ -34,7 +34,7 @@ export default function Home() {
                     </a>{" "}
                     for the source code and more instructions.
                 </div>
-            </div>}
+            </div>} */}
         </main>
     );
 }
